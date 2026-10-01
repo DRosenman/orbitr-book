@@ -1,0 +1,21 @@
+{
+  "hash": "5db36ac5e09e4a51e4f186880dbb8d6e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Physical Constants {#sec-constants}\n\n\n\norbitr exports the constants below, all in SI units. The masses and semi-major axes are from the JPL DE440 ephemeris [@park2021]; the gravitational constant is the CODATA 2018 value [@tiesinga2021]; the time constants are exact (a year here is the Julian year of 365.25 days). The table is generated from the installed package, so it always matches the version the book was built with.\n\nThe \"distance\" constants are semi-major axes, not current separations. Every orbit is an ellipse, and the semi-major axis is the one length that determines its period (Chapter 4). Paired with the mean orbital speed it gives a near-circular orbit that closely approximates the real one; for the real ellipse, use `add_planet()` or `add_body_keplerian()` (Chapter 7).\n\n\n::: {#tbl-constants .cell layout-align=\"center\" tbl-cap='Constants exported by orbitr, read from the installed package.'}\n::: {.cell-output-display}\n\n\n|Constant               |      Value|Unit           |\n|:----------------------|----------:|:--------------|\n|gravitational_constant | 6.6743e-11|m^3 kg^-1 s^-2 |\n|seconds_per_hour       | 3.6000e+03|s              |\n|seconds_per_day        | 8.6400e+04|s              |\n|seconds_per_year       | 3.1558e+07|s              |\n|mass_sun               | 1.9890e+30|kg             |\n|mass_mercury           | 3.3010e+23|kg             |\n|mass_venus             | 4.8670e+24|kg             |\n|mass_earth             | 5.9720e+24|kg             |\n|mass_moon              | 7.3420e+22|kg             |\n|mass_mars              | 6.4170e+23|kg             |\n|mass_jupiter           | 1.8980e+27|kg             |\n|mass_saturn            | 5.6830e+26|kg             |\n|mass_uranus            | 8.6810e+25|kg             |\n|mass_neptune           | 1.0240e+26|kg             |\n|mass_pluto             | 1.3090e+22|kg             |\n|distance_mercury_sun   | 5.7910e+10|m              |\n|distance_venus_sun     | 1.0820e+11|m              |\n|distance_earth_sun     | 1.4960e+11|m              |\n|distance_earth_moon    | 3.8440e+08|m              |\n|distance_mars_sun      | 2.2790e+11|m              |\n|distance_jupiter_sun   | 7.7850e+11|m              |\n|distance_saturn_sun    | 1.4340e+12|m              |\n|distance_uranus_sun    | 2.8710e+12|m              |\n|distance_neptune_sun   | 4.4950e+12|m              |\n|distance_pluto_sun     | 5.9060e+12|m              |\n|speed_mercury          | 4.7360e+04|m/s            |\n|speed_venus            | 3.5020e+04|m/s            |\n|speed_earth            | 2.9780e+04|m/s            |\n|speed_moon             | 1.0220e+03|m/s            |\n|speed_mars             | 2.4070e+04|m/s            |\n|speed_jupiter          | 1.3060e+04|m/s            |\n|speed_saturn           | 9.6800e+03|m/s            |\n|speed_uranus           | 6.8000e+03|m/s            |\n|speed_neptune          | 5.4300e+03|m/s            |\n|speed_pluto            | 4.7400e+03|m/s            |\n\n\n:::\n:::\n\n",
+    "supporting": [
+      "D-constants_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

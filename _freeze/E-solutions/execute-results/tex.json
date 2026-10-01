@@ -1,0 +1,21 @@
+{
+  "hash": "cba9733f7c44a196e3d3ae0c436a4074",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Solutions to Selected Exercises {#sec-solutions}\n\n\n\n*Draft status: to be written once the chapters are final. Solutions will be given for every exercise that has a numerical answer, with code; derivation exercises get the key steps.*\n\n## Chapter 1\n\n## Chapter 2\n\n## Chapter 3\n\n## Chapter 4\n\n## Chapter 5\n",
+    "supporting": [
+      "E-solutions_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

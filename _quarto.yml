@@ -16,14 +16,24 @@ book:
   sidebar:
     style: docked
     collapse-level: 1
+    tools:
+      - icon: github
+        href: https://github.com/DRosenman
+        text: GitHub
+      - icon: book
+        href: https://orbit-r.com
+        text: orbitr documentation
+      - icon: person-circle
+        href: https://daverosenman.com
+        text: About the author
   page-footer:
-    left: "Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0."
+    left: "Copyright 2026 [Dave Rosenman](about.qmd). The online edition is free to read under CC BY-NC-ND 4.0."
+    center: "[orbit-r.com](https://orbit-r.com) · [GitHub](https://github.com/DRosenman) · [daverosenman.com](https://daverosenman.com)"
     right: "Built with [Quarto](https://quarto.org)."
   cover-image: cover.png
   cover-image-alt: "Cover of Orbital Mechanics with R: the orbitr hex logo over a star field"
   chapters:
     - index.qmd
-    - the-app.qmd
     - part: "First Orbits"
       chapters:
         - 01-why-simulate-gravity.qmd
