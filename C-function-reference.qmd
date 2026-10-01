@@ -1,0 +1,76 @@
+# Function Quick Reference {#sec-function-reference}
+
+Every exported function in orbitr 1.0.0, grouped by role. Positions are in meters, velocities in m/s, masses in kg, times in seconds. Full documentation for each is at <https://orbit-r.com/reference/>.
+
+## Building a system
+
+| Function | What it does | Key arguments |
+|:--|:--|:--|
+| `create_system()` | Start an empty system | `G` (default `gravitational_constant`) |
+| `add_body()` | Add a body by Cartesian state | `id`, `mass`, `x`, `y`, `z`, `vx`, `vy`, `vz` (all default 0) |
+| `add_sun()` | Add the Sun at rest at the origin | `mass` (default `mass_sun`); position and velocity overridable |
+| `add_body_keplerian()` | Add a body by orbital elements; `e > 1` with `a < 0` for a hyperbola | `id`, `mass`, `a`, `e`, `i`, `lan`, `arg_pe`, `nu` (degrees), `parent` |
+| `add_planet()` | Add a named solar-system body from JPL elements | `name`, `parent`, `nu`; any element or `mass` overridable |
+| `load_solar_system()` | Sun, eight planets, Moon, Pluto | `moon = TRUE`, `pluto = TRUE` |
+| `remove_body()` | Drop bodies by name | `id` (vector) |
+| `get_bodies()` | The body table as a tibble | |
+| `system_from_simulation()` | Rebuild a system from one time step of a run | `time` (default: the last step), `G` |
+
+## Running
+
+| Function | What it does | Key arguments |
+|:--|:--|:--|
+| `simulate_system()` | Integrate forward in time | `time_step` (default 3600), `duration` (default one year), `method` (`"verlet"`, `"euler_cromer"`, `"euler"`), `softening` (default 0), `use_cpp` (default `TRUE`) |
+| `continue_simulation()` | Run on from a simulation's last state, appending rows | `time_step`, `duration`; `method`, `softening`, `G` default to the previous segment's |
+
+Output of `simulate_system()`: a tibble with one row per body per time step and columns `time`, `id`, `mass`, `x`, `y`, `z`, `vx`, `vy`, `vz`. The run's `G`, `softening`, `method`, and `time_step` are attached as attributes.
+
+## Analysis
+
+| Function | What it does | Key arguments |
+|:--|:--|:--|
+| `shift_reference_frame()` | Re-center the output on one body, or on the center of mass | `center_id` (a body id or `"barycenter"`), `keep_center = TRUE` |
+| `get_orbital_elements()` | Osculating `a`, `e`, `i`, `lan`, `arg_pe`, `nu`, `period` of a body about a parent, at every time step | `body`, `parent`, `mu` (default $GM_{\mathrm{parent}}$) |
+| `get_energy()` | Total `kinetic`, `potential`, `energy` at every time step | `G`, `softening` (default: as recorded in the run) |
+| `get_momentum()` | Total linear momentum `px`, `py`, `pz` | |
+| `get_angular_momentum()` | Total angular momentum `Lx`, `Ly`, `Lz` | |
+| `conserved_quantities()` | All of the above joined, plus `energy_error`, `momentum_error`, `angular_momentum_error` | `G`, `softening` |
+
+## Plotting
+
+| Function | What it does | Key arguments |
+|:--|:--|:--|
+| `plot_orbits()` | Full trajectories; ggplot in 2D, plotly if any $z$ motion | `three_d` |
+| `plot_orbits_3d()` | Interactive 3D trajectories | |
+| `plot_system()` | Snapshot at one time | `time`, `trails`, `three_d` |
+| `plot_system_3d()` | Interactive 3D snapshot | `time`, `trails` |
+| `animate_system()` | GIF animation (gganimate) or plotly if 3D | `fps`, `duration`, `trails`, `three_d` |
+| `animate_system_3d()` | Interactive plotly animation | `fps`, `duration`, `trails` |
+
+## Saving
+
+| Function | What it does |
+|:--|:--|
+| `save_system()` / `load_system()` | Write and read a system as `.rds` |
+| `export_bodies()` | Write the body table as CSV |
+
+## Helpers defined in this book
+
+These are not part of the package. Each is defined in full where it first appears; those marked with an asterisk are also collected in `R/helpers.R` in the book's source, which every chapter loads. Several of them do by hand what a package function does in one call, and are kept in the text for the derivation.
+
+| Helper | Defined in | Purpose | Package equivalent |
+|:--|:--|:--|:--|
+| `accelerations()` | Chapter 3 | N-body accelerations in plain R | the C++ kernel |
+| `relative_state()`\* | Chapter 4 | Relative position and velocity of one body about another | `shift_reference_frame()` |
+| `eccentricity()`\* | Chapter 4 | Eccentricity vector at every time step | `get_orbital_elements()` |
+| `measure_period()`\* | Chapter 4 | Orbital period measured from the time series (independent of Kepler's third law) | |
+| `total_energy()` | Chapter 5 | The energy sum written out | `get_energy()` |
+| `keplerian_to_state()`\* | Chapter 7 | Orbital elements to a Cartesian state vector | inside `add_body_keplerian()` |
+| `state_to_elements()`\* | Chapter 7 | Cartesian state vector to osculating elements | `get_orbital_elements()` |
+| `solve_kepler()`\*, `true_anomaly_at()`\* | Chapter 7 | Kepler's equation; true anomaly at a given time since periapsis | |
+| `unwrap()`\* | Chapter 8 | Make a sequence of angles continuous past $\pm\pi$ | |
+| `add_binary()`, `add_eccentric_binary()` | Chapter 9 | Place two bodies on a circular or eccentric mutual orbit with zero total momentum | |
+| `body_energies()` | Chapter 11 | Each body's energy relative to the rest of the system | |
+| `time_since_periapsis()`\* | Chapter 13 | Kepler's equation in reverse: time from periapsis to a true anomaly | |
+| `closest_approach()` | Chapter 16 | Minimum separation of every pair over a run | |
+| `kick_drag()` | Chapter 16 | Apply a velocity kick to one body at the last time step | |

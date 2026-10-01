@@ -1,0 +1,35 @@
+% ---------------------------------------------------------------------------
+% Print styling for the KDP edition. Loaded by _quarto.yml (include-in-header).
+% ---------------------------------------------------------------------------
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{booktabs}
+
+% No widows/orphans in a printed book.
+\widowpenalty=10000
+\clubpenalty=10000
+
+% Never hyphenate the package name.
+\hyphenation{orbitr}
+
+% Headings in the body font, bold.
+\setkomafont{disposition}{\normalfont\bfseries}
+\setkomafont{caption}{\small}
+\setkomafont{captionlabel}{\small\bfseries}
+\setcapindent{0pt}
+
+% Copyright page on the back of the title page (KOMA-Script prints
+% \lowertitleback on the verso of the title page automatically).
+\lowertitleback{%
+  \small
+  Copyright \textcopyright{} 2026 David P.~Rosenman\\[0.5ex]
+  All rights reserved. No part of this book may be reproduced in any form
+  without written permission from the author, except for brief quotations
+  in reviews.\\[1.5ex]
+  The orbitr package is free software released under the MIT License;
+  see \url{https://orbit-r.com}. All code listings in this book may be
+  used freely.\\[1.5ex]
+  Written for orbitr version 1.0.0.\\[0.5ex]
+  First edition.\\[1.5ex]
+  % ISBN assigned by KDP:
+  % ISBN 978-0-0000000-0-0
+}

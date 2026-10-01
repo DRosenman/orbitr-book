@@ -1,0 +1,9 @@
+# About the Author {.unnumbered}
+
+**Dave Rosenman** is a data scientist with a degree in physics and the author of orbitr, the R package this book is built on. He has published open-source packages on both CRAN and PyPI, and writes about physics for a general audience. *Orbital Mechanics with R* grew out of the package's documentation and the questions it could not answer: not how to run an orbit, but why the simulation behaves the way it does. He lives in Newtown, Pennsylvania. The package, the book, and his other work are at <https://orbit-r.com> and <https://daverosenman.com>.
+
+<!-- Back-cover version (two sentences):
+Dave Rosenman is a data scientist with a degree in physics and the author of
+orbitr, the R package this book is built on. He lives in Newtown, Pennsylvania;
+his work is at daverosenman.com.
+-->

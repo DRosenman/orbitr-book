@@ -1,0 +1,18 @@
+# Solutions to Selected Exercises {#sec-solutions}
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+*Draft status: to be written once the chapters are final. Solutions will be given for every exercise that has a numerical answer, with code; derivation exercises get the key steps.*
+
+## Chapter 1
+
+## Chapter 2
+
+## Chapter 3
+
+## Chapter 4
+
+## Chapter 5

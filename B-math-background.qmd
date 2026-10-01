@@ -1,0 +1,224 @@
+# Mathematical Background {#sec-math}
+
+This appendix collects the mathematics the rest of the book takes for granted. It is not a course; it is a reference, written for a reader who has met calculus and vectors before and wants the specific facts the derivations lean on, in the notation the book uses, with a pointer to where each one earns its keep. If you can read it without surprises, you have everything you need. If a section is new to you, it is short enough to learn from, and the chapter it feeds will make it concrete.
+
+The book assumes you are comfortable with algebra, with trigonometry (sines, cosines, radians), and with the derivative and integral of a function of one variable. Everything beyond that is here.
+
+## Vectors
+
+A **vector** is a quantity with magnitude and direction: a position, a velocity, a force. The book sets vectors in bold, $\mathbf{r}$, and writes their components as $\mathbf{r} = (x, y, z)$. The **magnitude** (length) is
+
+$$
+r = |\mathbf{r}| = \sqrt{x^2 + y^2 + z^2},
+$$
+
+in italic, and the **unit vector** in the direction of $\mathbf{r}$ wears a hat, $\hat{\mathbf{r}} = \mathbf{r}/r$, with $|\hat{\mathbf{r}}| = 1$. Vectors add component by component, and multiplying a vector by a number scales its length (and reverses it if the number is negative). The difference $\mathbf{r}_k - \mathbf{r}_j$ is the vector *from* $\mathbf{r}_j$ *to* $\mathbf{r}_k$; its magnitude is the distance between the two points. That one fact is the whole content of Chapter 3's force law.
+
+### The dot product
+
+The **dot product** of two vectors is a number:
+
+$$
+\mathbf{a}\cdot\mathbf{b} = a_x b_x + a_y b_y + a_z b_z = |\mathbf{a}|\,|\mathbf{b}|\cos\theta,
+$$ {#eq-dot}
+
+where $\theta$ is the angle between them. It is commutative ($\mathbf{a}\cdot\mathbf{b} = \mathbf{b}\cdot\mathbf{a}$), distributes over addition, and is zero when the vectors are perpendicular. Two uses recur throughout the book. First, a vector dotted with itself is its squared length, $\mathbf{r}\cdot\mathbf{r} = r^2$, which is how the book gets from vector equations to scalar ones (Chapter 4's energy derivation). Second, the dot product with a unit vector picks out the component along that direction: $\mathbf{v}\cdot\hat{\mathbf{r}}$ is the part of the velocity that points radially.
+
+### The cross product
+
+The **cross product** of two vectors is a vector:
+
+$$
+\mathbf{a}\times\mathbf{b} = \big(a_y b_z - a_z b_y,\ a_z b_x - a_x b_z,\ a_x b_y - a_y b_x\big).
+$$ {#eq-cross}
+
+Its magnitude is $|\mathbf{a}|\,|\mathbf{b}|\sin\theta$, which is the area of the parallelogram the two vectors span (so $\tfrac12|\mathbf{a}\times\mathbf{b}|$ is the area of the triangle; Chapter 4 uses this for Kepler's second law). Its direction is perpendicular to both $\mathbf{a}$ and $\mathbf{b}$, by the right-hand rule: curl the fingers of your right hand from $\mathbf{a}$ toward $\mathbf{b}$ and the thumb points along $\mathbf{a}\times\mathbf{b}$. The properties the book uses:
+
+- It is **anticommutative**: $\mathbf{b}\times\mathbf{a} = -\mathbf{a}\times\mathbf{b}$.
+- Any vector crossed with itself, or with a multiple of itself, is zero: $\mathbf{a}\times\mathbf{a} = \mathbf{0}$, $\mathbf{a}\times(c\mathbf{a}) = \mathbf{0}$. This is why angular momentum is conserved under a central force (Chapter 4).
+- It distributes over addition and obeys the product rule under differentiation (next section).
+
+Angular momentum, $\mathbf{r}\times\mathbf{v}$, is the cross product you will see most. The pattern of indices in @eq-cross is worth memorizing once: each component uses the other two coordinates, cyclically ($x \to y \to z \to x$), and the code in Chapters 4, 7, and 12 is a direct transcription of it.
+
+### Two triple-product identities
+
+Chapter 4's derivation of the orbit equation uses two identities for three vectors.
+
+The **scalar triple product** $\mathbf{a}\cdot(\mathbf{b}\times\mathbf{c})$ is the volume of the parallelepiped spanned by the three, and it is unchanged by cycling the vectors:
+
+$$
+\mathbf{a}\cdot(\mathbf{b}\times\mathbf{c}) = \mathbf{b}\cdot(\mathbf{c}\times\mathbf{a}) = \mathbf{c}\cdot(\mathbf{a}\times\mathbf{b}).
+$$ {#eq-scalar-triple}
+
+It is zero if any two of the vectors are parallel or if all three lie in a plane. The book uses it to turn $\mathbf{r}\cdot(\mathbf{v}\times\mathbf{h})$ into $\mathbf{h}\cdot(\mathbf{r}\times\mathbf{v}) = h^2$.
+
+The **vector triple product** expands as
+
+$$
+\mathbf{a}\times(\mathbf{b}\times\mathbf{c}) = \mathbf{b}\,(\mathbf{a}\cdot\mathbf{c}) - \mathbf{c}\,(\mathbf{a}\cdot\mathbf{b}),
+$$ {#eq-vector-triple}
+
+the "BAC minus CAB" rule. Note that the result lies in the plane of $\mathbf{b}$ and $\mathbf{c}$, and that the parentheses matter: $(\mathbf{a}\times\mathbf{b})\times\mathbf{c}$ is a different vector. Both identities can be verified by writing out components with @eq-cross; it is tedious once and then you never doubt them again.
+
+## Derivatives of vectors
+
+A vector that changes with time is differentiated component by component: if $\mathbf{r}(t) = (x(t), y(t), z(t))$ then $\dot{\mathbf{r}} = (\dot x, \dot y, \dot z)$. The book uses Newton's dot for time derivatives: $\dot{\mathbf{r}}$ is velocity, $\ddot{\mathbf{r}}$ is acceleration. Velocity is also written $\mathbf{v}$ and acceleration $\mathbf{a}$ when the context is clear.
+
+The product rules work for every kind of product, as long as the order of the factors is kept in the cross product:
+
+$$
+\frac{d}{dt}(f\mathbf{a}) = \dot f\,\mathbf{a} + f\,\dot{\mathbf{a}}, \qquad
+\frac{d}{dt}(\mathbf{a}\cdot\mathbf{b}) = \dot{\mathbf{a}}\cdot\mathbf{b} + \mathbf{a}\cdot\dot{\mathbf{b}}, \qquad
+\frac{d}{dt}(\mathbf{a}\times\mathbf{b}) = \dot{\mathbf{a}}\times\mathbf{b} + \mathbf{a}\times\dot{\mathbf{b}}.
+$$ {#eq-vector-product-rules}
+
+Two consequences do a lot of work in Chapter 4.
+
+**The derivative of a length.** Differentiating $r^2 = \mathbf{r}\cdot\mathbf{r}$ gives $2r\dot r = 2\,\mathbf{r}\cdot\dot{\mathbf{r}}$, so
+
+$$
+\dot r = \frac{\mathbf{r}\cdot\dot{\mathbf{r}}}{r} = \hat{\mathbf{r}}\cdot\dot{\mathbf{r}}.
+$$ {#eq-r-dot}
+
+The rate at which the distance changes is the radial component of the velocity. Note that $\dot r$ (the derivative of the length) is not $|\dot{\mathbf{r}}|$ (the length of the derivative, the speed); on a circular orbit the first is zero and the second is not.
+
+**The derivative of a unit vector.** By the quotient rule and @eq-r-dot,
+
+$$
+\frac{d}{dt}\left(\frac{\mathbf{r}}{r}\right) = \frac{\dot{\mathbf{r}}}{r} - \frac{\mathbf{r}\,\dot r}{r^2} = \frac{\dot{\mathbf{r}}}{r} - \frac{\mathbf{r}\,(\mathbf{r}\cdot\dot{\mathbf{r}})}{r^3}.
+$$ {#eq-unit-vector-dot}
+
+This is the expression that the vector triple product produces in Chapter 4's eccentricity-vector derivation, and recognizing it is the step that makes the derivation close.
+
+A function of a vector, like the potential $-\mu/r$, is differentiated through the chain rule: $\frac{d}{dt}(-\mu/r) = \mu\dot r/r^2$, and then @eq-r-dot.
+
+## Polar coordinates in the plane
+
+Two-body orbits are planar (Chapter 4 proves it), so most of the book's geometry lives in a plane, where a point can be given either by Cartesian coordinates $(x, y)$ or by its distance $r$ from the origin and its angle $\theta$ from the $x$ axis:
+
+$$
+x = r\cos\theta, \qquad y = r\sin\theta, \qquad r = \sqrt{x^2+y^2}, \qquad \theta = \operatorname{atan2}(y, x).
+$$
+
+The orbit equation of Chapter 4 is a relation between $r$ and $\theta$. To differentiate it you need the velocity in polar form. Define the unit vectors $\hat{\mathbf{r}} = (\cos\theta, \sin\theta)$, pointing outward, and $\hat{\boldsymbol{\theta}} = (-\sin\theta, \cos\theta)$, pointing in the direction of increasing $\theta$. Unlike the Cartesian unit vectors, these rotate as the point moves: $\dot{\hat{\mathbf{r}}} = \dot\theta\,\hat{\boldsymbol{\theta}}$ and $\dot{\hat{\boldsymbol{\theta}}} = -\dot\theta\,\hat{\mathbf{r}}$. Differentiating $\mathbf{r} = r\hat{\mathbf{r}}$ with the product rule,
+
+$$
+\mathbf{v} = \dot r\,\hat{\mathbf{r}} + r\dot\theta\,\hat{\boldsymbol{\theta}}.
+$$ {#eq-polar-velocity}
+
+The velocity has a radial part, $\dot r$, and a transverse part, $r\dot\theta$, and the speed squared is $\dot r^2 + r^2\dot\theta^2$. The angular momentum per unit mass is $h = |\mathbf{r}\times\mathbf{v}| = r\cdot r\dot\theta = r^2\dot\theta$, and because $h$ is constant for a central force this gives $\dot\theta = h/r^2$ directly, which Chapter 7 uses to turn the orbit equation into the velocity formulas. In a time $dt$ the position vector sweeps out a thin triangle of area $\tfrac12 r\cdot r\dot\theta\,dt$, so the area swept per unit time is $h/2$: Kepler's second law in one line.
+
+## Conic sections
+
+Every two-body orbit is a conic section: the curve you get by slicing a cone with a plane. Chapter 4 derives this; here is the geometry it needs.
+
+An **ellipse** is the set of points whose distances to two fixed points, the **foci**, add up to a constant, $2a$. It has a longest diameter $2a$ (the major axis) and a shortest $2b$ (the minor axis); $a$ is the **semi-major axis** and $b$ the **semi-minor axis**. The foci lie on the major axis at a distance $c = \sqrt{a^2 - b^2}$ from the center, and the **eccentricity** is $e = c/a$, between 0 (a circle, both foci at the center) and 1 (a degenerate line). The relations the book uses:
+
+$$
+b = a\sqrt{1-e^2}, \qquad \text{area} = \pi a b, \qquad r_{\min} = a(1-e), \qquad r_{\max} = a(1+e),
+$$ {#eq-ellipse-facts}
+
+where $r_{\min}$ and $r_{\max}$ are the nearest and farthest distances from a focus (periapsis and apoapsis, when the focus is a star). With the origin at one focus and $\nu$ the angle from the direction of the nearest point, the ellipse is
+
+$$
+r(\nu) = \frac{a(1-e^2)}{1 + e\cos\nu} = \frac{p}{1 + e\cos\nu},
+$$ {#eq-conic-polar}
+
+where $p = a(1-e^2)$ is the **semi-latus rectum**, the distance from the focus to the curve at $\nu = 90°$. Check it: $\nu = 0$ gives $a(1-e)$ and $\nu = \pi$ gives $a(1+e)$. This polar form is the one that falls out of Newton's law, and it is why the orbiting body is at a focus rather than at the center.
+
+The same equation with $e = 1$ describes a **parabola**, which reaches infinity at $\nu = \pm 180°$, and with $e > 1$ a **hyperbola**, which reaches infinity at the **asymptotes** $\nu = \pm\arccos(-1/e)$; between them the denominator is positive and the curve is a single open branch. For a hyperbola the semi-major axis is conventionally negative, $a < 0$, so that $p = a(1-e^2) > 0$ and the periapsis distance $a(1-e) > 0$ come out right from the same formulas. The angle between the two asymptotes, which is how much a flyby bends a trajectory, is $2\arcsin(1/e)$. Chapter 13 uses all of this.
+
+## Taylor series
+
+If a function is smooth, its value a short distance ahead can be built from its derivatives at the current point:
+
+$$
+f(t + \Delta t) = f(t) + f'(t)\,\Delta t + \frac{f''(t)}{2}\,\Delta t^2 + \frac{f'''(t)}{6}\,\Delta t^3 + \cdots
+$$ {#eq-taylor-general}
+
+The general term is $f^{(n)}(t)\,\Delta t^n/n!$. For the position of a body this reads $\mathbf{r}(t+\Delta t) = \mathbf{r} + \mathbf{v}\Delta t + \tfrac12\mathbf{a}\Delta t^2 + \cdots$, which is where every integrator in Chapter 5 comes from: an integrator is a decision about where to cut the series off and what to do about the terms you cut.
+
+The **big-O** notation summarizes the size of what was cut. Writing "$+\,O(\Delta t^3)$" means the omitted terms are no larger than a constant times $\Delta t^3$ when $\Delta t$ is small. The practical meaning is in the scaling: an $O(\Delta t^3)$ error shrinks by a factor of eight when the step is halved, an $O(\Delta t^2)$ error by four. If a method's error over one step is $O(\Delta t^{p+1})$, then over a fixed time interval, which takes $1/\Delta t$ steps, the accumulated error is $O(\Delta t^p)$, and the method is said to be of order $p$. Chapter 5 measures these exponents directly.
+
+Three special cases of @eq-taylor-general appear so often that it is worth knowing them by sight, with $x$ small:
+
+$$
+(1 + x)^n \approx 1 + nx, \qquad \sin x \approx x, \qquad e^x \approx 1 + x.
+$$ {#eq-common-approximations}
+
+The first, the **binomial approximation**, is how Chapter 6 estimates the cost of softening: $(1 + \varepsilon^2/r^2)^{-3/2} \approx 1 - \tfrac32\,\varepsilon^2/r^2$. The last is how a small growth rate turns into exponential growth over many steps: multiplying by $(1 + x)$ a total of $N$ times gives $(1+x)^N \approx e^{Nx}$.
+
+## Differential equations and the idea of state
+
+Newton's second law for one body, $\ddot{\mathbf{r}} = \mathbf{a}(\mathbf{r})$, is a **second-order differential equation**: it involves the second derivative of the unknown function $\mathbf{r}(t)$. To solve it you need two pieces of starting information, the position and the velocity at some instant, because the equation only tells you how the velocity *changes*. Those two pieces are the **state**, and the whole of Chapter 3's "simulation loop" is the observation that a second-order equation can be rewritten as two first-order ones,
+
+$$
+\dot{\mathbf{r}} = \mathbf{v}, \qquad \dot{\mathbf{v}} = \mathbf{a}(\mathbf{r}),
+$$
+
+each of which says how one part of the state changes given the current state. Any system of higher-order equations can be reduced to first order this way, and numerical methods work on the first-order form.
+
+A **solution in closed form** is a formula for $\mathbf{r}(t)$. The simplest example is the harmonic oscillator, $\ddot x = -\omega^2 x$, whose solution is $x(t) = A\cos\omega t + B\sin\omega t$, with $A$ and $B$ fixed by the initial position and velocity. Chapter 5 uses this equation as its test case because it is exactly solvable, so an integrator's mistakes can be measured against the truth. The two-body problem has a closed-form solution too (Chapter 4). The three-body problem does not (Chapter 11), and the simulation is the only way to find $\mathbf{r}(t)$.
+
+A **conserved quantity** (or first integral) is a function of the state that does not change along any solution, like the oscillator's energy $\tfrac12\dot x^2 + \tfrac12\omega^2 x^2$. Finding one is the standard trick for learning about a solution without solving: Chapter 4 finds three for the two-body problem and reads the shape of the orbit off them.
+
+## Matrices, rotations, and determinants
+
+A **matrix** is a grid of numbers; a $2\times2$ or $3\times3$ matrix acts on a vector to produce another vector, by the rule "each component of the output is the dot product of a row with the input":
+
+$$
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} ax + by \\ cx + dy \end{pmatrix}.
+$$
+
+Applying one matrix after another is the same as applying their **product**, and the product is read right to left: $M_2 M_1$ applies $M_1$ first. Matrix multiplication is not commutative, which is why the order of the three rotations in Chapter 7 matters.
+
+A **rotation** of the plane counterclockwise by $\theta$ is the matrix
+
+$$
+R(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix},
+$$
+
+and the three-dimensional rotations about the $z$ and $x$ axes are this block embedded in the $3\times3$ identity:
+
+$$
+R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}, \qquad
+R_x(\theta) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\theta & -\sin\theta \\ 0 & \sin\theta & \cos\theta \end{pmatrix}.
+$$ {#eq-rotation-matrices}
+
+Rotations preserve lengths and angles. Their inverse is their transpose ($R^{-1} = R^{T}$), so undoing a rotation costs nothing, which Chapter 7's exercises use. The sign convention here, that $R(\theta)$ rotates the *vector* counterclockwise by $\theta$, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with $-\theta$.
+
+The **determinant** of a $2\times2$ matrix is $ad - bc$. Its geometric meaning is the thing Chapter 5 is built on: a matrix with determinant $D$ scales every area by a factor $|D|$ (every volume, for $3\times3$ matrices). A rotation has determinant 1, as it should. A map that preserves area has determinant exactly 1, and a map with determinant greater than 1 inflates every region it touches. Chapter 5 computes the determinant of each integrator's one-step map and finds $1 + \omega^2\Delta t^2$ for Euler and exactly 1 for Euler-Cromer and Verlet; that single number is the difference between an orbit that spirals and one that does not.
+
+One more fact about $2\times2$ matrices, used in a Chapter 5 exercise: the eigenvalues $\lambda$ satisfy $\lambda^2 - (\operatorname{trace})\lambda + \det = 0$. When $\det = 1$ the two eigenvalues multiply to 1, and they are a complex-conjugate pair on the unit circle, meaning the map rotates without growing, exactly when $|\operatorname{trace}| < 2$. That is where the stability condition $\omega\Delta t < 2$ comes from.
+
+## Logarithms, exponentials, and power laws
+
+If $y = C x^k$, then $\log y = \log C + k\log x$: a power law is a straight line on a plot with logarithmic axes, and its slope is the exponent. Chapter 8 checks Kepler's third law this way (the slope is $3/2$) and Chapter 15 reads the $n^2$ cost of the force calculation off a log-log benchmark. Chapter 5's convergence tables are the same idea in a table: halving $\Delta t$ and watching the error fall by $2^p$ measures $p$.
+
+If a quantity grows as $y = y_0\,e^{t/\tau}$, then $\log y$ is a straight line against $t$ with slope $1/\tau$; $\tau$ is the **e-folding time**, the time for the quantity to grow by a factor of $e \approx 2.718$. Chapter 11 measures the Lyapunov time of a chaotic triple, and the instability time of a Lagrange point, from exactly such a slope. The natural logarithm is the one that makes this work; R's `log()` is natural by default, and `log10()` is for the axes.
+
+## Angles
+
+The book's formulas use **radians**; the package's arguments use **degrees**, because that is how orbital elements are published. The conversion is $\pi$ radians $= 180°$, so multiply degrees by $\pi/180$ to get radians, and the book's code does this at the top of every function that takes an angle.
+
+The angle of a point $(x, y)$ from the $x$ axis is `atan2(y, x)`, not `atan(y/x)`: the two-argument form knows which quadrant the point is in and returns a value in $(-\pi, \pi]$. The jump from $+\pi$ to $-\pi$ as a body crosses the negative $x$ axis is an artifact of that range, and several chapters **unwrap** a sequence of angles, adding $2\pi$ at each jump so the angle grows continuously and a body's total travel can be measured. The helper `unwrap()` in `R/helpers.R` does this with one line: take successive differences, wrap each into $(-\pi, \pi]$, and accumulate.
+
+## Units and dimensions
+
+Everything in the book is in SI units: meters, kilograms, seconds. The only reason to mention it is that **dimensional analysis** is the cheapest error check there is, and the book uses it silently all the time. $G$ has units $\mathrm{m^3\,kg^{-1}\,s^{-2}}$, so $GM$ has units $\mathrm{m^3\,s^{-2}}$, $GM/r$ has units $\mathrm{m^2\,s^{-2}}$, and $\sqrt{GM/r}$ has units of $\mathrm{m\,s^{-1}}$: a speed, as the circular-orbit formula says it should be. $\sqrt{a^3/GM}$ has units of seconds, so $2\pi\sqrt{a^3/\mu}$ is a time, as Kepler's third law requires. If you derive a formula and the units do not come out right, the formula is wrong; if they do, it is at worst wrong by a dimensionless factor like $2\pi$, which is the kind of error a simulation will show you immediately.
+
+A related habit is estimating **orders of magnitude** before computing. Earth's orbital speed is $\sqrt{GM_\odot/r} \approx \sqrt{1.3\times10^{20}/1.5\times10^{11}} \approx \sqrt{10^9} \approx 3\times10^4$ m/s. Knowing that number is about 30 km/s before you run anything is what lets you notice when a simulation hands you 300.
+
+## Where each tool is used
+
+| Tool | Used in |
+|:--|:--|
+| Dot and cross products, triple-product identities | Chapters 3, 4, 7, 12 |
+| Derivatives of $r$ and of $\mathbf{r}/r$ | Chapter 4 |
+| Polar coordinates, $h = r^2\dot\theta$ | Chapters 4, 7 |
+| Ellipse geometry and the polar conic | Chapters 4, 7, 13 |
+| Taylor series, big-O, binomial approximation | Chapters 5, 6 |
+| State form of differential equations | Chapters 3, 5 |
+| Rotation matrices and determinants | Chapters 5, 7, 10 |
+| Log-log slopes and e-folding times | Chapters 5, 8, 11, 15 |
+| `atan2` and unwrapping | Chapters 4, 8, 10, 12 |

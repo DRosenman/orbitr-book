@@ -1,0 +1,33 @@
+# Publishes the HTML edition to GitHub Pages on every push to main.
+# No R is installed here: the chapters' computations are frozen in _freeze/
+# (freeze: auto), so Quarto only renders the cached results. Render locally
+# and commit _freeze/ whenever a chapter changes.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+name: Publish book
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render the HTML edition from frozen results
+        run: quarto render --to html
+
+      - name: Publish to GitHub Pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          render: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,49 @@
+# Try It First: The orbitr App {.unnumbered}
+
+Before any code, it helps to have *seen* an orbit respond to a change: a planet given a little more speed and swinging out into an ellipse, a time step pushed too far and the orbit falling apart. The orbitr app is the package with a control panel on it. It runs in a browser, needs no installation, and does nothing the code in this book cannot do, which is the point: every control in it corresponds to an argument of a function you will meet in Chapter 2, and when you later type `add_body("Moon", mass = mass_moon, x = distance_earth_moon, vy = speed_moon)` you will already know what happens when that `vy` goes up. The app's **Code** tab makes that correspondence explicit: whatever system you have set up, it shows the R code that produces exactly what is on the screen. Set up a system by clicking, read the code, paste it into R, and you have run your first simulation.
+
+::: {.content-visible when-format="pdf"}
+The app is at <https://daverosenman.shinyapps.io/orbitr/>, or scan the code below. The online edition of this book at <https://book.orbit-r.com> embeds it in this page, with a guided walkthrough of what to try.
+
+![](qr-app.png){width="38%" fig-align="center"}
+
+Ten minutes with it is a good investment before Chapter 2. Suggested experiments, in order: pick a preset system and run it as is; change one body's starting speed by ten percent in each direction and run again; shorten and lengthen the time step until something looks wrong; switch the integrator from Verlet to Euler and run the same system. After each one, open the Code tab and see which argument changed. Chapters 4 and 5 explain what you just saw.
+:::
+
+::: {.content-visible when-format="html"}
+
+<!-- DAVE: confirm the app's actual controls and panels before publishing; the
+     walkthrough below describes the typical layout (presets, body table,
+     simulation settings, plot/animation) and should be edited to match. -->
+
+<iframe src="https://daverosenman.shinyapps.io/orbitr/" width="100%" height="820" style="border: 1px solid #ccc; border-radius: 6px;" title="The orbitr app"></iframe>
+
+If the frame above is blank, your browser may be blocking embedded content; the app is also at <https://daverosenman.shinyapps.io/orbitr/> in its own tab.
+
+## What to try
+
+Each of these is one of the book's chapters, compressed to a minute.
+
+**1. Run a system as given.** Choose one of the preset systems and run it without changing anything. The plot that appears is the output of `plot_orbits()` on a table of positions, and that table is what every chapter in this book works with.
+
+**2. Open the Code tab.** It shows the R that produced the plot: a `create_system()`, an `add_body()` or `add_planet()` per body, a `simulate_system()` with the time step and duration you set, and the plotting call. This is the four-line pipeline of Chapter 2, written out for the system in front of you. Every experiment below changes one line of it; look at the Code tab after each one to see which.
+
+**3. Give a planet too much speed.** Increase one body's starting velocity by about 10% and run again. The circle becomes an ellipse with the starting point at its closest approach to the star. Increase it by 40% and the ellipse stretches toward escape; at $\sqrt{2}$ times the circular speed, about 41% more, the body never comes back. Chapter 4 derives exactly why those numbers are what they are.
+
+**4. Give it too little.** Decrease the speed by 10% instead. The orbit dips *inward*, and the starting point is now the farthest point of the ellipse rather than the nearest. Same physics, opposite side.
+
+**5. Break the time step.** Make the time step ten times larger and run the same system. Watch the orbit stop closing on itself. Then make it ten times smaller than the original. Chapter 5 explains what the step does and how to choose it; the short version is that the fastest-moving body in the system decides.
+
+**6. Switch the integrator.** With a moderate time step, run the same system with Velocity Verlet and then with Euler. The Verlet orbit retraces itself; the Euler orbit spirals outward, gaining energy from nowhere. That spiral is the single most important thing to understand about simulating gravity, and Chapter 5 is about why it happens and how Verlet avoids it.
+
+**7. Add a third body.** Put a second planet, or a second star, into the system and run it. If the third body is small and far from the others, nothing much changes. If it is comparable in mass and close, the motion stops being predictable in any useful sense. Chapter 11 measures that.
+
+When something surprises you, that is the moment to go to the chapter and find out why. The app shows the behavior and the Code tab shows the call; the book owns the explanation.
+
+::: {.callout-warning title="When the app says no"}
+Ask the app for a very long run with a very short time step and it will refuse rather than start. The reason is arithmetic. A simulation costs one force calculation per pair of bodies per step, so the work is roughly (number of steps) times (number of bodies squared), and the number of steps is the duration divided by the time step: a thousand years at hourly steps is nine million steps before the first planet has moved. The app runs on a shared web server with a fixed slice of one processor, so it estimates the step count before it starts and declines anything that would tie the server up for everyone else. <!-- DAVE: state the actual limit the app enforces, e.g. "about N steps" -->
+
+Nothing in the package itself has this limit. The same `simulate_system()` call on your own computer runs for as long as it takes, and Chapter 15 measures exactly how long that is. When the app says no, that is the moment to open the Code tab, copy the code, and run it in R.
+:::
+
+:::

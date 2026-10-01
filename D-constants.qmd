@@ -1,0 +1,51 @@
+# Physical Constants {#sec-constants}
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+orbitr exports the constants below, all in SI units. The masses and semi-major axes are from the JPL DE440 ephemeris [@park2021]; the gravitational constant is the CODATA 2018 value [@tiesinga2021]; the time constants are exact (a year here is the Julian year of 365.25 days). The table is generated from the installed package, so it always matches the version the book was built with.
+
+The "distance" constants are semi-major axes, not current separations. Every orbit is an ellipse, and the semi-major axis is the one length that determines its period (Chapter 4). Paired with the mean orbital speed it gives a near-circular orbit that closely approximates the real one; for the real ellipse, use `add_planet()` or `add_body_keplerian()` (Chapter 7).
+
+```{r}
+#| label: tbl-constants
+#| tbl-cap: "Constants exported by orbitr, read from the installed package."
+#| echo: false
+constant_names <- c(
+  "gravitational_constant",
+  "seconds_per_hour", "seconds_per_day", "seconds_per_year",
+  "mass_sun", "mass_mercury", "mass_venus", "mass_earth", "mass_moon",
+  "mass_mars", "mass_jupiter", "mass_saturn", "mass_uranus", "mass_neptune",
+  "mass_pluto",
+  "distance_mercury_sun", "distance_venus_sun", "distance_earth_sun",
+  "distance_earth_moon", "distance_mars_sun", "distance_jupiter_sun",
+  "distance_saturn_sun", "distance_uranus_sun", "distance_neptune_sun",
+  "distance_pluto_sun",
+  "speed_mercury", "speed_venus", "speed_earth", "speed_moon", "speed_mars",
+  "speed_jupiter", "speed_saturn", "speed_uranus", "speed_neptune",
+  "speed_pluto"
+)
+
+unit_for <- function(name) {
+  dplyr::case_when(
+    name == "gravitational_constant" ~ "m^3 kg^-1 s^-2",
+    startsWith(name, "seconds_")     ~ "s",
+    startsWith(name, "mass_")        ~ "kg",
+    startsWith(name, "distance_")    ~ "m",
+    startsWith(name, "speed_")       ~ "m/s",
+    TRUE ~ ""
+  )
+}
+
+tibble(
+  constant = constant_names,
+  value    = vapply(constant_names,
+                    function(n) get(n, envir = asNamespace("orbitr")),
+                    numeric(1)),
+  unit     = unit_for(constant_names)
+) |>
+  mutate(value = format(value, digits = 5, scientific = TRUE)) |>
+  knitr::kable(col.names = c("Constant", "Value", "Unit"), align = "lrl")
+```

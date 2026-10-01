@@ -1,0 +1,259 @@
+# Figures for Papers and Talks {#sec-figures}
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+The plotting functions in orbitr are built to get you a picture in one line so that you can get back to the physics. That is the right design for exploring and the wrong one for publishing, where the picture needs the units, labels, colors, and size that your journal or your slides demand. The good news is that there is no gap between the two: `plot_orbits()` returns a ggplot you can keep modifying, and everything else is a tibble you can plot however you like. This chapter is the short, practical one. It collects the plotting patterns the rest of the book has been using, adds the ones a paper or a talk needs, and says where the interactive and animated output fits.
+
+## `plot_orbits()` is a ggplot
+
+Anything you can add to a ggplot you can add to the output of `plot_orbits()`. The most common fixes are a marker for the central body, which is otherwise invisible because it barely moves; axis labels in sensible units; and a theme:
+
+```{r}
+#| label: fig-layered
+#| fig-cap: "The default plot with three additions: a marker for the Sun, axis labels, and a scale in AU."
+#| fig-width: 4.5
+#| fig-height: 4.5
+#| out-width: "65%"
+AU <- distance_earth_sun
+
+inner <- create_system() |>
+  add_sun() |>
+  add_planet("Mercury", parent = "Sun") |>
+  add_planet("Venus",   parent = "Sun") |>
+  add_planet("Earth",   parent = "Sun") |>
+  add_planet("Mars",    parent = "Sun") |>
+  simulate_system(time_step = seconds_per_day, duration = seconds_per_year)
+
+plot_orbits(inner, three_d = FALSE) +
+  annotate("point", x = 0, y = 0, size = 3) +
+  scale_x_continuous(labels = function(m) m / AU) +
+  scale_y_continuous(labels = function(m) m / AU) +
+  labs(x = "x (AU)", y = "y (AU)", color = NULL)
+```
+
+The scale functions relabel the axes without touching the data, which keeps `coord_equal()` honest. If you would rather convert the data, do it before plotting, as the next section does.
+
+## Your own plots from the tibble
+
+The built-in plot draws one path per body. Everything else is a `mutate()` and a `ggplot()`. Four patterns cover most needs.
+
+**Color by time**, to show direction and speed along a path:
+
+```{r}
+#| label: fig-color-time
+#| fig-cap: "Mars seen from Earth over two years, colored by time. The color gradient makes the direction of motion and the retrograde loop readable without an animation."
+#| fig-width: 4.5
+#| fig-height: 4
+#| out-width: "65%"
+create_system() |>
+  add_sun() |>
+  add_planet("Earth", parent = "Sun") |>
+  add_planet("Mars",  parent = "Sun", nu = 60) |>
+  simulate_system(time_step = seconds_per_day, duration = seconds_per_year * 2.2) |>
+  shift_reference_frame("Earth", keep_center = FALSE) |>
+  filter(id == "Mars") |>
+  ggplot(aes(x / AU, y / AU, color = time / seconds_per_year)) +
+  geom_path(linewidth = 0.9) +
+  scale_color_viridis_c() +
+  coord_equal() +
+  labs(x = "x (AU)", y = "y (AU)", color = "Years")
+```
+
+**Time series** of any derived quantity: distance, speed, energy, an orbital element. The pattern is always `mutate()` the quantity, then `aes(time, quantity)`:
+
+```{r}
+#| label: fig-time-series
+#| fig-cap: "Mercury's heliocentric distance and speed over one orbit, as time series. Two panels from one tibble via pivot_longer()."
+#| fig-height: 3
+create_system() |>
+  add_sun() |>
+  add_planet("Mercury", parent = "Sun") |>
+  simulate_system(time_step = seconds_per_hour * 6, duration = seconds_per_day * 88) |>
+  shift_reference_frame("Sun", keep_center = FALSE) |>
+  transmute(day = time / seconds_per_day,
+            `Distance (AU)` = sqrt(x^2 + y^2 + z^2) / AU,
+            `Speed (km/s)`  = sqrt(vx^2 + vy^2 + vz^2) / 1e3) |>
+  tidyr::pivot_longer(-day) |>
+  ggplot(aes(day, value)) +
+  geom_line() +
+  facet_wrap(~ name, scales = "free_y", ncol = 1) +
+  labs(x = "Day", y = NULL)
+```
+
+**Small multiples** with `facet_wrap()`, which is how most of this book's comparisons were drawn: give each run a label column with `mutate(run = "...")`, `bind_rows()` them, and facet by it. Chapter 5's integrator comparison and Chapter 6's encounter figure are both this pattern.
+
+**Snapshots in a grid.** `plot_system()` draws one instant. For a sequence of instants in a paper, where an animation is not an option, overlay the full paths in grey and facet the positions by time:
+
+```{r}
+#| label: fig-snapshot-grid
+#| fig-cap: "The inner solar system at four instants, with the full year's paths behind. A static substitute for an animation."
+#| fig-width: 6
+#| fig-height: 6
+#| out-width: "85%"
+days <- c(0, 90, 180, 270)
+
+snapshots <- bind_rows(lapply(days, function(d) {
+  inner |>
+    filter(abs(time - d * seconds_per_day) < seconds_per_day / 2) |>
+    mutate(day = paste("Day", d))
+}))
+
+ggplot() +
+  geom_path(data = inner, aes(x / AU, y / AU, group = id), color = "grey80") +
+  geom_point(data = snapshots, aes(x / AU, y / AU, color = id), size = 2) +
+  annotate("point", x = 0, y = 0, size = 2) +
+  coord_equal() +
+  facet_wrap(~ day) +
+  labs(x = "x (AU)", y = "y (AU)", color = NULL)
+```
+
+## A figure for a paper
+
+A journal figure has a few requirements that an exploratory plot does not: a fixed physical size, a font size that will still be legible after the figure is shrunk to a column, a color scheme that survives greyscale printing and colorblind readers, and vector output. Here is a recipe:
+
+```{r}
+#| label: fig-paper
+#| fig-cap: "A publication-style version of Chapter 5's integrator comparison: colorblind-safe palette, distinct line types so the figure works in greyscale, a classic theme, and labels in the units a reader expects."
+#| fig-width: 5
+#| fig-height: 4
+#| out-width: "70%"
+star_planet <- create_system() |>
+  add_body("Star",   mass = 1e30) |>
+  add_body("Planet", mass = 1e24, x = 1e11, vy = 30000)
+
+comparison <- bind_rows(lapply(c("verlet", "euler"), function(m) {
+  star_planet |>
+    simulate_system(time_step = seconds_per_hour * 6,
+                    duration = seconds_per_year * 6, method = m) |>
+    filter(id == "Planet") |>
+    mutate(method = c(verlet = "Velocity Verlet", euler = "Euler")[m])
+}))
+
+paper_figure <- comparison |>
+  ggplot(aes(x / AU, y / AU, color = method, linetype = method)) +
+  geom_path(linewidth = 0.5) +
+  annotate("point", x = 0, y = 0, size = 2.5) +
+  scale_color_brewer(palette = "Dark2") +
+  coord_equal() +
+  labs(x = "x (AU)", y = "y (AU)", color = NULL, linetype = NULL) +
+  theme_classic(base_size = 9) +
+  theme(legend.position = "bottom")
+
+paper_figure
+```
+
+Save it at the size it will be printed, as a vector file:
+
+```{r}
+#| eval: false
+ggsave("integrators.pdf", paper_figure, width = 3.4, height = 3.0, units = "in")
+ggsave("integrators.png", paper_figure, width = 3.4, height = 3.0, units = "in",
+       dpi = 600)
+```
+
+A single-column figure in most journals is about 3.4 inches wide; set `base_size` so that the text is 7 to 9 points at that size. The PDF is what you submit; the PNG is for the slide.
+
+Two things to watch. Orbit plots need `coord_equal()`, or circles become ellipses and the eye reads an eccentricity that is not there. And when the data span orders of magnitude, as a comet's distance does, a logarithmic axis (`scale_y_log10()`) is usually right, as it was in Chapter 11.
+
+## Interactive 3D for the screen
+
+Any system with motion out of the plane dispatches to plotly automatically, and `plot_orbits_3d()` and `plot_system_3d()` force it:
+
+```{r}
+#| label: fig-3d-solar
+#| eval: !expr knitr::is_html_output()
+#| fig-cap: "The solar system in 3D (interactive in the online edition): drag to rotate, scroll to zoom, hover for the time stamp."
+load_solar_system() |>
+  remove_body("Moon") |>
+  simulate_system(time_step = seconds_per_day, duration = seconds_per_year * 30) |>
+  plot_orbits_3d()
+```
+
+You can rotate, zoom, and hover for the time stamp. For a talk, the widget can be saved as a self-contained HTML file and opened in any browser:
+
+```{r}
+#| eval: false
+p <- plot_orbits_3d(sim)
+htmlwidgets::saveWidget(p, "solar-system-3d.html", selfcontained = TRUE)
+```
+
+When you need more than the convenience function offers, build the plotly figure from the tibble. The documentation's custom-visualization article colors the Moon's path by speed with a `plot_ly()` call; the same idea works for any quantity you can `mutate()`. For a static image of a 3D view, the usual route is a screenshot at the orientation you want, or `plotly::save_image()`, which needs the `kaleido` Python package installed through `reticulate`.
+
+## Animation
+
+`animate_system()` samples the run into `fps * duration` frames and renders a GIF with gganimate:
+
+```{r}
+#| label: anim-inner-ch14
+#| eval: !expr knitr::is_html_output()
+anim <- animate_system(inner, fps = 20, duration = 8, trails = TRUE)
+anim
+```
+
+```{r}
+#| eval: false
+gganimate::anim_save("inner-solar-system.gif", anim)
+```
+
+Rendering takes tens of seconds, so get the static version right first, and keep `fps * duration` modest: 160 frames is plenty for a slide. A GIF loops forever and works in every slide program, which is usually what you want. If you need an MP4, or control over the frame labels, build the animation yourself from the tibble with gganimate, which is a few lines:
+
+```{r}
+#| eval: false
+library(gganimate)
+
+frames <- inner |> filter(time %% (seconds_per_day * 5) == 0)   # every 5th day
+
+p <- ggplot(frames, aes(x / AU, y / AU, color = id)) +
+  geom_point(size = 3) +
+  coord_equal() +
+  labs(title = "Day {round(frame_time / 86400)}", x = "x (AU)", y = "y (AU)") +
+  transition_time(time) +
+  shadow_wake(wake_length = 0.1)
+
+animate(p, fps = 15, nframes = 73, renderer = av_renderer("inner.mp4"))
+```
+
+For a 3D animation the plotly route (`animate_system_3d()`) renders instantly and gives a play button and a time slider, but it only lives in a browser.
+
+## Export and reproducibility
+
+A figure in a paper should be reproducible from a script. Keep three things together: the script that builds the system, the version of the package, and the simulation output.
+
+```{r}
+#| eval: false
+save_system(system, "kepler16-setup.rds")          # the initial conditions
+saveRDS(sim, "kepler16-run.rds")                   # the output tibble
+readr::write_csv(sim, "kepler16-run.csv")          # for collaborators not using R
+writeLines(as.character(packageVersion("orbitr")), "orbitr-version.txt")
+```
+
+The output tibble is often large (half a million rows for Chapter 8's run) and the setup is tiny, and the output can always be regenerated from the setup with the same package version, so the setup and the version are the things to archive. Record the time step and the method too; they are not stored in the output. A reader who has the `.rds` setup file, the version number, and the `simulate_system()` call can reproduce every figure in this book.
+
+::: {.callout-tip title="Key results"}
+- `plot_orbits()` returns a ggplot; add layers, scales, and themes with `+`.
+- Everything else is `mutate()` then `ggplot()`: color by time, time series, `facet_wrap()` for comparisons and for snapshot grids.
+- For print: `coord_equal()`, a colorblind-safe palette plus line types, `theme_classic()`, fixed size via `ggsave()`, vector PDF.
+- Interactive 3D (plotly) and animation (gganimate) are for screens; save widgets as HTML and animations as GIF.
+- Archive the setup (`save_system()`), the package version, and the `simulate_system()` call.
+:::
+
+## Exercises {.unnumbered}
+
+::: {#exr-ch14-phase}
+Plot Mercury's radial velocity $\dot r$ against $r$ over one orbit (a phase-space plot). What shape is it, and why is it closed?
+:::
+
+::: {#exr-ch14-grid}
+Make a snapshot grid of the Kepler-16 system from Chapter 9 at six instants spaced over one binary orbit, in the frame of the planet.
+:::
+
+::: {#exr-ch14-greyscale}
+Take any three-body figure from Chapter 11 and make it work in greyscale: distinguish the bodies by line type and point shape rather than color, and check it by printing it in black and white.
+:::
+
+::: {#exr-ch14-anim}
+Animate the retrograde-Mars run of Chapter 10 in Earth's frame with the custom gganimate recipe, with a title that shows the date and a shadow wake on Mars only.
+:::

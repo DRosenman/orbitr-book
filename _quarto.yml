@@ -1,0 +1,118 @@
+project:
+  type: book
+  output-dir: _book
+  resources:
+    - CNAME        # tells GitHub Pages the custom domain on every publish
+
+book:
+  title: "Orbital Mechanics with R"
+  subtitle: "Simulating Planets, Binary Stars, Chaotic Systems, and the N-Body Problem with orbitr"
+  author: "Dave Rosenman"
+  # --- Website settings (used by the HTML edition only) ---
+  site-url: https://book.orbit-r.com
+  repo-url: https://github.com/DRosenman/orbitr-book
+  repo-actions: [edit, issue]
+  search: true
+  sidebar:
+    style: docked
+    collapse-level: 1
+  page-footer:
+    left: "Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0."
+    right: "Built with [Quarto](https://quarto.org)."
+  cover-image: cover.png
+  cover-image-alt: "Cover of Orbital Mechanics with R: the orbitr hex logo over a star field"
+  chapters:
+    - index.qmd
+    - the-app.qmd
+    - part: "First Orbits"
+      chapters:
+        - 01-why-simulate-gravity.qmd
+        - 02-four-lines-to-an-orbit.qmd
+    - part: "Where the Physics Comes From"
+      chapters:
+        - 03-newton-and-the-n-body-problem.qmd
+        - 04-the-two-body-problem.qmd
+        - 05-integrators.qmd
+        - 06-softening.qmd
+        - 07-keplerian-elements.qmd
+    - part: "Doing Astrophysics with orbitr"
+      chapters:
+        - 08-the-solar-system.qmd
+        - 09-binary-stars.qmd
+        - 10-reference-frames.qmd
+        - 11-chaos-and-the-three-body-problem.qmd
+        - 12-energy-and-angular-momentum.qmd
+        - 13-comets.qmd
+        - 14-figures-for-papers-and-talks.qmd
+    - part: "Under the Hood"
+      chapters:
+        - 15-the-cpp-engine.qmd
+        - 16-limits-and-extensions.qmd
+    - references.qmd
+  appendices:
+    - A-r-basics.qmd
+    - B-math-background.qmd
+    - C-function-reference.qmd
+    - D-constants.qmd
+    - E-solutions.qmd
+    - about.qmd
+
+bibliography: references.bib
+
+# Every chapter is executed with R/knitr. `freeze: auto` caches results so a
+# chapter is only re-run when its source changes. Commit _freeze/ so the site
+# can be published (locally or from CI) without re-running every simulation.
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+
+callout-icon: false
+code-overflow: wrap
+number-depth: 2
+
+format:
+  # --- Free online edition (like r4ds.hadley.nz) ---
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    fig-width: 7
+    fig-height: 4.8
+    code-copy: true
+    code-tools: false
+    smooth-scroll: true
+    link-external-newwindow: true
+
+  # --- KDP paperback, 7 x 10 in trim, no bleed ---
+  pdf:
+    documentclass: scrbook
+    pdf-engine: xelatex
+    fontsize: 10.5pt
+    geometry:
+      - paperwidth=7in
+      - paperheight=10in
+      - inner=0.875in
+      - outer=0.625in
+      - top=0.8in
+      - bottom=0.9in
+      - headsep=0.2in
+      - footskip=0.4in
+    # Default fonts are Latin Modern (always available). To change, uncomment:
+    # mainfont: "TeX Gyre Pagella"
+    # sansfont: "TeX Gyre Heros"
+    # monofont: "DejaVu Sans Mono"
+    # mathfont: "TeX Gyre Pagella Math"
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    hyperrefoptions: [hidelinks]   # print book: no coloured link boxes
+    colorlinks: false
+    fig-width: 5.5
+    fig-height: 3.8
+    fig-pos: "tbp"
+    highlight-style: monochrome    # safe for black-and-white interiors
+    include-in-header: latex/preamble.tex
+    keep-tex: true
