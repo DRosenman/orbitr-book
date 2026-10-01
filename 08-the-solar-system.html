@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -418,7 +412,6 @@ window.Quarto = {
   <li><a href="#how-often-do-earth-and-mars-line-up" id="toc-how-often-do-earth-and-mars-line-up" class="nav-link" data-scroll-target="#how-often-do-earth-and-mars-line-up"><span class="header-section-number">8.4</span> How often do Earth and Mars line up?</a></li>
   <li><a href="#the-sun-wobbles" id="toc-the-sun-wobbles" class="nav-link" data-scroll-target="#the-sun-wobbles"><span class="header-section-number">8.5</span> The Sun wobbles</a></li>
   <li><a href="#a-long-run-checked" id="toc-a-long-run-checked" class="nav-link" data-scroll-target="#a-long-run-checked"><span class="header-section-number">8.6</span> A long run checked</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/08-the-solar-system.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -674,24 +667,6 @@ Figure&nbsp;8.3: Relative energy error of the 170-year solar system run, sampled
 <li>The Sun moves at about 12 m/s because of Jupiter; this is the radial-velocity exoplanet signal.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch8-venus" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.1</strong></span> Compute the Earth-Venus synodic period from <a href="#eq-synodic" class="quarto-xref">Equation&nbsp;<span>8.1</span></a> and from the data. It should be close to 584 days. How many synodic periods make almost exactly eight years? (This near-commensurability is why Venus’s appearances in the sky repeat on an eight-year cycle, known since the Babylonians.)</p>
-</div>
-<div id="exr-ch8-moon" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.2</strong></span> Build the Earth-Moon system with <code>add_planet("Moon", parent = "Earth")</code> and an hourly step, measure the Moon’s period, and weigh Earth with Kepler’s third law. How does the answer compare with <code>mass_earth</code>, and why is it slightly off? (Chapter 7 is relevant.)</p>
-</div>
-<div id="exr-ch8-pluto" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.3</strong></span> Pluto and Neptune are in a 3:2 orbital resonance: Pluto completes two orbits for every three of Neptune. Run a 500-year simulation with Pluto included (a daily step is fine) and measure both periods. Is the ratio 3:2? Pluto’s orbit crosses Neptune’s; use the data to show that the two bodies are never close when it does.</p>
-</div>
-<div id="exr-ch8-saturn" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.4</strong></span> Remove Jupiter from the system and repeat the Sun-wobble plot. Identify Saturn’s period and velocity amplitude from the result and compare with the two-body prediction <span class="math inline">\(v = \sqrt{G m_{\mathrm{Saturn}}^2 / ((M_\odot + m_{\mathrm{Saturn}})\, a)}\)</span>.</p>
-</div>
-<div id="exr-ch8-mercury" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.5</strong></span> Mercury’s perihelion precesses by about 532 arcseconds per century because of the other planets (plus 43 from general relativity, which the package does not include). Extract Mercury’s osculating argument of perihelion from the full run, average it over each orbit to smooth out the short-period wobble, and estimate the precession rate. How close do you get, and what limits the precision?</p>
 </div>
 
 

@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -416,7 +410,6 @@ window.Quarto = {
   <li><a href="#an-eccentric-binary" id="toc-an-eccentric-binary" class="nav-link" data-scroll-target="#an-eccentric-binary"><span class="header-section-number">9.2</span> An eccentric binary</a></li>
   <li><a href="#kepler-16" id="toc-kepler-16" class="nav-link" data-scroll-target="#kepler-16"><span class="header-section-number">9.3</span> Kepler-16</a></li>
   <li><a href="#how-close-is-too-close" id="toc-how-close-is-too-close" class="nav-link" data-scroll-target="#how-close-is-too-close"><span class="header-section-number">9.4</span> How close is too close?</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/09-binary-stars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -570,7 +563,7 @@ Figure&nbsp;9.1: Kepler-16 for two years. The two stars orbit their common cente
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; planet_predicted_days  planet_measured_days  binary_measured_days </span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             229.01798             220.79718              41.12564</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Both match the published periods. The planet is not <em>exactly</em> on a circle, because the two stars’ pull is not exactly that of a point at the barycenter; the difference is a small periodic wobble at the binary’s period, and you can see it by plotting the planet’s distance from the barycenter over time (Exercise <a href="#exr-ch9-wobble" class="quarto-xref">Exercise&nbsp;<span>9.2</span></a>). That wobble is real and it is how the planet’s orbit was characterized from the transit timing.</p>
+<p>Both match the published periods. The planet is not <em>exactly</em> on a circle, because the two stars’ pull is not exactly that of a point at the barycenter; the difference is a small periodic wobble at the binary’s period, and you can see it by plotting the planet’s distance from the barycenter over time. That wobble is real and it is how the planet’s orbit was characterized from the transit timing.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled" title="Where it comes from">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -647,24 +640,6 @@ Figure&nbsp;9.1: Kepler-16 for two years. The two stars orbit their common cente
 <li>Planets inside about <span class="math inline">\(2\)</span> to <span class="math inline">\(4\)</span> binary separations (<a href="#eq-holman-wiegert" class="quarto-xref">Equation&nbsp;<span>9.4</span></a>) are unstable.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch9-equal" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.1</strong></span> Build an equal-mass binary of two Sun-mass stars 1 AU apart. Before running it, predict each star’s speed and the period. Then confirm both.</p>
-</div>
-<div id="exr-ch9-wobble" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.2</strong></span> Plot Kepler-16b’s distance from the barycenter against time for the two-year run. Identify the period of the wobble and explain why it matches the binary’s period rather than the planet’s.</p>
-</div>
-<div id="exr-ch9-sunset" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.3</strong></span> From the planet, how far apart in the sky are the two stars? Shift the Kepler-16 run to the planet’s frame with <code>shift_reference_frame("Kepler-16b")</code>, compute the angle between the directions to the two stars at every time step, and plot it. What is the maximum separation in degrees? (Chapter 10 does more with this.)</p>
-</div>
-<div id="exr-ch9-retrograde" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.4</strong></span> Put the test planet at <span class="math inline">\(2.0\,a_{\mathrm{bin}}\)</span> but give it a <em>retrograde</em> orbit (reverse the sign of its velocity). Retrograde circumbinary orbits are known to be more stable than prograde ones. Does it survive fifteen years?</p>
-</div>
-<div id="exr-ch9-mass-ratio" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.5</strong></span> Repeat the stability sweep with <span class="math inline">\(m_B = m_A\)</span> (so <span class="math inline">\(q = 0.5\)</span>) and a circular binary. Where is the transition now, and what does <a href="#eq-holman-wiegert" class="quarto-xref">Equation&nbsp;<span>9.4</span></a> predict?</p>
 </div>
 
 

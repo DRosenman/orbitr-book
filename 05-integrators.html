@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -425,7 +419,6 @@ window.Quarto = {
   <li><a href="#order-measured" id="toc-order-measured" class="nav-link" data-scroll-target="#order-measured">Order, measured</a></li>
   </ul></li>
   <li><a href="#choosing-a-time-step" id="toc-choosing-a-time-step" class="nav-link" data-scroll-target="#choosing-a-time-step"><span class="header-section-number">5.6</span> Choosing a time step</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/05-integrators.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -564,7 +557,7 @@ M_{\mathrm{VV}} = \begin{pmatrix}
 <p><span id="eq-stormer"><span class="math display">\[
 \mathbf{x}_{n+1} = 2\mathbf{x}_n - \mathbf{x}_{n-1} + \mathbf{a}_n\Delta t^2.
 \tag{5.8}\]</span></span></p>
-<p>No velocities appear at all, and the local error in position is <span class="math inline">\(O(\Delta t^4)\)</span>, one order better than the derivation of <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a> suggested. Subtracting consecutive position updates of <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a> and using the velocity update to eliminate <span class="math inline">\(\mathbf{v}\)</span> (Exercise <a href="#exr-ch5-equivalence" class="quarto-xref">Exercise&nbsp;<span>5.1</span></a>) shows that velocity Verlet produces exactly the same sequence of positions as <a href="#eq-stormer" class="quarto-xref">Equation&nbsp;<span>5.8</span></a>. Velocity Verlet is just the Störmer form with the velocity carried along explicitly, which is convenient because you usually want the velocity.</p>
+<p>No velocities appear at all, and the local error in position is <span class="math inline">\(O(\Delta t^4)\)</span>, one order better than the derivation of <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a> suggested. Subtracting consecutive position updates of <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a> and using the velocity update to eliminate <span class="math inline">\(\mathbf{v}\)</span> (a few lines of algebra worth doing once) shows that velocity Verlet produces exactly the same sequence of positions as <a href="#eq-stormer" class="quarto-xref">Equation&nbsp;<span>5.8</span></a>. Velocity Verlet is just the Störmer form with the velocity carried along explicitly, which is convenient because you usually want the velocity.</p>
 <p><strong>The leapfrog, or kick-drift-kick, form.</strong> Split the velocity update of <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a> in half, doing the first half before the position update and the second half after:</p>
 <p><span id="eq-leapfrog"><span class="math display">\[
 \mathbf{v}_{n+\frac12} = \mathbf{v}_n + \tfrac12\mathbf{a}_n\Delta t, \qquad
@@ -750,24 +743,6 @@ Figure&nbsp;5.2: Relative energy error <span class="math inline">\((E - E_0)/|E_
 <li>Choose the step from the fastest orbit in the system, check it by halving.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch5-equivalence" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 5.1</strong></span> Starting from the velocity Verlet update <a href="#eq-verlet" class="quarto-xref">Equation&nbsp;<span>5.6</span></a>, write the position update for step <span class="math inline">\(n\)</span> and for step <span class="math inline">\(n-1\)</span>, subtract them, and use the velocity update to eliminate <span class="math inline">\(\mathbf{v}_n - \mathbf{v}_{n-1}\)</span>. Show that the result is the Störmer form <a href="#eq-stormer" class="quarto-xref">Equation&nbsp;<span>5.8</span></a>.</p>
-</div>
-<div id="exr-ch5-vv-det" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 5.2</strong></span> Multiply out <span class="math inline">\(\det M_{\mathrm{VV}}\)</span> in <a href="#eq-vv-matrix" class="quarto-xref">Equation&nbsp;<span>5.7</span></a> and confirm it equals 1. Then compute the trace, and show the eigenvalues have modulus 1 exactly when <span class="math inline">\(\omega\Delta t &lt; 2\)</span>.</p>
-</div>
-<div id="exr-ch5-cromer-phase" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 5.3</strong></span> Run <code>star_planet</code> for ten years with Euler-Cromer and with Verlet at a six-hour step. For each, find the time of the fifth periapsis passage (the fifth local minimum of the planet’s distance from the star). By how many days do they differ? Which do you trust, and why?</p>
-</div>
-<div id="exr-ch5-moon-step" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 5.4</strong></span> The default time step is one hour. Simulate the Earth-Moon system for one year with steps of 1, 3, 6, and 12 hours, compute the maximum relative energy error for each, and check that it scales as expected for a second-order method.</p>
-</div>
-<div id="exr-ch5-euler-escape" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 5.5</strong></span> Using the Euler run, estimate from the energy plot how long it would take the planet to reach zero total energy and escape. Then run it that long and see if you were right.</p>
 </div>
 
 

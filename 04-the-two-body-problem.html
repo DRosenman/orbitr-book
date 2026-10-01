@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -426,7 +420,6 @@ window.Quarto = {
   <li><a href="#measuring-the-period" id="toc-measuring-the-period" class="nav-link" data-scroll-target="#measuring-the-period">Measuring the period</a></li>
   <li><a href="#the-moon-revisited" id="toc-the-moon-revisited" class="nav-link" data-scroll-target="#the-moon-revisited">The Moon, revisited</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/04-the-two-body-problem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -853,25 +846,6 @@ Figure&nbsp;4.1: The same launch point, four launch speeds. The circle is <span 
 </ul>
 </div>
 </div>
-</section>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch4-energy-a" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.1</strong></span> Carry out the algebra from <a href="#eq-e-energy" class="quarto-xref">Equation&nbsp;<span>4.7</span></a> to <a href="#eq-energy-a" class="quarto-xref">Equation&nbsp;<span>4.10</span></a>: substitute <span class="math inline">\(h^2 = \mu a (1-e^2)\)</span> and solve for <span class="math inline">\(\varepsilon\)</span>. Where did the assumption <span class="math inline">\(e \ne 1\)</span> get used?</p>
-</div>
-<div id="exr-ch4-escape" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.2</strong></span> Launch the planet in <code>make_sim()</code> at <span class="math inline">\(k = 0.99\sqrt{2}\)</span>, <span class="math inline">\(k = \sqrt{2}\)</span>, and <span class="math inline">\(k = 1.1\sqrt{2}\)</span> for two years. Compute the specific energy <span class="math inline">\(\varepsilon\)</span> from the simulated state at every time step and plot it against time for all three. What sign does each have, and is it constant?</p>
-</div>
-<div id="exr-ch4-perihelion-speed" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.3</strong></span> Mars has <span class="math inline">\(a = 2.279\times10^{11}\)</span> m and <span class="math inline">\(e = 0.0934\)</span>. Use vis-viva to compute its speed at perihelion and at aphelion. Then build Mars with <code>add_planet("Mars", parent = "Sun")</code> (which starts it at perihelion), simulate for one Mars year, and compare the maximum and minimum speeds in the output with your numbers.</p>
-</div>
-<div id="exr-ch4-weigh" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.4</strong></span> Io orbits Jupiter with a period of 1.769 days at a mean distance of 421,800 km. Use Kepler’s third law to compute Jupiter’s mass and compare with <code>mass_jupiter</code>. Then simulate Io on a circular orbit using your computed mass and check that <code>measure_period()</code> returns 1.769 days.</p>
-</div>
-<div id="exr-ch4-e-vector-direction" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 4.5</strong></span> For the <span class="math inline">\(k = 1.2\)</span> run, print the components of <span class="math inline">\(\mathbf{e}\)</span> at <span class="math inline">\(t = 0\)</span>. In which direction does it point, and why is that the direction you should expect given where the planet was launched?</p>
-</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -891,6 +865,7 @@ Kepler, Johannes. 1619. <em>Harmonices Mundi</em>. J. Planck.
 Newton, Isaac. 1687. <em>Philosophi<span>æ</span> Naturalis Principia Mathematica</em>. Royal Society.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->

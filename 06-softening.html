@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -417,7 +411,6 @@ window.Quarto = {
   <li><a href="#what-softening-costs" id="toc-what-softening-costs" class="nav-link" data-scroll-target="#what-softening-costs"><span class="header-section-number">6.3</span> What softening costs</a></li>
   <li><a href="#the-encounter-softened" id="toc-the-encounter-softened" class="nav-link" data-scroll-target="#the-encounter-softened"><span class="header-section-number">6.4</span> The encounter, softened</a></li>
   <li><a href="#when-to-use-it" id="toc-when-to-use-it" class="nav-link" data-scroll-target="#when-to-use-it"><span class="header-section-number">6.5</span> When to use it</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/06-softening.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -619,21 +612,6 @@ Figure&nbsp;6.2: The same two stars in three runs. Left: unsoftened, ten-minute 
 <li>Softening models bodies having size. It does not fix a time step that is too large for the physics you asked for.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch6-period" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 6.1</strong></span> Simulate the Earth-Sun system for one year with <code>softening</code> equal to <span class="math inline">\(10^8\)</span>, <span class="math inline">\(10^9\)</span>, and <span class="math inline">\(10^{10}\)</span> m and measure the period each time with <code>measure_period()</code>. Compare the fractional change with the prediction <span class="math inline">\(\tfrac34(\varepsilon/r)^2\)</span>.</p>
-</div>
-<div id="exr-ch6-max-force" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 6.2</strong></span> Differentiate the softened acceleration <span class="math inline">\(a(r) = Gm\,r/(r^2+\varepsilon^2)^{3/2}\)</span> with respect to <span class="math inline">\(r\)</span> and show that its maximum is at <span class="math inline">\(r = \varepsilon/\sqrt2\)</span> with value <span class="math inline">\((2/3)^{3/2}\,Gm/(\sqrt{2}\,\varepsilon^2) \approx 0.385\,Gm/\varepsilon^2\)</span>.</p>
-</div>
-<div id="exr-ch6-step" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 6.3</strong></span> For the unsoftened encounter, run with steps of 320, 160, 80, 40, and 20 seconds and tabulate the eccentricity after the encounter and the maximum energy error. At what step does the answer stop changing?</p>
-</div>
-<div id="exr-ch6-potential" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 6.4</strong></span> Show that the potential energy of two bodies interacting through the softened force is <span class="math inline">\(-Gm_1m_2/\sqrt{r^2+\varepsilon^2}\)</span> by integrating the force from <span class="math inline">\(r\)</span> to infinity. Then confirm that <code>conserved_quantities(soft)</code> reports a nearly constant energy while <code>conserved_quantities(soft, softening = 0)</code> does not.</p>
 </div>
 
 

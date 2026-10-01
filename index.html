@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -461,6 +455,9 @@ window.Quarto = {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1><p><img src="cover.png" title="Orbital Mechanics with R" class="quarto-cover-image nolightbox img-fluid" alt="Cover of Orbital Mechanics with R: the orbitr hex logo over a star field"></p>
+<div style="text-align:center; font-style:italic; margin: 1.5em 0 2.5em 0; line-height:1.7;">
+<p>For Kerry, a true academic, with a mind so beautiful<br>it is hard to believe it runs on the laws of physics.<br><br> And for my parents, who supported me through not one undergraduate degree but two:<br>political science at Temple, and then, when I announced the crazy idea<br>of studying theoretical physics, that one as well.<br><br> And lastly for my grandfather, a math teacher, for a million things,<br>among them the algebra and trigonometry he taught me all over again<br>before I could start on physics; and for my grandmother,<br>who powered every one of those sessions with the best Italian food on the planet.</p>
+</div>
 <div class="callout callout-style-default callout-note no-icon callout-titled" title="About this edition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -471,8 +468,9 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is the free online edition of <em>Orbital Mechanics with R</em>. It is the complete book, kept current with the orbitr package. A paperback edition is in preparation. <!-- DAVE: when the listing is live, change to: A paperback edition is available from Amazon [link]. --></p>
-<p>The online edition is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>: read it, share the link, cite it, but please do not redistribute copies or sell derivatives. All code in the book is MIT-licensed, like the package, and may be used freely. The package documentation is at <a href="https://orbit-r.com" class="uri">https://orbit-r.com</a>, the source for both the package and this book is at <a href="https://github.com/DRosenman" class="uri">https://github.com/DRosenman</a>, and the author is at <a href="https://daverosenman.com" class="uri">https://daverosenman.com</a>.</p>
+<p>This is the first online edition of <em>Orbital Mechanics with R</em>, and it is a living document. The text will change in small ways over time: a clearer sentence, a corrected number, a figure that was improved, an example brought up to date when the orbitr package changes. What will not change is the structure. The chapters, their order, and their numbering are fixed, so a reference to “Chapter 5” or “Section 4.3” in a syllabus or a citation will keep pointing at the same thing.</p>
+<p>A paperback edition is in preparation. My preference is for it to be available at or near the cost of printing rather than for profit, through a service like Leanpub, where an author sets a minimum price (which can be zero) and readers choose what to pay above it, and where a book can be published while still being refined, with updates going to everyone who has it. Until that edition exists, this online version is the edition of record, and it is subject to the minor changes described above.</p>
+<p>Whatever happens with print, this online edition will always be here, and always free. The text is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>; read it, share it, cite it. All code in the book is MIT-licensed, like the package, and may be used freely. The package documentation is at <a href="https://orbit-r.com" class="uri">https://orbit-r.com</a>, the source for both the package and this book is at <a href="https://github.com/DRosenman" class="uri">https://github.com/DRosenman</a>, and the author is at <a href="https://daverosenman.com" class="uri">https://daverosenman.com</a>.</p>
 </div>
 </div>
 <p>The documentation for orbitr lives at <a href="https://orbit-r.com" class="uri">https://orbit-r.com</a>, and it is free. It will show you how to put a planet around a star in four lines of R, how to load the whole solar system from real JPL data, and how to animate a planet orbiting two suns. If all you want is to drive the package, you may not need this book.</p>
@@ -492,7 +490,7 @@ window.Quarto = {
 <p><strong>Part II, Where the Physics Comes From</strong>, is the heart of the book. Chapter 3 starts from Newton’s law and builds the N-body equations of motion that the package integrates. Chapter 4 solves the two-body problem by hand and derives everything the documentation states as fact: the orbit equation, Kepler’s laws, the vis-viva equation, circular and escape velocity. Chapter 5 derives the three integrators (Euler, Euler-Cromer, Velocity Verlet), shows why only two of them are fit for orbits, and traces the Verlet method back through molecular dynamics, the aurora, and the <em>Principia</em>. Chapter 6 explains gravitational softening. Chapter 7 derives the conversion from Keplerian orbital elements to the Cartesian state vectors the engine actually uses.</p>
 <p><strong>Part III, Doing Astrophysics with orbitr</strong>, is the applications half. Each chapter takes a problem from astronomy, sets it up from the physics in Part II, runs it, and analyzes the result with dplyr and ggplot2.</p>
 <p><strong>Part IV, Under the Hood</strong>, looks at the C++ engine and at the places where a point-mass Newtonian model stops being enough.</p>
-<p>The appendices collect the mathematical background the derivations assume, a quick function reference, the built-in physical constants with their sources, and solutions to the exercises.</p>
+<p>The appendices collect the mathematical background the derivations assume, the R needed to run the book, a quick function reference, and the built-in physical constants with their sources.</p>
 </section>
 <section id="what-you-need" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="what-you-need">What you need</h2>
@@ -550,7 +548,7 @@ window.Quarto = {
 <p>All quantities are in SI units: meters, kilograms, seconds. The built-in constants (<code>mass_earth</code>, <code>distance_earth_sun</code>, <code>speed_moon</code>, …) are all SI, and all of the package’s arguments expect SI. Vectors are set in bold, <span class="math inline">\(\mathbf{r}\)</span>, and their magnitudes in italic, <span class="math inline">\(r = |\mathbf{r}|\)</span>. Unit vectors wear a hat, <span class="math inline">\(\hat{\mathbf{r}} = \mathbf{r}/r\)</span>. Dots denote time derivatives: <span class="math inline">\(\dot{\mathbf{r}}\)</span> is velocity and <span class="math inline">\(\ddot{\mathbf{r}}\)</span> is acceleration.</p>
 <p>The symbol <span class="math inline">\(\mu\)</span> always means the gravitational parameter <span class="math inline">\(\mu = G(M + m)\)</span> of a pair of bodies (or <span class="math inline">\(GM\)</span> when one is much heavier). Some mechanics texts use <span class="math inline">\(\mu\)</span> for the reduced mass; this book writes the reduced mass as <span class="math inline">\(m_r\)</span> to avoid the clash.</p>
 <p>A few helper functions that the text defines for the derivations (measuring a period from a time series, solving Kepler’s equation, converting elements to a state vector by hand) are collected in the file <code>R/helpers.R</code> in the book’s source, which every chapter loads, so later chapters use them without repeating the definitions. Everything else is a package function.</p>
-<p>Boxes marked <strong>Where it comes from</strong> give the history of a method or a formula: who found it, what problem they were working on, and how it ended up in the package. Boxes marked <strong>Key result</strong> collect the formulas you will reuse. Exercises close each chapter; solutions are in <a href="E-solutions.html" class="quarto-xref"><span>Appendix E — Solutions to Selected Exercises</span></a>.</p>
+<p>Boxes marked <strong>Where it comes from</strong> give the history of a method or a formula: who found it, what problem they were working on, and how it ended up in the package. Boxes marked <strong>Key result</strong> collect the formulas you will reuse.</p>
 </section>
 <section id="try-it-first-the-orbitr-app" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="try-it-first-the-orbitr-app">Try it first: the orbitr app</h2>

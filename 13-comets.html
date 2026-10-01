@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -371,12 +371,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -398,7 +392,6 @@ window.Quarto = {
   <li><a href="#segmented-runs" id="toc-segmented-runs" class="nav-link" data-scroll-target="#segmented-runs"><span class="header-section-number">13.3</span> Segmented runs</a></li>
   <li><a href="#hyperbolic-visitors" id="toc-hyperbolic-visitors" class="nav-link" data-scroll-target="#hyperbolic-visitors"><span class="header-section-number">13.4</span> Hyperbolic visitors</a></li>
   <li><a href="#sungrazers" id="toc-sungrazers" class="nav-link" data-scroll-target="#sungrazers"><span class="header-section-number">13.5</span> Sungrazers</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/13-comets.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -639,24 +632,6 @@ Figure&nbsp;13.2: Energy error for the segmented run (8-day steps outside 5 AU, 
 <li>Hyperbolic orbits (<span class="math inline">\(e &gt; 1\)</span>, <span class="math inline">\(a &lt; 0\)</span>) work in <code>add_body_keplerian()</code>; the visitor leaves with the speed it came with, deflected by <span class="math inline">\(2\arcsin(1/e)\)</span>.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch13-two-orbits" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.1</strong></span> Extend the segmented Halley run to two full orbits by adding three more segments, and compare the time of the second perihelion with Kepler’s third law.</p>
-</div>
-<div id="exr-ch13-switch-radius" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.2</strong></span> Repeat the segmented run switching at 2 AU and at 10 AU instead of 5 AU. Tabulate the number of steps and the maximum energy error for each. Where is the sweet spot?</p>
-</div>
-<div id="exr-ch13-loop" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.3</strong></span> Write a function <code>run_segmented(system, body, center, r_switch, step_far, step_near, duration)</code> that runs in chunks of one year with the coarse step (using <code>continue_simulation()</code>), checks after each chunk whether the body is inside <code>r_switch</code>, and switches steps accordingly, without using Kepler’s equation at all. Test it on Halley.</p>
-</div>
-<div id="exr-ch13-borisov" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.4</strong></span> Comet 2I/Borisov, the second interstellar visitor, had <span class="math inline">\(e = 3.36\)</span> and <span class="math inline">\(q = 2.01\)</span> AU. Set it up, run it through perihelion, and compute its deflection angle and its speed at infinity.</p>
-</div>
-<div id="exr-ch13-sungrazer" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 13.5</strong></span> Build a Kreutz-like comet with <span class="math inline">\(q = 0.005\)</span> AU and <span class="math inline">\(e = 0.9999\)</span>, start it at 2 AU inbound, and find the time step at which Verlet resolves the perihelion passage (energy error below <span class="math inline">\(10^{-4}\)</span>). How many steps per day is that?</p>
 </div>
 
 

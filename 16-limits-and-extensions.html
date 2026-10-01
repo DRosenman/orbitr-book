@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -424,7 +418,6 @@ window.Quarto = {
   <li><a href="#better-integrators" id="toc-better-integrators" class="nav-link" data-scroll-target="#better-integrators"><span class="header-section-number">16.5</span> Better integrators</a></li>
   <li><a href="#the-roadmap-and-how-to-help" id="toc-the-roadmap-and-how-to-help" class="nav-link" data-scroll-target="#the-roadmap-and-how-to-help"><span class="header-section-number">16.6</span> The roadmap, and how to help</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next"><span class="header-section-number">16.7</span> Where to go next</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/16-limits-and-extensions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -580,11 +573,11 @@ Figure&nbsp;16.2: Orbital decay under a toy drag law applied by operator splitti
 </div>
 </div>
 </div>
-<p>Splitting is first-order accurate in the interval between kicks, so make the interval short compared with the drag timescale. The toy applies the same fractional kick wherever the satellite happens to be, which is what a body moving through a uniform medium feels. Real atmospheric drag is concentrated at periapsis, where the air is densest, and that changes the shape of the decay: periapsis stays nearly fixed while apoapsis is pulled down, the orbit circularizes, and only then does the whole thing spiral in. The same loop produces that behavior if the kick depends on altitude through a density profile, which is Exercise <a href="#exr-ch16-real-drag" class="quarto-xref">Exercise&nbsp;<span>16.4</span></a>.</p>
+<p>Splitting is first-order accurate in the interval between kicks, so make the interval short compared with the drag timescale. The toy applies the same fractional kick wherever the satellite happens to be, which is what a body moving through a uniform medium feels. Real atmospheric drag is concentrated at periapsis, where the air is densest, and that changes the shape of the decay: periapsis stays nearly fixed while apoapsis is pulled down, the orbit circularizes, and only then does the whole thing spiral in. The same loop produces that behavior if the kick depends on altitude through a density profile, <span class="math inline">\(\tau(r) = \tau_0\exp\big((r - r_0)/H\big)\)</span> with a scale height <span class="math inline">\(H\)</span> of about 60 km, applied every few minutes instead of every day.</p>
 </section>
 <section id="thrust" class="level3">
 <h3 class="anchored" data-anchor-id="thrust">Thrust</h3>
-<p>A rocket burn is a kick too, and a short one is well modeled as an instantaneous velocity change: a <span class="math inline">\(\Delta v\)</span>. The Hohmann transfer between two circular orbits is two kicks, one at periapsis of the transfer ellipse and one at apoapsis, with magnitudes that follow directly from vis-viva (Exercise <a href="#exr-ch16-hohmann" class="quarto-xref">Exercise&nbsp;<span>16.3</span></a>). Splitting with <code>continue_simulation()</code> does it exactly.</p>
+<p>A rocket burn is a kick too, and a short one is well modeled as an instantaneous velocity change: a <span class="math inline">\(\Delta v\)</span>. The Hohmann transfer between two circular orbits is two kicks, one at periapsis of the transfer ellipse and one at apoapsis, with magnitudes that follow directly from vis-viva: the transfer ellipse has <span class="math inline">\(a = (r_1 + r_2)/2\)</span>, and each <span class="math inline">\(\Delta v\)</span> is the difference between the circular speed and the transfer-orbit speed at that radius. Splitting with <code>continue_simulation()</code> does it exactly.</p>
 </section>
 </section>
 <section id="oblateness" class="level2" data-number="16.3">
@@ -673,27 +666,6 @@ w_1 = \frac{1}{2 - 2^{1/3}} \approx 1.351, \qquad w_0 = -\frac{2^{1/3}}{2 - 2^{1
 <li>Adaptive steps break symplecticity unless chosen time-symmetrically; higher order comes from Yoshida’s composition of Verlet steps.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch16-merge" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.1</strong></span> Using <code>closest_approach()</code>, find the first time two stars of the chaotic triple pass within two solar radii. Stop the run there, replace the two with their inelastic merger, continue with <code>continue_simulation()</code>, and compare the subsequent motion with the unmerged run.</p>
-</div>
-<div id="exr-ch16-beta" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.2</strong></span> Derive <span class="math inline">\(e = \beta/(1-\beta)\)</span> from Chapter 4’s rule <span class="math inline">\(e = |k^2-1|\)</span>, and confirm with <code>get_orbital_elements()</code> on the <span class="math inline">\(\beta = 0.3\)</span> grain (pass <code>mu = gravitational_constant * (1 - 0.3) * mass_sun</code>, the effective parameter).</p>
-</div>
-<div id="exr-ch16-hohmann" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.3</strong></span> A Hohmann transfer from a circular orbit of radius <span class="math inline">\(r_1\)</span> to one of radius <span class="math inline">\(r_2\)</span> uses an ellipse with <span class="math inline">\(a = (r_1+r_2)/2\)</span>. Use vis-viva to compute the two <span class="math inline">\(\Delta v\)</span>’s for a transfer from a 400 km Earth orbit to geostationary altitude (42,164 km from Earth’s center). Apply them with <code>kick_drag()</code>-style velocity edits and <code>continue_simulation()</code>, and confirm the satellite arrives on a circular orbit.</p>
-</div>
-<div id="exr-ch16-real-drag" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.4</strong></span> Replace the uniform kick in <code>kick_drag()</code> with one whose damping time depends on altitude as <span class="math inline">\(\tau(r) = \tau_0\exp\big((r - r_0)/H\big)\)</span>, with a scale height <span class="math inline">\(H\)</span> of 60 km, and apply it every ten minutes instead of every day (use a shorter run). Show that periapsis stays nearly fixed while apoapsis falls.</p>
-</div>
-<div id="exr-ch16-sun-sync" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.5</strong></span> Use <a href="#eq-j2-rates" class="quarto-xref">Equation&nbsp;<span>16.3</span></a> to find the inclination at which a circular 700 km orbit is Sun-synchronous (<span class="math inline">\(\dot\Omega = 360°\)</span> per year). Why must it be retrograde?</p>
-</div>
-<div id="exr-ch16-yoshida" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 16.6</strong></span> Implement the fourth-order Yoshida composition in plain R on top of Chapter 3’s <code>accelerations()</code> for a two-body system, and show that its energy error scales as <span class="math inline">\(\Delta t^4\)</span> by halving the step twice.</p>
 </div>
 
 

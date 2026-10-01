@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -421,7 +415,6 @@ window.Quarto = {
   <li><a href="#writing-the-acceleration-yourself" id="toc-writing-the-acceleration-yourself" class="nav-link" data-scroll-target="#writing-the-acceleration-yourself"><span class="header-section-number">3.7</span> Writing the acceleration yourself</a></li>
   <li><a href="#a-three-body-example" id="toc-a-three-body-example" class="nav-link" data-scroll-target="#a-three-body-example"><span class="header-section-number">3.8</span> A three-body example</a></li>
   <li><a href="#what-the-engine-does-differently" id="toc-what-the-engine-does-differently" class="nav-link" data-scroll-target="#what-the-engine-does-differently"><span class="header-section-number">3.9</span> What the engine does differently</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/03-newton-and-the-n-body-problem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -651,21 +644,6 @@ for each time step:
 <li>The computational cost grows as <span class="math inline">\(N^2\)</span>.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch3-ratio" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.1</strong></span> Using the constants in the package, compute the acceleration of Earth due to the Sun, due to the Moon, and due to Jupiter at its closest approach (Jupiter’s distance from the Sun minus Earth’s). Express the last two as fractions of the first.</p>
-</div>
-<div id="exr-ch3-shell" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.2</strong></span> A hollow spherical shell of mass <span class="math inline">\(M\)</span> and radius <span class="math inline">\(R\)</span> has a small hole drilled in it. A pebble is dropped into the hole. Describe its motion inside the shell. (No calculation needed, but say which theorem you are using.)</p>
-</div>
-<div id="exr-ch3-vectorize" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.3</strong></span> Rewrite <code>accelerations()</code> without the inner loop: for a fixed <span class="math inline">\(j\)</span>, compute the difference vectors to all other bodies at once with <code>sweep()</code> or by subtracting a row from the matrix, and sum the contributions with <code>colSums()</code>. Check that it gives the same answer on the Sun-Earth-Moon system.</p>
-</div>
-<div id="exr-ch3-g" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 3.4</strong></span> Simulate the Earth-Moon system for 28 days with <code>create_system(G = gravitational_constant * 1.01)</code> and again with the standard value. By how much does the Moon’s position differ at the end? Is a 1% change in <span class="math inline">\(G\)</span> detectable from one month of orbit data?</p>
 </div>
 
 

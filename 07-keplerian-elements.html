@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -420,7 +414,6 @@ window.Quarto = {
   <li><a href="#the-moon-on-its-real-orbit" id="toc-the-moon-on-its-real-orbit" class="nav-link" data-scroll-target="#the-moon-on-its-real-orbit"><span class="header-section-number">7.6</span> The Moon on its real orbit</a></li>
   <li><a href="#where-is-mars-today-keplers-equation" id="toc-where-is-mars-today-keplers-equation" class="nav-link" data-scroll-target="#where-is-mars-today-keplers-equation"><span class="header-section-number">7.7</span> Where is Mars today? Kepler’s equation</a></li>
   <li><a href="#osculating-elements" id="toc-osculating-elements" class="nav-link" data-scroll-target="#osculating-elements"><span class="header-section-number">7.8</span> Osculating elements</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/07-keplerian-elements.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -681,7 +674,7 @@ R_x(\theta) = \begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; \cos\theta &amp; -\si
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">measure_period</span>(em_sim, <span class="st">"Moon"</span>, <span class="st">"Earth"</span>) <span class="sc">/</span> seconds_per_day</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 26.74042</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If you need the Moon’s period right to better than a percent, build it with <code>keplerian_to_state()</code> using the combined <span class="math inline">\(\mu\)</span> and pass the result to <code>add_body()</code> (Exercise <a href="#exr-ch7-moon-fix" class="quarto-xref">Exercise&nbsp;<span>7.3</span></a>). For every other body in the solar system the question does not arise: the heaviest planet is a thousandth of the Sun, and the error is a twentieth of a percent in its period.</p>
+<p>If you need the Moon’s period right to better than a percent, build it with <code>keplerian_to_state()</code> using the combined <span class="math inline">\(\mu\)</span> and pass the result to <code>add_body()</code>; <code>measure_period()</code> then returns the real 27.32 days. For every other body in the solar system the question does not arise: the heaviest planet is a thousandth of the Sun, and the error is a twentieth of a percent in its period.</p>
 </section>
 <section id="where-is-mars-today-keplers-equation" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="where-is-mars-today-keplers-equation"><span class="header-section-number">7.7</span> Where is Mars today? Kepler’s equation</h2>
@@ -810,24 +803,6 @@ Figure&nbsp;7.1: Earth’s osculating eccentricity over 24 years, alone (flat li
 <li>In an N-body system the elements are osculating: they describe the instantaneous ellipse and drift under perturbation.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch7-hodograph" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.1</strong></span> Show from <a href="#eq-pf-velocity" class="quarto-xref">Equation&nbsp;<span>7.2</span></a> that the perifocal velocity vector lies on a circle of radius <span class="math inline">\(\mu/h\)</span> centered at <span class="math inline">\((0, \mu e/h)\)</span>. Then compute <span class="math inline">\(\mathbf{v}\)</span> at every time step of the Mars simulation, rotate it back into the perifocal frame with the transpose of <span class="math inline">\(Q\)</span>, and plot <span class="math inline">\(v_y\)</span> against <span class="math inline">\(v_x\)</span>.</p>
-</div>
-<div id="exr-ch7-rotation-order" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.2</strong></span> Apply the three rotations in the wrong order, <span class="math inline">\(R_z(\omega)R_x(i)R_z(\Omega)\)</span>, to Mars’s perifocal state and compare with the package. For which special values of the elements does the order not matter?</p>
-</div>
-<div id="exr-ch7-moon-fix" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.3</strong></span> Build the Moon with <code>keplerian_to_state()</code> using <span class="math inline">\(\mu = G(M_\oplus + m_{\mathrm{Moon}})\)</span>, <span class="math inline">\(a = 384{,}400\)</span> km, <span class="math inline">\(e = 0.0549\)</span>, and <span class="math inline">\(i = 5.15°\)</span>, add it with <code>add_body()</code>, and confirm with <code>measure_period()</code> that its period is the real 27.32 days.</p>
-</div>
-<div id="exr-ch7-spread" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.4</strong></span> Use <code>true_anomaly_at()</code> to place Mercury, Venus, Earth, and Mars where they would be 200 days after each one’s perihelion, then simulate and plot a snapshot with <code>plot_system()</code>.</p>
-</div>
-<div id="exr-ch7-precession" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.5</strong></span> Extract Earth’s osculating argument of perihelion <span class="math inline">\(\omega\)</span> from the Earth-Jupiter run at every time step with <code>get_orbital_elements()</code> and plot it. Does it precess steadily, oscillate, or both?</p>
 </div>
 
 

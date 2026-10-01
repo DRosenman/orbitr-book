@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -417,7 +411,6 @@ window.Quarto = {
   <li><a href="#slingshot" id="toc-slingshot" class="nav-link" data-scroll-target="#slingshot"><span class="header-section-number">11.3</span> Slingshot</a></li>
   <li><a href="#why-the-sun-earth-and-moon-are-not-chaotic" id="toc-why-the-sun-earth-and-moon-are-not-chaotic" class="nav-link" data-scroll-target="#why-the-sun-earth-and-moon-are-not-chaotic"><span class="header-section-number">11.4</span> Why the Sun, Earth, and Moon are not chaotic</a></li>
   <li><a href="#the-lagrange-points-and-which-ones-are-traps" id="toc-the-lagrange-points-and-which-ones-are-traps" class="nav-link" data-scroll-target="#the-lagrange-points-and-which-ones-are-traps"><span class="header-section-number">11.5</span> The Lagrange points, and which ones are traps</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/11-chaos-and-the-three-body-problem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -720,24 +713,6 @@ Figure&nbsp;11.4: A probe placed at the Sun-Earth <span class="math inline">\(L_
 <li><span class="math inline">\(L_1\)</span>, <span class="math inline">\(L_2\)</span>, <span class="math inline">\(L_3\)</span> are unstable saddle points with e-folding times of weeks (Sun-Earth); <span class="math inline">\(L_4\)</span>, <span class="math inline">\(L_5\)</span> are stable for small mass ratios.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch11-lyapunov-step" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.1</strong></span> Repeat the twin-run experiment with a time step of 30 minutes instead of an hour. Does the Lyapunov time change? Does the detailed trajectory after two years change? What does that tell you about which results of a chaotic simulation to trust?</p>
-</div>
-<div id="exr-ch11-energy-check" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.2</strong></span> Run <code>get_energy()</code> on the three-year triple and confirm the total is conserved through the ejection. Then compute the energy of the surviving pair alone (as a two-body system) at the end and show that it is more negative than the total.</p>
-</div>
-<div id="exr-ch11-figure-eight" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.3</strong></span> The figure-eight orbit is a periodic solution of the equal-mass three-body problem in which all three bodies chase each other around a single figure-eight curve. In units with <span class="math inline">\(G = 1\)</span> and unit masses, its initial conditions are bodies at <span class="math inline">\((0.97000436, -0.24308753)\)</span>, <span class="math inline">\((-0.97000436, 0.24308753)\)</span>, and <span class="math inline">\((0, 0)\)</span> with velocities <span class="math inline">\((0.46620369, 0.43236573)\)</span>, <span class="math inline">\((0.46620369, 0.43236573)\)</span>, and <span class="math inline">\((-0.93240737, -0.86473146)\)</span>. Scale these to SI units (choose a mass and a length; derive the time and velocity scales) and reproduce the orbit with <code>create_system(G = ...)</code>. How long does it stay on the figure eight?</p>
-</div>
-<div id="exr-ch11-retrograde-hill" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.4</strong></span> Place a test moon at <span class="math inline">\(0.7\,r_{\mathrm{H}}\)</span> on a <em>retrograde</em> orbit (reverse the sign of its velocity relative to Earth) and another at the same distance prograde. Which survives five years?</p>
-</div>
-<div id="exr-ch11-l2" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.5</strong></span> Repeat the <span class="math inline">\(L_1\)</span> experiment at <span class="math inline">\(L_2\)</span>, on the far side of Earth from the Sun, where JWST operates. Is the e-folding time the same? Then try <span class="math inline">\(L_3\)</span>, and explain why its instability is so much slower.</p>
 </div>
 
 

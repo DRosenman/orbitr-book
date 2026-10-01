@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -371,12 +371,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -398,7 +392,6 @@ window.Quarto = {
   <li><a href="#computing-all-three" id="toc-computing-all-three" class="nav-link" data-scroll-target="#computing-all-three"><span class="header-section-number">12.3</span> Computing all three</a></li>
   <li><a href="#reading-the-plots" id="toc-reading-the-plots" class="nav-link" data-scroll-target="#reading-the-plots"><span class="header-section-number">12.4</span> Reading the plots</a></li>
   <li><a href="#a-worked-diagnosis-the-orbit-that-looked-fine" id="toc-a-worked-diagnosis-the-orbit-that-looked-fine" class="nav-link" data-scroll-target="#a-worked-diagnosis-the-orbit-that-looked-fine"><span class="header-section-number">12.5</span> A worked diagnosis: the orbit that looked fine</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/12-energy-and-angular-momentum.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -664,24 +657,6 @@ Figure&nbsp;12.2: Left: Mercury’s perihelion direction in a two-body run, whic
 <li>Bounded energy error does not imply an accurate orbit. Numerical precession of the periapsis is <span class="math inline">\(O(\Delta t^2)\)</span> and invisible to the energy test; track the eccentricity vector.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch12-euler-L" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 12.1</strong></span> Show that one Euler step changes the total angular momentum by <span class="math inline">\(\Delta t^2\sum_j m_j\mathbf{v}_j\times\mathbf{a}_j\)</span>, and that for a circular two-body orbit this quantity is nonzero and has a constant sign. Confirm with the Euler run that <span class="math inline">\(|\mathbf{L}|\)</span> grows monotonically.</p>
-</div>
-<div id="exr-ch12-softening" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 12.2</strong></span> Run Chapter 6’s softened encounter and compute <code>conserved_quantities()</code> with its default and with <code>softening = 0</code>. Describe the spurious “drift” the mismatched version shows.</p>
-</div>
-<div id="exr-ch12-precession-e" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 12.3</strong></span> Repeat the numerical-precession measurement for a planet on a circular orbit (<span class="math inline">\(e = 0\)</span>) and on a very eccentric one (<span class="math inline">\(e = 0.8\)</span>) with the same semi-major axis and step. How does the artifact depend on eccentricity, and why?</p>
-</div>
-<div id="exr-ch12-euler-cromer-precession" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 12.4</strong></span> Repeat it with Euler-Cromer at a one-day step. Is the numerical precession larger or smaller than Verlet’s at the same step, and how does it scale when the step is halved?</p>
-</div>
-<div id="exr-ch12-full" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 12.5</strong></span> Write a function <code>check_run(sim)</code> that prints one line per conservation law saying “ok” or “suspect”, using thresholds you choose from the figures in this chapter, and run it on every simulation in Chapter 8.</p>
 </div>
 
 

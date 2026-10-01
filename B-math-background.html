@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -336,12 +336,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -533,7 +527,7 @@ R(\theta) = \begin{pmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \co
 R_z(\theta) = \begin{pmatrix} \cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}, \qquad
 R_x(\theta) = \begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; \cos\theta &amp; -\sin\theta \\ 0 &amp; \sin\theta &amp; \cos\theta \end{pmatrix}.
 \tag{B.13}\]</span></span></p>
-<p>Rotations preserve lengths and angles. Their inverse is their transpose (<span class="math inline">\(R^{-1} = R^{T}\)</span>), so undoing a rotation costs nothing, which Chapter 7’s exercises use. The sign convention here, that <span class="math inline">\(R(\theta)\)</span> rotates the <em>vector</em> counterclockwise by <span class="math inline">\(\theta\)</span>, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with <span class="math inline">\(-\theta\)</span>.</p>
+<p>Rotations preserve lengths and angles. Their inverse is their transpose (<span class="math inline">\(R^{-1} = R^{T}\)</span>), so undoing a rotation costs nothing. The sign convention here, that <span class="math inline">\(R(\theta)\)</span> rotates the <em>vector</em> counterclockwise by <span class="math inline">\(\theta\)</span>, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with <span class="math inline">\(-\theta\)</span>.</p>
 <p>The <strong>determinant</strong> of a <span class="math inline">\(2\times2\)</span> matrix is <span class="math inline">\(ad - bc\)</span>. Its geometric meaning is the thing Chapter 5 is built on: a matrix with determinant <span class="math inline">\(D\)</span> scales every area by a factor <span class="math inline">\(|D|\)</span> (every volume, for <span class="math inline">\(3\times3\)</span> matrices). A rotation has determinant 1, as it should. A map that preserves area has determinant exactly 1, and a map with determinant greater than 1 inflates every region it touches. Chapter 5 computes the determinant of each integrator’s one-step map and finds <span class="math inline">\(1 + \omega^2\Delta t^2\)</span> for Euler and exactly 1 for Euler-Cromer and Verlet; that single number is the difference between an orbit that spirals and one that does not.</p>
 <p>One more fact about <span class="math inline">\(2\times2\)</span> matrices, used in a Chapter 5 exercise: the eigenvalues <span class="math inline">\(\lambda\)</span> satisfy <span class="math inline">\(\lambda^2 - (\operatorname{trace})\lambda + \det = 0\)</span>. When <span class="math inline">\(\det = 1\)</span> the two eigenvalues multiply to 1, and they are a complex-conjugate pair on the unit circle, meaning the map rotates without growing, exactly when <span class="math inline">\(|\operatorname{trace}| &lt; 2\)</span>. That is where the stability condition <span class="math inline">\(\omega\Delta t &lt; 2\)</span> comes from.</p>
 </section>

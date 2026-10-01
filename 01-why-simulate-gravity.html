@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -390,12 +390,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About the Author</span></a>
   </div>
@@ -418,7 +412,6 @@ window.Quarto = {
   <li><a href="#what-orbitr-is-not" id="toc-what-orbitr-is-not" class="nav-link" data-scroll-target="#what-orbitr-is-not"><span class="header-section-number">1.4</span> What orbitr is not</a></li>
   <li><a href="#how-to-read-this-book" id="toc-how-to-read-this-book" class="nav-link" data-scroll-target="#how-to-read-this-book"><span class="header-section-number">1.5</span> How to read this book</a></li>
   <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">1.6</span> Setting up</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/01-why-simulate-gravity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -485,7 +478,7 @@ window.Quarto = {
 <section id="how-to-read-this-book" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="how-to-read-this-book"><span class="header-section-number">1.5</span> How to read this book</h2>
 <p>If you want to get something running first, go to Chapter 2 now, then come back. Part II can be read straight through as a physics text; the code is there to check the physics, not the other way round. Part III assumes Part II but each chapter stands alone, so you can go straight to binary stars or chaos if that is what you came for.</p>
-<p>The exercises matter more than they might in a pure physics book, because the answers are something you can run. Many of them are of the form “predict, then simulate.” Do the prediction first.</p>
+<p>The most useful habit while reading is to predict before you run. Each chapter’s code sets up something whose outcome the physics tells you in advance; say what you expect, then look. When the two disagree, one of them is wrong, and finding out which is where the learning is.</p>
 </section>
 <section id="setting-up" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1.6</span> Setting up</h2>
@@ -497,18 +490,6 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "R version 4.6.1 (2026-06-24 ucrt)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If <code>packageVersion("orbitr")</code> reports something older than 1.0.0, update: the analysis functions this book relies on were added in 1.0.0. Anything newer should run the book’s code unchanged; the changelog (<code>NEWS.md</code> in the GitHub repository, <a href="https://github.com/DRosenman/orbitr" class="uri">https://github.com/DRosenman/orbitr</a>) lists any deprecations.</p>
-</section>
-<section id="exercises" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
-<div id="exr-ch1-three-body" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.1</strong></span> Kepler’s laws describe one body orbiting one other body. List three systems in the real solar system where you would expect them to be noticeably wrong, and say which other body is responsible in each case.</p>
-</div>
-<div id="exr-ch1-step" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.2</strong></span> The Moon orbits Earth in about 27.3 days. If a simulation steps forward one hour at a time, how many steps does one orbit take? How many if it steps one day at a time? Which do you think is more likely to give a good answer, and why? (Chapter 5 gives a rule of thumb; guess first.)</p>
-</div>
-<div id="exr-ch1-point-mass" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.3</strong></span> Earth has a radius of about 6,371 km and the Moon orbits at about 384,400 km. The International Space Station orbits at about 420 km above the surface. For which of these two orbits do you think treating Earth as a point mass is a better approximation, and what feature of Earth might matter for the other?</p>
-</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
