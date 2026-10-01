@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix B — Mathematical Background – Orbital Mechanics with R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./C-function-reference.html" rel="next">
+<link href="./A-r-basics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-r-basics.html">Appendices</a></li><li class="breadcrumb-item"><a href="./B-math-background.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Orbital Mechanics with R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/DRosenman/orbitr-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the-app.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try It First: The orbitr App</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">First Orbits</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-simulate-gravity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Simulate Gravity?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-four-lines-to-an-orbit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Four Lines to an Orbit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Where the Physics Comes From</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-newton-and-the-n-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-the-two-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Two-Body Problem, Solved by Hand</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-integrators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integrators: Euler, Euler-Cromer, and Velocity Verlet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-softening.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keplerian-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">From Orbital Elements to State Vectors</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Doing Astrophysics with orbitr</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-the-solar-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Solar System from JPL Elements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-binary-stars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-reference-frames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reference Frames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-chaos-and-the-three-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chaos and the Three-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-energy-and-angular-momentum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conservation Laws as Diagnostics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-comets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comets and Highly Eccentric Orbits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-figures-for-papers-and-talks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Figures for Papers and Talks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Under the Hood</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-the-cpp-engine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The C++ Engine</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-limits-and-extensions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Limits and Extensions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-r-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-math-background.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function Quick Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./D-constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Physical Constants</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#vectors" id="toc-vectors" class="nav-link active" data-scroll-target="#vectors"><span class="header-section-number">B.1</span> Vectors</a>
+  <ul class="collapse">
+  <li><a href="#the-dot-product" id="toc-the-dot-product" class="nav-link" data-scroll-target="#the-dot-product">The dot product</a></li>
+  <li><a href="#the-cross-product" id="toc-the-cross-product" class="nav-link" data-scroll-target="#the-cross-product">The cross product</a></li>
+  <li><a href="#two-triple-product-identities" id="toc-two-triple-product-identities" class="nav-link" data-scroll-target="#two-triple-product-identities">Two triple-product identities</a></li>
+  </ul></li>
+  <li><a href="#derivatives-of-vectors" id="toc-derivatives-of-vectors" class="nav-link" data-scroll-target="#derivatives-of-vectors"><span class="header-section-number">B.2</span> Derivatives of vectors</a></li>
+  <li><a href="#polar-coordinates-in-the-plane" id="toc-polar-coordinates-in-the-plane" class="nav-link" data-scroll-target="#polar-coordinates-in-the-plane"><span class="header-section-number">B.3</span> Polar coordinates in the plane</a></li>
+  <li><a href="#conic-sections" id="toc-conic-sections" class="nav-link" data-scroll-target="#conic-sections"><span class="header-section-number">B.4</span> Conic sections</a></li>
+  <li><a href="#taylor-series" id="toc-taylor-series" class="nav-link" data-scroll-target="#taylor-series"><span class="header-section-number">B.5</span> Taylor series</a></li>
+  <li><a href="#differential-equations-and-the-idea-of-state" id="toc-differential-equations-and-the-idea-of-state" class="nav-link" data-scroll-target="#differential-equations-and-the-idea-of-state"><span class="header-section-number">B.6</span> Differential equations and the idea of state</a></li>
+  <li><a href="#matrices-rotations-and-determinants" id="toc-matrices-rotations-and-determinants" class="nav-link" data-scroll-target="#matrices-rotations-and-determinants"><span class="header-section-number">B.7</span> Matrices, rotations, and determinants</a></li>
+  <li><a href="#logarithms-exponentials-and-power-laws" id="toc-logarithms-exponentials-and-power-laws" class="nav-link" data-scroll-target="#logarithms-exponentials-and-power-laws"><span class="header-section-number">B.8</span> Logarithms, exponentials, and power laws</a></li>
+  <li><a href="#angles" id="toc-angles" class="nav-link" data-scroll-target="#angles"><span class="header-section-number">B.9</span> Angles</a></li>
+  <li><a href="#units-and-dimensions" id="toc-units-and-dimensions" class="nav-link" data-scroll-target="#units-and-dimensions"><span class="header-section-number">B.10</span> Units and dimensions</a></li>
+  <li><a href="#where-each-tool-is-used" id="toc-where-each-tool-is-used" class="nav-link" data-scroll-target="#where-each-tool-is-used"><span class="header-section-number">B.11</span> Where each tool is used</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/B-math-background.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-r-basics.html">Appendices</a></li><li class="breadcrumb-item"><a href="./B-math-background.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-math" class="quarto-section-identifier">Appendix B — Mathematical Background</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This appendix collects the mathematics the rest of the book takes for granted. It is not a course; it is a reference, written for a reader who has met calculus and vectors before and wants the specific facts the derivations lean on, in the notation the book uses, with a pointer to where each one earns its keep. If you can read it without surprises, you have everything you need. If a section is new to you, it is short enough to learn from, and the chapter it feeds will make it concrete.</p>
+<p>The book assumes you are comfortable with algebra, with trigonometry (sines, cosines, radians), and with the derivative and integral of a function of one variable. Everything beyond that is here.</p>
+<section id="vectors" class="level2" data-number="B.1">
+<h2 data-number="B.1" class="anchored" data-anchor-id="vectors"><span class="header-section-number">B.1</span> Vectors</h2>
+<p>A <strong>vector</strong> is a quantity with magnitude and direction: a position, a velocity, a force. The book sets vectors in bold, <span class="math inline">\(\mathbf{r}\)</span>, and writes their components as <span class="math inline">\(\mathbf{r} = (x, y, z)\)</span>. The <strong>magnitude</strong> (length) is</p>
+<p><span class="math display">\[
+r = |\mathbf{r}| = \sqrt{x^2 + y^2 + z^2},
+\]</span></p>
+<p>in italic, and the <strong>unit vector</strong> in the direction of <span class="math inline">\(\mathbf{r}\)</span> wears a hat, <span class="math inline">\(\hat{\mathbf{r}} = \mathbf{r}/r\)</span>, with <span class="math inline">\(|\hat{\mathbf{r}}| = 1\)</span>. Vectors add component by component, and multiplying a vector by a number scales its length (and reverses it if the number is negative). The difference <span class="math inline">\(\mathbf{r}_k - \mathbf{r}_j\)</span> is the vector <em>from</em> <span class="math inline">\(\mathbf{r}_j\)</span> <em>to</em> <span class="math inline">\(\mathbf{r}_k\)</span>; its magnitude is the distance between the two points. That one fact is the whole content of Chapter 3’s force law.</p>
+<section id="the-dot-product" class="level3">
+<h3 class="anchored" data-anchor-id="the-dot-product">The dot product</h3>
+<p>The <strong>dot product</strong> of two vectors is a number:</p>
+<p><span id="eq-dot"><span class="math display">\[
+\mathbf{a}\cdot\mathbf{b} = a_x b_x + a_y b_y + a_z b_z = |\mathbf{a}|\,|\mathbf{b}|\cos\theta,
+\tag{B.1}\]</span></span></p>
+<p>where <span class="math inline">\(\theta\)</span> is the angle between them. It is commutative (<span class="math inline">\(\mathbf{a}\cdot\mathbf{b} = \mathbf{b}\cdot\mathbf{a}\)</span>), distributes over addition, and is zero when the vectors are perpendicular. Two uses recur throughout the book. First, a vector dotted with itself is its squared length, <span class="math inline">\(\mathbf{r}\cdot\mathbf{r} = r^2\)</span>, which is how the book gets from vector equations to scalar ones (Chapter 4’s energy derivation). Second, the dot product with a unit vector picks out the component along that direction: <span class="math inline">\(\mathbf{v}\cdot\hat{\mathbf{r}}\)</span> is the part of the velocity that points radially.</p>
+</section>
+<section id="the-cross-product" class="level3">
+<h3 class="anchored" data-anchor-id="the-cross-product">The cross product</h3>
+<p>The <strong>cross product</strong> of two vectors is a vector:</p>
+<p><span id="eq-cross"><span class="math display">\[
+\mathbf{a}\times\mathbf{b} = \big(a_y b_z - a_z b_y,\ a_z b_x - a_x b_z,\ a_x b_y - a_y b_x\big).
+\tag{B.2}\]</span></span></p>
+<p>Its magnitude is <span class="math inline">\(|\mathbf{a}|\,|\mathbf{b}|\sin\theta\)</span>, which is the area of the parallelogram the two vectors span (so <span class="math inline">\(\tfrac12|\mathbf{a}\times\mathbf{b}|\)</span> is the area of the triangle; Chapter 4 uses this for Kepler’s second law). Its direction is perpendicular to both <span class="math inline">\(\mathbf{a}\)</span> and <span class="math inline">\(\mathbf{b}\)</span>, by the right-hand rule: curl the fingers of your right hand from <span class="math inline">\(\mathbf{a}\)</span> toward <span class="math inline">\(\mathbf{b}\)</span> and the thumb points along <span class="math inline">\(\mathbf{a}\times\mathbf{b}\)</span>. The properties the book uses:</p>
+<ul>
+<li>It is <strong>anticommutative</strong>: <span class="math inline">\(\mathbf{b}\times\mathbf{a} = -\mathbf{a}\times\mathbf{b}\)</span>.</li>
+<li>Any vector crossed with itself, or with a multiple of itself, is zero: <span class="math inline">\(\mathbf{a}\times\mathbf{a} = \mathbf{0}\)</span>, <span class="math inline">\(\mathbf{a}\times(c\mathbf{a}) = \mathbf{0}\)</span>. This is why angular momentum is conserved under a central force (Chapter 4).</li>
+<li>It distributes over addition and obeys the product rule under differentiation (next section).</li>
+</ul>
+<p>Angular momentum, <span class="math inline">\(\mathbf{r}\times\mathbf{v}\)</span>, is the cross product you will see most. The pattern of indices in <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>B.2</span></a> is worth memorizing once: each component uses the other two coordinates, cyclically (<span class="math inline">\(x \to y \to z \to x\)</span>), and the code in Chapters 4, 7, and 12 is a direct transcription of it.</p>
+</section>
+<section id="two-triple-product-identities" class="level3">
+<h3 class="anchored" data-anchor-id="two-triple-product-identities">Two triple-product identities</h3>
+<p>Chapter 4’s derivation of the orbit equation uses two identities for three vectors.</p>
+<p>The <strong>scalar triple product</strong> <span class="math inline">\(\mathbf{a}\cdot(\mathbf{b}\times\mathbf{c})\)</span> is the volume of the parallelepiped spanned by the three, and it is unchanged by cycling the vectors:</p>
+<p><span id="eq-scalar-triple"><span class="math display">\[
+\mathbf{a}\cdot(\mathbf{b}\times\mathbf{c}) = \mathbf{b}\cdot(\mathbf{c}\times\mathbf{a}) = \mathbf{c}\cdot(\mathbf{a}\times\mathbf{b}).
+\tag{B.3}\]</span></span></p>
+<p>It is zero if any two of the vectors are parallel or if all three lie in a plane. The book uses it to turn <span class="math inline">\(\mathbf{r}\cdot(\mathbf{v}\times\mathbf{h})\)</span> into <span class="math inline">\(\mathbf{h}\cdot(\mathbf{r}\times\mathbf{v}) = h^2\)</span>.</p>
+<p>The <strong>vector triple product</strong> expands as</p>
+<p><span id="eq-vector-triple"><span class="math display">\[
+\mathbf{a}\times(\mathbf{b}\times\mathbf{c}) = \mathbf{b}\,(\mathbf{a}\cdot\mathbf{c}) - \mathbf{c}\,(\mathbf{a}\cdot\mathbf{b}),
+\tag{B.4}\]</span></span></p>
+<p>the “BAC minus CAB” rule. Note that the result lies in the plane of <span class="math inline">\(\mathbf{b}\)</span> and <span class="math inline">\(\mathbf{c}\)</span>, and that the parentheses matter: <span class="math inline">\((\mathbf{a}\times\mathbf{b})\times\mathbf{c}\)</span> is a different vector. Both identities can be verified by writing out components with <a href="#eq-cross" class="quarto-xref">Equation&nbsp;<span>B.2</span></a>; it is tedious once and then you never doubt them again.</p>
+</section>
+</section>
+<section id="derivatives-of-vectors" class="level2" data-number="B.2">
+<h2 data-number="B.2" class="anchored" data-anchor-id="derivatives-of-vectors"><span class="header-section-number">B.2</span> Derivatives of vectors</h2>
+<p>A vector that changes with time is differentiated component by component: if <span class="math inline">\(\mathbf{r}(t) = (x(t), y(t), z(t))\)</span> then <span class="math inline">\(\dot{\mathbf{r}} = (\dot x, \dot y, \dot z)\)</span>. The book uses Newton’s dot for time derivatives: <span class="math inline">\(\dot{\mathbf{r}}\)</span> is velocity, <span class="math inline">\(\ddot{\mathbf{r}}\)</span> is acceleration. Velocity is also written <span class="math inline">\(\mathbf{v}\)</span> and acceleration <span class="math inline">\(\mathbf{a}\)</span> when the context is clear.</p>
+<p>The product rules work for every kind of product, as long as the order of the factors is kept in the cross product:</p>
+<p><span id="eq-vector-product-rules"><span class="math display">\[
+\frac{d}{dt}(f\mathbf{a}) = \dot f\,\mathbf{a} + f\,\dot{\mathbf{a}}, \qquad
+\frac{d}{dt}(\mathbf{a}\cdot\mathbf{b}) = \dot{\mathbf{a}}\cdot\mathbf{b} + \mathbf{a}\cdot\dot{\mathbf{b}}, \qquad
+\frac{d}{dt}(\mathbf{a}\times\mathbf{b}) = \dot{\mathbf{a}}\times\mathbf{b} + \mathbf{a}\times\dot{\mathbf{b}}.
+\tag{B.5}\]</span></span></p>
+<p>Two consequences do a lot of work in Chapter 4.</p>
+<p><strong>The derivative of a length.</strong> Differentiating <span class="math inline">\(r^2 = \mathbf{r}\cdot\mathbf{r}\)</span> gives <span class="math inline">\(2r\dot r = 2\,\mathbf{r}\cdot\dot{\mathbf{r}}\)</span>, so</p>
+<p><span id="eq-r-dot"><span class="math display">\[
+\dot r = \frac{\mathbf{r}\cdot\dot{\mathbf{r}}}{r} = \hat{\mathbf{r}}\cdot\dot{\mathbf{r}}.
+\tag{B.6}\]</span></span></p>
+<p>The rate at which the distance changes is the radial component of the velocity. Note that <span class="math inline">\(\dot r\)</span> (the derivative of the length) is not <span class="math inline">\(|\dot{\mathbf{r}}|\)</span> (the length of the derivative, the speed); on a circular orbit the first is zero and the second is not.</p>
+<p><strong>The derivative of a unit vector.</strong> By the quotient rule and <a href="#eq-r-dot" class="quarto-xref">Equation&nbsp;<span>B.6</span></a>,</p>
+<p><span id="eq-unit-vector-dot"><span class="math display">\[
+\frac{d}{dt}\left(\frac{\mathbf{r}}{r}\right) = \frac{\dot{\mathbf{r}}}{r} - \frac{\mathbf{r}\,\dot r}{r^2} = \frac{\dot{\mathbf{r}}}{r} - \frac{\mathbf{r}\,(\mathbf{r}\cdot\dot{\mathbf{r}})}{r^3}.
+\tag{B.7}\]</span></span></p>
+<p>This is the expression that the vector triple product produces in Chapter 4’s eccentricity-vector derivation, and recognizing it is the step that makes the derivation close.</p>
+<p>A function of a vector, like the potential <span class="math inline">\(-\mu/r\)</span>, is differentiated through the chain rule: <span class="math inline">\(\frac{d}{dt}(-\mu/r) = \mu\dot r/r^2\)</span>, and then <a href="#eq-r-dot" class="quarto-xref">Equation&nbsp;<span>B.6</span></a>.</p>
+</section>
+<section id="polar-coordinates-in-the-plane" class="level2" data-number="B.3">
+<h2 data-number="B.3" class="anchored" data-anchor-id="polar-coordinates-in-the-plane"><span class="header-section-number">B.3</span> Polar coordinates in the plane</h2>
+<p>Two-body orbits are planar (Chapter 4 proves it), so most of the book’s geometry lives in a plane, where a point can be given either by Cartesian coordinates <span class="math inline">\((x, y)\)</span> or by its distance <span class="math inline">\(r\)</span> from the origin and its angle <span class="math inline">\(\theta\)</span> from the <span class="math inline">\(x\)</span> axis:</p>
+<p><span class="math display">\[
+x = r\cos\theta, \qquad y = r\sin\theta, \qquad r = \sqrt{x^2+y^2}, \qquad \theta = \operatorname{atan2}(y, x).
+\]</span></p>
+<p>The orbit equation of Chapter 4 is a relation between <span class="math inline">\(r\)</span> and <span class="math inline">\(\theta\)</span>. To differentiate it you need the velocity in polar form. Define the unit vectors <span class="math inline">\(\hat{\mathbf{r}} = (\cos\theta, \sin\theta)\)</span>, pointing outward, and <span class="math inline">\(\hat{\boldsymbol{\theta}} = (-\sin\theta, \cos\theta)\)</span>, pointing in the direction of increasing <span class="math inline">\(\theta\)</span>. Unlike the Cartesian unit vectors, these rotate as the point moves: <span class="math inline">\(\dot{\hat{\mathbf{r}}} = \dot\theta\,\hat{\boldsymbol{\theta}}\)</span> and <span class="math inline">\(\dot{\hat{\boldsymbol{\theta}}} = -\dot\theta\,\hat{\mathbf{r}}\)</span>. Differentiating <span class="math inline">\(\mathbf{r} = r\hat{\mathbf{r}}\)</span> with the product rule,</p>
+<p><span id="eq-polar-velocity"><span class="math display">\[
+\mathbf{v} = \dot r\,\hat{\mathbf{r}} + r\dot\theta\,\hat{\boldsymbol{\theta}}.
+\tag{B.8}\]</span></span></p>
+<p>The velocity has a radial part, <span class="math inline">\(\dot r\)</span>, and a transverse part, <span class="math inline">\(r\dot\theta\)</span>, and the speed squared is <span class="math inline">\(\dot r^2 + r^2\dot\theta^2\)</span>. The angular momentum per unit mass is <span class="math inline">\(h = |\mathbf{r}\times\mathbf{v}| = r\cdot r\dot\theta = r^2\dot\theta\)</span>, and because <span class="math inline">\(h\)</span> is constant for a central force this gives <span class="math inline">\(\dot\theta = h/r^2\)</span> directly, which Chapter 7 uses to turn the orbit equation into the velocity formulas. In a time <span class="math inline">\(dt\)</span> the position vector sweeps out a thin triangle of area <span class="math inline">\(\tfrac12 r\cdot r\dot\theta\,dt\)</span>, so the area swept per unit time is <span class="math inline">\(h/2\)</span>: Kepler’s second law in one line.</p>
+</section>
+<section id="conic-sections" class="level2" data-number="B.4">
+<h2 data-number="B.4" class="anchored" data-anchor-id="conic-sections"><span class="header-section-number">B.4</span> Conic sections</h2>
+<p>Every two-body orbit is a conic section: the curve you get by slicing a cone with a plane. Chapter 4 derives this; here is the geometry it needs.</p>
+<p>An <strong>ellipse</strong> is the set of points whose distances to two fixed points, the <strong>foci</strong>, add up to a constant, <span class="math inline">\(2a\)</span>. It has a longest diameter <span class="math inline">\(2a\)</span> (the major axis) and a shortest <span class="math inline">\(2b\)</span> (the minor axis); <span class="math inline">\(a\)</span> is the <strong>semi-major axis</strong> and <span class="math inline">\(b\)</span> the <strong>semi-minor axis</strong>. The foci lie on the major axis at a distance <span class="math inline">\(c = \sqrt{a^2 - b^2}\)</span> from the center, and the <strong>eccentricity</strong> is <span class="math inline">\(e = c/a\)</span>, between 0 (a circle, both foci at the center) and 1 (a degenerate line). The relations the book uses:</p>
+<p><span id="eq-ellipse-facts"><span class="math display">\[
+b = a\sqrt{1-e^2}, \qquad \text{area} = \pi a b, \qquad r_{\min} = a(1-e), \qquad r_{\max} = a(1+e),
+\tag{B.9}\]</span></span></p>
+<p>where <span class="math inline">\(r_{\min}\)</span> and <span class="math inline">\(r_{\max}\)</span> are the nearest and farthest distances from a focus (periapsis and apoapsis, when the focus is a star). With the origin at one focus and <span class="math inline">\(\nu\)</span> the angle from the direction of the nearest point, the ellipse is</p>
+<p><span id="eq-conic-polar"><span class="math display">\[
+r(\nu) = \frac{a(1-e^2)}{1 + e\cos\nu} = \frac{p}{1 + e\cos\nu},
+\tag{B.10}\]</span></span></p>
+<p>where <span class="math inline">\(p = a(1-e^2)\)</span> is the <strong>semi-latus rectum</strong>, the distance from the focus to the curve at <span class="math inline">\(\nu = 90°\)</span>. Check it: <span class="math inline">\(\nu = 0\)</span> gives <span class="math inline">\(a(1-e)\)</span> and <span class="math inline">\(\nu = \pi\)</span> gives <span class="math inline">\(a(1+e)\)</span>. This polar form is the one that falls out of Newton’s law, and it is why the orbiting body is at a focus rather than at the center.</p>
+<p>The same equation with <span class="math inline">\(e = 1\)</span> describes a <strong>parabola</strong>, which reaches infinity at <span class="math inline">\(\nu = \pm 180°\)</span>, and with <span class="math inline">\(e &gt; 1\)</span> a <strong>hyperbola</strong>, which reaches infinity at the <strong>asymptotes</strong> <span class="math inline">\(\nu = \pm\arccos(-1/e)\)</span>; between them the denominator is positive and the curve is a single open branch. For a hyperbola the semi-major axis is conventionally negative, <span class="math inline">\(a &lt; 0\)</span>, so that <span class="math inline">\(p = a(1-e^2) &gt; 0\)</span> and the periapsis distance <span class="math inline">\(a(1-e) &gt; 0\)</span> come out right from the same formulas. The angle between the two asymptotes, which is how much a flyby bends a trajectory, is <span class="math inline">\(2\arcsin(1/e)\)</span>. Chapter 13 uses all of this.</p>
+</section>
+<section id="taylor-series" class="level2" data-number="B.5">
+<h2 data-number="B.5" class="anchored" data-anchor-id="taylor-series"><span class="header-section-number">B.5</span> Taylor series</h2>
+<p>If a function is smooth, its value a short distance ahead can be built from its derivatives at the current point:</p>
+<p><span id="eq-taylor-general"><span class="math display">\[
+f(t + \Delta t) = f(t) + f'(t)\,\Delta t + \frac{f''(t)}{2}\,\Delta t^2 + \frac{f'''(t)}{6}\,\Delta t^3 + \cdots
+\tag{B.11}\]</span></span></p>
+<p>The general term is <span class="math inline">\(f^{(n)}(t)\,\Delta t^n/n!\)</span>. For the position of a body this reads <span class="math inline">\(\mathbf{r}(t+\Delta t) = \mathbf{r} + \mathbf{v}\Delta t + \tfrac12\mathbf{a}\Delta t^2 + \cdots\)</span>, which is where every integrator in Chapter 5 comes from: an integrator is a decision about where to cut the series off and what to do about the terms you cut.</p>
+<p>The <strong>big-O</strong> notation summarizes the size of what was cut. Writing “<span class="math inline">\(+\,O(\Delta t^3)\)</span>” means the omitted terms are no larger than a constant times <span class="math inline">\(\Delta t^3\)</span> when <span class="math inline">\(\Delta t\)</span> is small. The practical meaning is in the scaling: an <span class="math inline">\(O(\Delta t^3)\)</span> error shrinks by a factor of eight when the step is halved, an <span class="math inline">\(O(\Delta t^2)\)</span> error by four. If a method’s error over one step is <span class="math inline">\(O(\Delta t^{p+1})\)</span>, then over a fixed time interval, which takes <span class="math inline">\(1/\Delta t\)</span> steps, the accumulated error is <span class="math inline">\(O(\Delta t^p)\)</span>, and the method is said to be of order <span class="math inline">\(p\)</span>. Chapter 5 measures these exponents directly.</p>
+<p>Three special cases of <a href="#eq-taylor-general" class="quarto-xref">Equation&nbsp;<span>B.11</span></a> appear so often that it is worth knowing them by sight, with <span class="math inline">\(x\)</span> small:</p>
+<p><span id="eq-common-approximations"><span class="math display">\[
+(1 + x)^n \approx 1 + nx, \qquad \sin x \approx x, \qquad e^x \approx 1 + x.
+\tag{B.12}\]</span></span></p>
+<p>The first, the <strong>binomial approximation</strong>, is how Chapter 6 estimates the cost of softening: <span class="math inline">\((1 + \varepsilon^2/r^2)^{-3/2} \approx 1 - \tfrac32\,\varepsilon^2/r^2\)</span>. The last is how a small growth rate turns into exponential growth over many steps: multiplying by <span class="math inline">\((1 + x)\)</span> a total of <span class="math inline">\(N\)</span> times gives <span class="math inline">\((1+x)^N \approx e^{Nx}\)</span>.</p>
+</section>
+<section id="differential-equations-and-the-idea-of-state" class="level2" data-number="B.6">
+<h2 data-number="B.6" class="anchored" data-anchor-id="differential-equations-and-the-idea-of-state"><span class="header-section-number">B.6</span> Differential equations and the idea of state</h2>
+<p>Newton’s second law for one body, <span class="math inline">\(\ddot{\mathbf{r}} = \mathbf{a}(\mathbf{r})\)</span>, is a <strong>second-order differential equation</strong>: it involves the second derivative of the unknown function <span class="math inline">\(\mathbf{r}(t)\)</span>. To solve it you need two pieces of starting information, the position and the velocity at some instant, because the equation only tells you how the velocity <em>changes</em>. Those two pieces are the <strong>state</strong>, and the whole of Chapter 3’s “simulation loop” is the observation that a second-order equation can be rewritten as two first-order ones,</p>
+<p><span class="math display">\[
+\dot{\mathbf{r}} = \mathbf{v}, \qquad \dot{\mathbf{v}} = \mathbf{a}(\mathbf{r}),
+\]</span></p>
+<p>each of which says how one part of the state changes given the current state. Any system of higher-order equations can be reduced to first order this way, and numerical methods work on the first-order form.</p>
+<p>A <strong>solution in closed form</strong> is a formula for <span class="math inline">\(\mathbf{r}(t)\)</span>. The simplest example is the harmonic oscillator, <span class="math inline">\(\ddot x = -\omega^2 x\)</span>, whose solution is <span class="math inline">\(x(t) = A\cos\omega t + B\sin\omega t\)</span>, with <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> fixed by the initial position and velocity. Chapter 5 uses this equation as its test case because it is exactly solvable, so an integrator’s mistakes can be measured against the truth. The two-body problem has a closed-form solution too (Chapter 4). The three-body problem does not (Chapter 11), and the simulation is the only way to find <span class="math inline">\(\mathbf{r}(t)\)</span>.</p>
+<p>A <strong>conserved quantity</strong> (or first integral) is a function of the state that does not change along any solution, like the oscillator’s energy <span class="math inline">\(\tfrac12\dot x^2 + \tfrac12\omega^2 x^2\)</span>. Finding one is the standard trick for learning about a solution without solving: Chapter 4 finds three for the two-body problem and reads the shape of the orbit off them.</p>
+</section>
+<section id="matrices-rotations-and-determinants" class="level2" data-number="B.7">
+<h2 data-number="B.7" class="anchored" data-anchor-id="matrices-rotations-and-determinants"><span class="header-section-number">B.7</span> Matrices, rotations, and determinants</h2>
+<p>A <strong>matrix</strong> is a grid of numbers; a <span class="math inline">\(2\times2\)</span> or <span class="math inline">\(3\times3\)</span> matrix acts on a vector to produce another vector, by the rule “each component of the output is the dot product of a row with the input”:</p>
+<p><span class="math display">\[
+\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} ax + by \\ cx + dy \end{pmatrix}.
+\]</span></p>
+<p>Applying one matrix after another is the same as applying their <strong>product</strong>, and the product is read right to left: <span class="math inline">\(M_2 M_1\)</span> applies <span class="math inline">\(M_1\)</span> first. Matrix multiplication is not commutative, which is why the order of the three rotations in Chapter 7 matters.</p>
+<p>A <strong>rotation</strong> of the plane counterclockwise by <span class="math inline">\(\theta\)</span> is the matrix</p>
+<p><span class="math display">\[
+R(\theta) = \begin{pmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{pmatrix},
+\]</span></p>
+<p>and the three-dimensional rotations about the <span class="math inline">\(z\)</span> and <span class="math inline">\(x\)</span> axes are this block embedded in the <span class="math inline">\(3\times3\)</span> identity:</p>
+<p><span id="eq-rotation-matrices"><span class="math display">\[
+R_z(\theta) = \begin{pmatrix} \cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}, \qquad
+R_x(\theta) = \begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; \cos\theta &amp; -\sin\theta \\ 0 &amp; \sin\theta &amp; \cos\theta \end{pmatrix}.
+\tag{B.13}\]</span></span></p>
+<p>Rotations preserve lengths and angles. Their inverse is their transpose (<span class="math inline">\(R^{-1} = R^{T}\)</span>), so undoing a rotation costs nothing, which Chapter 7’s exercises use. The sign convention here, that <span class="math inline">\(R(\theta)\)</span> rotates the <em>vector</em> counterclockwise by <span class="math inline">\(\theta\)</span>, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with <span class="math inline">\(-\theta\)</span>.</p>
+<p>The <strong>determinant</strong> of a <span class="math inline">\(2\times2\)</span> matrix is <span class="math inline">\(ad - bc\)</span>. Its geometric meaning is the thing Chapter 5 is built on: a matrix with determinant <span class="math inline">\(D\)</span> scales every area by a factor <span class="math inline">\(|D|\)</span> (every volume, for <span class="math inline">\(3\times3\)</span> matrices). A rotation has determinant 1, as it should. A map that preserves area has determinant exactly 1, and a map with determinant greater than 1 inflates every region it touches. Chapter 5 computes the determinant of each integrator’s one-step map and finds <span class="math inline">\(1 + \omega^2\Delta t^2\)</span> for Euler and exactly 1 for Euler-Cromer and Verlet; that single number is the difference between an orbit that spirals and one that does not.</p>
+<p>One more fact about <span class="math inline">\(2\times2\)</span> matrices, used in a Chapter 5 exercise: the eigenvalues <span class="math inline">\(\lambda\)</span> satisfy <span class="math inline">\(\lambda^2 - (\operatorname{trace})\lambda + \det = 0\)</span>. When <span class="math inline">\(\det = 1\)</span> the two eigenvalues multiply to 1, and they are a complex-conjugate pair on the unit circle, meaning the map rotates without growing, exactly when <span class="math inline">\(|\operatorname{trace}| &lt; 2\)</span>. That is where the stability condition <span class="math inline">\(\omega\Delta t &lt; 2\)</span> comes from.</p>
+</section>
+<section id="logarithms-exponentials-and-power-laws" class="level2" data-number="B.8">
+<h2 data-number="B.8" class="anchored" data-anchor-id="logarithms-exponentials-and-power-laws"><span class="header-section-number">B.8</span> Logarithms, exponentials, and power laws</h2>
+<p>If <span class="math inline">\(y = C x^k\)</span>, then <span class="math inline">\(\log y = \log C + k\log x\)</span>: a power law is a straight line on a plot with logarithmic axes, and its slope is the exponent. Chapter 8 checks Kepler’s third law this way (the slope is <span class="math inline">\(3/2\)</span>) and Chapter 15 reads the <span class="math inline">\(n^2\)</span> cost of the force calculation off a log-log benchmark. Chapter 5’s convergence tables are the same idea in a table: halving <span class="math inline">\(\Delta t\)</span> and watching the error fall by <span class="math inline">\(2^p\)</span> measures <span class="math inline">\(p\)</span>.</p>
+<p>If a quantity grows as <span class="math inline">\(y = y_0\,e^{t/\tau}\)</span>, then <span class="math inline">\(\log y\)</span> is a straight line against <span class="math inline">\(t\)</span> with slope <span class="math inline">\(1/\tau\)</span>; <span class="math inline">\(\tau\)</span> is the <strong>e-folding time</strong>, the time for the quantity to grow by a factor of <span class="math inline">\(e \approx 2.718\)</span>. Chapter 11 measures the Lyapunov time of a chaotic triple, and the instability time of a Lagrange point, from exactly such a slope. The natural logarithm is the one that makes this work; R’s <code>log()</code> is natural by default, and <code>log10()</code> is for the axes.</p>
+</section>
+<section id="angles" class="level2" data-number="B.9">
+<h2 data-number="B.9" class="anchored" data-anchor-id="angles"><span class="header-section-number">B.9</span> Angles</h2>
+<p>The book’s formulas use <strong>radians</strong>; the package’s arguments use <strong>degrees</strong>, because that is how orbital elements are published. The conversion is <span class="math inline">\(\pi\)</span> radians <span class="math inline">\(= 180°\)</span>, so multiply degrees by <span class="math inline">\(\pi/180\)</span> to get radians, and the book’s code does this at the top of every function that takes an angle.</p>
+<p>The angle of a point <span class="math inline">\((x, y)\)</span> from the <span class="math inline">\(x\)</span> axis is <code>atan2(y, x)</code>, not <code>atan(y/x)</code>: the two-argument form knows which quadrant the point is in and returns a value in <span class="math inline">\((-\pi, \pi]\)</span>. The jump from <span class="math inline">\(+\pi\)</span> to <span class="math inline">\(-\pi\)</span> as a body crosses the negative <span class="math inline">\(x\)</span> axis is an artifact of that range, and several chapters <strong>unwrap</strong> a sequence of angles, adding <span class="math inline">\(2\pi\)</span> at each jump so the angle grows continuously and a body’s total travel can be measured. The helper <code>unwrap()</code> in <code>R/helpers.R</code> does this with one line: take successive differences, wrap each into <span class="math inline">\((-\pi, \pi]\)</span>, and accumulate.</p>
+</section>
+<section id="units-and-dimensions" class="level2" data-number="B.10">
+<h2 data-number="B.10" class="anchored" data-anchor-id="units-and-dimensions"><span class="header-section-number">B.10</span> Units and dimensions</h2>
+<p>Everything in the book is in SI units: meters, kilograms, seconds. The only reason to mention it is that <strong>dimensional analysis</strong> is the cheapest error check there is, and the book uses it silently all the time. <span class="math inline">\(G\)</span> has units <span class="math inline">\(\mathrm{m^3\,kg^{-1}\,s^{-2}}\)</span>, so <span class="math inline">\(GM\)</span> has units <span class="math inline">\(\mathrm{m^3\,s^{-2}}\)</span>, <span class="math inline">\(GM/r\)</span> has units <span class="math inline">\(\mathrm{m^2\,s^{-2}}\)</span>, and <span class="math inline">\(\sqrt{GM/r}\)</span> has units of <span class="math inline">\(\mathrm{m\,s^{-1}}\)</span>: a speed, as the circular-orbit formula says it should be. <span class="math inline">\(\sqrt{a^3/GM}\)</span> has units of seconds, so <span class="math inline">\(2\pi\sqrt{a^3/\mu}\)</span> is a time, as Kepler’s third law requires. If you derive a formula and the units do not come out right, the formula is wrong; if they do, it is at worst wrong by a dimensionless factor like <span class="math inline">\(2\pi\)</span>, which is the kind of error a simulation will show you immediately.</p>
+<p>A related habit is estimating <strong>orders of magnitude</strong> before computing. Earth’s orbital speed is <span class="math inline">\(\sqrt{GM_\odot/r} \approx \sqrt{1.3\times10^{20}/1.5\times10^{11}} \approx \sqrt{10^9} \approx 3\times10^4\)</span> m/s. Knowing that number is about 30 km/s before you run anything is what lets you notice when a simulation hands you 300.</p>
+</section>
+<section id="where-each-tool-is-used" class="level2" data-number="B.11">
+<h2 data-number="B.11" class="anchored" data-anchor-id="where-each-tool-is-used"><span class="header-section-number">B.11</span> Where each tool is used</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tool</th>
+<th style="text-align: left;">Used in</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Dot and cross products, triple-product identities</td>
+<td style="text-align: left;">Chapters 3, 4, 7, 12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Derivatives of <span class="math inline">\(r\)</span> and of <span class="math inline">\(\mathbf{r}/r\)</span></td>
+<td style="text-align: left;">Chapter 4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Polar coordinates, <span class="math inline">\(h = r^2\dot\theta\)</span></td>
+<td style="text-align: left;">Chapters 4, 7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ellipse geometry and the polar conic</td>
+<td style="text-align: left;">Chapters 4, 7, 13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taylor series, big-O, binomial approximation</td>
+<td style="text-align: left;">Chapters 5, 6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">State form of differential equations</td>
+<td style="text-align: left;">Chapters 3, 5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rotation matrices and determinants</td>
+<td style="text-align: left;">Chapters 5, 7, 10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log-log slopes and e-folding times</td>
+<td style="text-align: left;">Chapters 5, 8, 11, 15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>atan2</code> and unwrapping</td>
+<td style="text-align: left;">Chapters 4, 8, 10, 12</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/book\.orbit-r\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./A-r-basics.html" class="pagination-link" aria-label="R Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R Basics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./C-function-reference.html" class="pagination-link" aria-label="Function Quick Reference">
+        <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function Quick Reference</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/B-math-background.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

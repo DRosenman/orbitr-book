@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Softening: What Happens When Bodies Get Close – Orbital Mechanics with R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-keplerian-elements.html" rel="next">
+<link href="./05-integrators.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html">Where the Physics Comes From</a></li><li class="breadcrumb-item"><a href="./06-softening.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Orbital Mechanics with R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/DRosenman/orbitr-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the-app.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try It First: The orbitr App</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">First Orbits</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-simulate-gravity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Simulate Gravity?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-four-lines-to-an-orbit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Four Lines to an Orbit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Where the Physics Comes From</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-newton-and-the-n-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-the-two-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Two-Body Problem, Solved by Hand</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-integrators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integrators: Euler, Euler-Cromer, and Velocity Verlet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-softening.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keplerian-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">From Orbital Elements to State Vectors</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Doing Astrophysics with orbitr</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-the-solar-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Solar System from JPL Elements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-binary-stars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-reference-frames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reference Frames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-chaos-and-the-three-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chaos and the Three-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-energy-and-angular-momentum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conservation Laws as Diagnostics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-comets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comets and Highly Eccentric Orbits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-figures-for-papers-and-talks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Figures for Papers and Talks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Under the Hood</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-the-cpp-engine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The C++ Engine</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-limits-and-extensions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Limits and Extensions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-r-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-math-background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function Quick Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./D-constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Physical Constants</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-singularity-numerically" id="toc-the-singularity-numerically" class="nav-link active" data-scroll-target="#the-singularity-numerically"><span class="header-section-number">6.1</span> The singularity, numerically</a></li>
+  <li><a href="#plummer-softening" id="toc-plummer-softening" class="nav-link" data-scroll-target="#plummer-softening"><span class="header-section-number">6.2</span> Plummer softening</a></li>
+  <li><a href="#what-softening-costs" id="toc-what-softening-costs" class="nav-link" data-scroll-target="#what-softening-costs"><span class="header-section-number">6.3</span> What softening costs</a></li>
+  <li><a href="#the-encounter-softened" id="toc-the-encounter-softened" class="nav-link" data-scroll-target="#the-encounter-softened"><span class="header-section-number">6.4</span> The encounter, softened</a></li>
+  <li><a href="#when-to-use-it" id="toc-when-to-use-it" class="nav-link" data-scroll-target="#when-to-use-it"><span class="header-section-number">6.5</span> When to use it</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/06-softening.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html">Where the Physics Comes From</a></li><li class="breadcrumb-item"><a href="./06-softening.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-softening" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The inverse-square force has a hole in it. As two point masses approach, <span class="math inline">\(1/r^2\)</span> grows without limit, and at <span class="math inline">\(r = 0\)</span> it is infinite. Nothing in the real universe does this, because nothing in the real universe is a point: two stars that get close enough touch, and from then on gravity is the least of their problems. But the simulation does not know that. <code>simulate_system()</code> has an argument, <code>softening</code>, whose entire purpose is to paper over the hole. This chapter explains what the argument does to the force law, where the formula comes from, what it costs you when bodies are far apart, and when you should use it. The short version: softening is a model of bodies having size, not a fix for a time step that is too large, and it is off by default for a reason.</p>
+<section id="the-singularity-numerically" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="the-singularity-numerically"><span class="header-section-number">6.1</span> The singularity, numerically</h2>
+<p>An integrator with a fixed step assumes the acceleration does not change much during a step. Near a close encounter that assumption fails completely. The characteristic time of the encounter is roughly the periapsis distance divided by the periapsis speed, and for a deep encounter that can be minutes while the step is an hour. The integrator then takes one enormous kick in a direction computed from a position that is already wrong, and the result is two bodies flying apart with far more energy than they came in with. Nothing blows up to <code>NaN</code>; it just produces garbage that looks like physics.</p>
+<p>Here is a deliberately bad encounter: two Sun-mass stars approaching each other on a path that would bring them within about two-thirds of a solar radius, which for real stars is a collision.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>M  <span class="ot">&lt;-</span> <span class="fl">1e30</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> gravitational_constant <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> M</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>u  <span class="ot">&lt;-</span> <span class="fl">1.2e5</span>     <span class="co"># initial relative speed, m/s</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>b  <span class="ot">&lt;-</span> <span class="fl">3e9</span>       <span class="co"># initial sideways offset, m</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>encounter <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">softening =</span> <span class="dv">0</span>, <span class="at">time_step =</span> <span class="dv">600</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">duration =</span> <span class="dv">4</span> <span class="sc">*</span> seconds_per_day) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(<span class="st">"A"</span>, <span class="at">mass =</span> M, <span class="at">x =</span> <span class="sc">-</span><span class="fl">1e10</span>, <span class="at">y =</span> <span class="sc">-</span>b <span class="sc">/</span> <span class="dv">2</span>, <span class="at">vx =</span>  u <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(<span class="st">"B"</span>, <span class="at">mass =</span> M, <span class="at">x =</span>  <span class="fl">1e10</span>, <span class="at">y =</span>  b <span class="sc">/</span> <span class="dv">2</span>, <span class="at">vx =</span> <span class="sc">-</span>u <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">simulate_system</span>(<span class="at">time_step =</span> time_step, <span class="at">duration =</span> duration,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">softening =</span> softening)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Before running anything, Chapter 4 tells us what should happen. From the initial relative state we can get the eccentricity, and from the eccentricity the periapsis distance and the angle through which the stars should be deflected. For a hyperbola, each asymptote makes an angle <span class="math inline">\(\arccos(-1/e)\)</span> with the periapsis direction, so the total deflection is <span class="math inline">\(\delta = 2\arcsin(1/e)\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">encounter</span>(<span class="at">duration =</span> <span class="dv">600</span>)        <span class="co"># one step: just the initial state</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>e0    <span class="ot">&lt;-</span> <span class="fu">get_orbital_elements</span>(start, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="dv">1</span>]   <span class="co"># mu = G(M_A + M_B)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>r_p   <span class="ot">&lt;-</span> (b <span class="sc">*</span> u)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> mu <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> e0)        <span class="co"># p / (1 + e), with h = b u</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">e =</span> e0, <span class="at">periapsis_solar_radii =</span> r_p <span class="sc">/</span> <span class="fl">6.957e8</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">deflection_deg =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="dv">1</span> <span class="sc">/</span> e0) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     e periapsis_solar_radii        deflection_deg </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             1.0043512             0.6962632           169.3294587</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The stars should swing around each other through about 169 degrees, nearly reversing direction, and leave with exactly the eccentricity and energy they arrived with. Now run it with a ten-minute step and no softening:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bad <span class="ot">&lt;-</span> <span class="fu">encounter</span>(<span class="at">softening =</span> <span class="dv">0</span>, <span class="at">time_step =</span> <span class="dv">600</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">e_start =</span> <span class="fu">get_orbital_elements</span>(bad, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="dv">1</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_end   =</span> <span class="fu">get_orbital_elements</span>(bad, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="fu">nrow</span>(bad) <span class="sc">/</span> <span class="dv">2</span>],</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_energy_error =</span> <span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">conserved_quantities</span>(bad)<span class="sc">$</span>energy_error)))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          e_start            e_end max_energy_error </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         1.004351         1.005115        21.463194</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The eccentricity, which should be a constant of the motion, is not even close, and the energy error is enormous. The time step was far too large for the periapsis passage, and the integrator did what integrators do with too large a step: it invented energy. The paths look like a slingshot because that is what a huge spurious kick looks like.</p>
+</section>
+<section id="plummer-softening" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="plummer-softening"><span class="header-section-number">6.2</span> Plummer softening</h2>
+<p>The package’s remedy replaces the distance in the force law:</p>
+<p><span class="math display">\[
+r \;\longrightarrow\; r_{\mathrm{soft}} = \sqrt{r^2 + \varepsilon^2},
+\]</span></p>
+<p>so the acceleration of body <span class="math inline">\(j\)</span> due to body <span class="math inline">\(k\)</span> becomes</p>
+<p><span id="eq-softened"><span class="math display">\[
+\mathbf{a}_{jk} = G m_k \,\frac{\mathbf{r}_k - \mathbf{r}_j}{\left(r_{jk}^2 + \varepsilon^2\right)^{3/2}}.
+\tag{6.1}\]</span></span></p>
+<p>The difference vector in the numerator is untouched; only the <span class="math inline">\(r^3\)</span> in the denominator is softened. At <span class="math inline">\(r = 0\)</span> the acceleration is now zero, not infinite, and its maximum magnitude, which occurs at <span class="math inline">\(r = \varepsilon/\sqrt2\)</span>, is about <span class="math inline">\(0.38\,G m_k/\varepsilon^2\)</span>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Where it comes from">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where it comes from
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In 1911 H. C. Plummer was fitting the observed brightness profiles of globular clusters and found that a density law of the form <span class="math inline">\(\rho(r) \propto (1 + r^2/\varepsilon^2)^{-5/2}\)</span> matched them well <span class="citation" data-cites="plummer1911">(<a href="references.html#ref-plummer1911" role="doc-biblioref">Plummer 1911</a>)</span>. The gravitational potential of that density distribution works out to</p>
+<p><span class="math display">\[
+\Phi(r) = -\frac{GM}{\sqrt{r^2 + \varepsilon^2}},
+\]</span></p>
+<p>a potential that looks exactly like a point mass at large <span class="math inline">\(r\)</span> and flattens out smoothly to a finite value at the center. Differentiating, the acceleration is <span class="math inline">\(-d\Phi/dr = -GMr/(r^2+\varepsilon^2)^{3/2}\)</span>, which is <a href="#eq-softened" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>. So softening is not an ad hoc patch: it replaces each point mass by a small Plummer sphere of scale radius <span class="math inline">\(\varepsilon\)</span>, and the resulting force is still exactly the gradient of a potential, which means the softened system still conserves energy (its own softened energy) and angular momentum. When N-body simulation of star clusters began in earnest in the 1960s, Aarseth and others adopted the Plummer form because it was the simplest potential that was both finite at the origin and physically interpretable <span class="citation" data-cites="aarseth2003">(<a href="references.html#ref-aarseth2003" role="doc-biblioref">Aarseth 2003</a>)</span>, and it has been the default ever since.</p>
+</div>
+</div>
+<p><a href="#fig-softened-force" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> shows what the softened force looks like. Inside <span class="math inline">\(\varepsilon\)</span> it falls to zero; outside a few <span class="math inline">\(\varepsilon\)</span> it is indistinguishable from the point-mass force.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fl">0.05</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.01</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">point_mass =</span> <span class="dv">1</span> <span class="sc">/</span> x<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">softened   =</span> x <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> x<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="fl">1.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>x, <span class="at">names_to =</span> <span class="st">"law"</span>, <span class="at">values_to =</span> <span class="st">"a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x, a, <span class="at">linetype =</span> law)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(r <span class="sc">/</span> epsilon), <span class="at">y =</span> <span class="st">"Acceleration"</span>, <span class="at">linetype =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-softened-force" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-softened-force-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-softening_files/figure-html/fig-softened-force-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-softened-force-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: The softened acceleration (solid) compared with the point-mass <span class="math inline">\(1/r^2\)</span> law (dashed), in units where <span class="math inline">\(Gm/\varepsilon^2 = 1\)</span>. Beyond <span class="math inline">\(r \approx 3\varepsilon\)</span> the two agree to a few percent.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-softening-costs" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="what-softening-costs"><span class="header-section-number">6.3</span> What softening costs</h2>
+<p>The softened force is weaker than the true force at <em>every</em> distance, not just inside <span class="math inline">\(\varepsilon\)</span>. The ratio is</p>
+<p><span id="eq-softening-error"><span class="math display">\[
+\frac{a_{\mathrm{soft}}}{a} = \left(1 + \frac{\varepsilon^2}{r^2}\right)^{-3/2} \approx 1 - \frac{3}{2}\frac{\varepsilon^2}{r^2}
+\qquad (r \gg \varepsilon).
+\tag{6.2}\]</span></span></p>
+<p>For a circular orbit the period goes as the inverse square root of the force, so softening lengthens every period by a fraction of about <span class="math inline">\(\tfrac34\,\varepsilon^2/r^2\)</span>. Put numbers in. The documentation suggests <code>softening = 1e4</code> (10 km) as reasonable for planetary systems; at Earth’s distance from the Sun, <span class="math inline">\(\varepsilon/r \approx 7\times10^{-8}\)</span> and the period changes by one part in <span class="math inline">\(10^{14}\)</span>. You could not detect that with a million years of simulation. At <span class="math inline">\(\varepsilon = 10^9\)</span> m the change at 1 AU is <span class="math inline">\(3\times10^{-5}\)</span>, about a quarter of an hour per year, which starts to matter for precise work. At <span class="math inline">\(\varepsilon = 10^{10}\)</span> m, a bit under a tenth of an AU, Earth’s year would be about three days too long.</p>
+<p>The lesson is that softening is cheap as long as <span class="math inline">\(\varepsilon\)</span> is much smaller than every orbital separation you care about, and it is never free. With <code>softening = 0</code>, the default, there is no error of this kind at all, and for planetary systems, where nothing ever gets close to anything, the default is the right choice.</p>
+</section>
+<section id="the-encounter-softened" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="the-encounter-softened"><span class="header-section-number">6.4</span> The encounter, softened</h2>
+<p>Run the same encounter with the same ten-minute step and a softening length of <span class="math inline">\(3\times10^9\)</span> m, about four solar radii, which is a crude way of saying “these stars have size”:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soft <span class="ot">&lt;-</span> <span class="fu">encounter</span>(<span class="at">softening =</span> <span class="fl">3e9</span>, <span class="at">time_step =</span> <span class="dv">600</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">e_start =</span> <span class="fu">get_orbital_elements</span>(soft, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="dv">1</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_end   =</span> <span class="fu">get_orbital_elements</span>(soft, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="fu">nrow</span>(soft) <span class="sc">/</span> <span class="dv">2</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_energy_error =</span> <span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">conserved_quantities</span>(soft)<span class="sc">$</span>energy_error)))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          e_start            e_end max_energy_error </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1.0043512        1.0047221        0.0140379</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two things changed. First, the energy is now conserved to a fraction of a percent, because the softened force varies slowly enough during the encounter for a ten-minute step to follow it. Second, the eccentricity after the encounter is different from the eccentricity before, <em>and that is correct</em>: the stars did not interact through a point-mass force, so they are not on the point-mass hyperbola. Softening changed the physics, which is what it is for. The energy diagnostic needs the same softening, so that it computes the potential energy of the force that was actually used. <code>conserved_quantities()</code> reads the softening length from the simulation output and replaces <span class="math inline">\(r\)</span> with <span class="math inline">\(\sqrt{r^2+\varepsilon^2}\)</span> in the potential automatically; if you compute the energy yourself, you have to do the same.</p>
+<p>The third run is the honest one: no softening, and a step small enough for the point-mass physics.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fine <span class="ot">&lt;-</span> <span class="fu">encounter</span>(<span class="at">softening =</span> <span class="dv">0</span>, <span class="at">time_step =</span> <span class="dv">20</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">e_start =</span> <span class="fu">get_orbital_elements</span>(fine, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="dv">1</span>],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">e_end   =</span> <span class="fu">get_orbital_elements</span>(fine, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> mu)<span class="sc">$</span>e[<span class="fu">nrow</span>(fine) <span class="sc">/</span> <span class="dv">2</span>],</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_energy_error =</span> <span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">conserved_quantities</span>(fine)<span class="sc">$</span>energy_error)))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          e_start            e_end max_energy_error </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1.0043512        1.0043512        0.0270577</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now the eccentricity survives the encounter and the energy error is small. That cost thirty times as many steps as the softened run, and it is the only one of the three that answers the question “what would two point masses do?”</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(bad  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">run =</span> <span class="st">"softening = 0, dt = 10 min"</span>),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>          soft <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">run =</span> <span class="st">"softening = 3e9 m, dt = 10 min"</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>          fine <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">run =</span> <span class="st">"softening = 0, dt = 20 s"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x, y, <span class="at">color =</span> id)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> run) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">color =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-encounter" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-encounter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-softening_files/figure-html/fig-encounter-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-encounter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: The same two stars in three runs. Left: unsoftened, ten-minute step, a spurious kick at periapsis. Center: softened to <span class="math inline">\(3\times 10^9\)</span> m, same step, a smooth but physically different encounter. Right: unsoftened, twenty-second step, the true point-mass deflection.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="when-to-use-it" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="when-to-use-it"><span class="header-section-number">6.5</span> When to use it</h2>
+<p><strong>Use softening when bodies have size and you care about what happens when they meet.</strong> Stars in a cluster, a planetesimal disk, anything with many bodies and frequent close passages. Set <span class="math inline">\(\varepsilon\)</span> to something like the physical size of the bodies, or to a fraction of the typical spacing, and accept that encounters closer than <span class="math inline">\(\varepsilon\)</span> are not being modeled correctly, because they would not be point-mass encounters in reality either. In this regime a modest softening also lets you use a larger time step than the closest passage would otherwise demand, which for a thousand-body system is the difference between a run that finishes and one that does not.</p>
+<p><strong>Do not use softening to rescue a bad time step in a few-body system.</strong> If two planets, or a comet and the Sun, pass close and the energy jumps, the cure is a smaller step (Chapter 13 shows how to afford one), not a softened force that changes the answer. The only exception is when you have decided that the close approach is a collision and you do not care about the trajectory afterward; then softening is a cheap way to keep the simulation from flinging things to infinity.</p>
+<p><strong>Keep <span class="math inline">\(\varepsilon\)</span> far below the smallest orbit.</strong> <a href="#eq-softening-error" class="quarto-xref">Equation&nbsp;<span>6.2</span></a> is the rule: the relative error in the force is about <span class="math inline">\(\tfrac32(\varepsilon/r)^2\)</span>, so a softening of one percent of the smallest orbital radius changes periods by about one part in ten thousand. Decide what precision you need and work backward.</p>
+<p><strong>Account for it in diagnostics.</strong> The softened system conserves the softened energy. <code>get_energy()</code> and <code>conserved_quantities()</code> take the softening length from the run; if you hand-compute energies, use the softened distance, or you will diagnose a drift that is not there.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="Key results">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Softening replaces <span class="math inline">\(r^3\)</span> in the force denominator with <span class="math inline">\((r^2+\varepsilon^2)^{3/2}\)</span>. The force is finite everywhere and zero at <span class="math inline">\(r = 0\)</span>.</li>
+<li>It is the force of a Plummer sphere of scale radius <span class="math inline">\(\varepsilon\)</span>: still conservative, still central.</li>
+<li>Relative error in the force at distance <span class="math inline">\(r \gg \varepsilon\)</span>: about <span class="math inline">\(\tfrac32(\varepsilon/r)^2\)</span>. Periods lengthen by about <span class="math inline">\(\tfrac34(\varepsilon/r)^2\)</span>.</li>
+<li>Softening models bodies having size. It does not fix a time step that is too large for the physics you asked for.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<div id="exr-ch6-period" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.1</strong></span> Simulate the Earth-Sun system for one year with <code>softening</code> equal to <span class="math inline">\(10^8\)</span>, <span class="math inline">\(10^9\)</span>, and <span class="math inline">\(10^{10}\)</span> m and measure the period each time with <code>measure_period()</code>. Compare the fractional change with the prediction <span class="math inline">\(\tfrac34(\varepsilon/r)^2\)</span>.</p>
+</div>
+<div id="exr-ch6-max-force" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.2</strong></span> Differentiate the softened acceleration <span class="math inline">\(a(r) = Gm\,r/(r^2+\varepsilon^2)^{3/2}\)</span> with respect to <span class="math inline">\(r\)</span> and show that its maximum is at <span class="math inline">\(r = \varepsilon/\sqrt2\)</span> with value <span class="math inline">\((2/3)^{3/2}\,Gm/(\sqrt{2}\,\varepsilon^2) \approx 0.385\,Gm/\varepsilon^2\)</span>.</p>
+</div>
+<div id="exr-ch6-step" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.3</strong></span> For the unsoftened encounter, run with steps of 320, 160, 80, 40, and 20 seconds and tabulate the eccentricity after the encounter and the maximum energy error. At what step does the answer stop changing?</p>
+</div>
+<div id="exr-ch6-potential" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 6.4</strong></span> Show that the potential energy of two bodies interacting through the softened force is <span class="math inline">\(-Gm_1m_2/\sqrt{r^2+\varepsilon^2}\)</span> by integrating the force from <span class="math inline">\(r\)</span> to infinity. Then confirm that <code>conserved_quantities(soft)</code> reports a nearly constant energy while <code>conserved_quantities(soft, softening = 0)</code> does not.</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-aarseth2003" class="csl-entry" role="listitem">
+Aarseth, Sverre J. 2003. <em>Gravitational <span>N</span>-Body Simulations: Tools and Algorithms</em>. Cambridge University Press.
+</div>
+<div id="ref-plummer1911" class="csl-entry" role="listitem">
+Plummer, H. C. 1911. <span>“On the Problem of Distribution in Globular Star Clusters.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 71 (5): 460–70. <a href="https://doi.org/10.1093/mnras/71.5.460">https://doi.org/10.1093/mnras/71.5.460</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/book\.orbit-r\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-integrators.html" class="pagination-link" aria-label="Integrators: Euler, Euler-Cromer, and Velocity Verlet">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integrators: Euler, Euler-Cromer, and Velocity Verlet</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-keplerian-elements.html" class="pagination-link" aria-label="From Orbital Elements to State Vectors">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">From Orbital Elements to State Vectors</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/06-softening.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

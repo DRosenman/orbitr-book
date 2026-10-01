@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Newton’s Law and the N-Body Problem – Orbital Mechanics with R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-the-two-body-problem.html" rel="next">
+<link href="./02-four-lines-to-an-orbit.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html">Where the Physics Comes From</a></li><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Orbital Mechanics with R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/DRosenman/orbitr-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the-app.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try It First: The orbitr App</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">First Orbits</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-simulate-gravity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Simulate Gravity?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-four-lines-to-an-orbit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Four Lines to an Orbit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Where the Physics Comes From</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-newton-and-the-n-body-problem.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-the-two-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Two-Body Problem, Solved by Hand</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-integrators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integrators: Euler, Euler-Cromer, and Velocity Verlet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-softening.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keplerian-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">From Orbital Elements to State Vectors</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Doing Astrophysics with orbitr</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-the-solar-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Solar System from JPL Elements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-binary-stars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-reference-frames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reference Frames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-chaos-and-the-three-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chaos and the Three-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-energy-and-angular-momentum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conservation Laws as Diagnostics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-comets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comets and Highly Eccentric Orbits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-figures-for-papers-and-talks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Figures for Papers and Talks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Under the Hood</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-the-cpp-engine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The C++ Engine</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-limits-and-extensions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Limits and Extensions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-r-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-math-background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function Quick Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./D-constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Physical Constants</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#from-the-apple-to-the-moon" id="toc-from-the-apple-to-the-moon" class="nav-link active" data-scroll-target="#from-the-apple-to-the-moon"><span class="header-section-number">3.1</span> From the apple to the Moon</a></li>
+  <li><a href="#the-law-in-vector-form" id="toc-the-law-in-vector-form" class="nav-link" data-scroll-target="#the-law-in-vector-form"><span class="header-section-number">3.2</span> The law in vector form</a></li>
+  <li><a href="#superposition-the-n-body-acceleration" id="toc-superposition-the-n-body-acceleration" class="nav-link" data-scroll-target="#superposition-the-n-body-acceleration"><span class="header-section-number">3.3</span> Superposition: the N-body acceleration</a></li>
+  <li><a href="#why-point-masses-are-enough" id="toc-why-point-masses-are-enough" class="nav-link" data-scroll-target="#why-point-masses-are-enough"><span class="header-section-number">3.4</span> Why point masses are enough</a></li>
+  <li><a href="#units-g-and-how-well-we-know-it" id="toc-units-g-and-how-well-we-know-it" class="nav-link" data-scroll-target="#units-g-and-how-well-we-know-it"><span class="header-section-number">3.5</span> Units, <span class="math inline">\(G\)</span>, and how well we know it</a></li>
+  <li><a href="#the-equations-of-motion-as-a-system" id="toc-the-equations-of-motion-as-a-system" class="nav-link" data-scroll-target="#the-equations-of-motion-as-a-system"><span class="header-section-number">3.6</span> The equations of motion as a system</a></li>
+  <li><a href="#writing-the-acceleration-yourself" id="toc-writing-the-acceleration-yourself" class="nav-link" data-scroll-target="#writing-the-acceleration-yourself"><span class="header-section-number">3.7</span> Writing the acceleration yourself</a></li>
+  <li><a href="#a-three-body-example" id="toc-a-three-body-example" class="nav-link" data-scroll-target="#a-three-body-example"><span class="header-section-number">3.8</span> A three-body example</a></li>
+  <li><a href="#what-the-engine-does-differently" id="toc-what-the-engine-does-differently" class="nav-link" data-scroll-target="#what-the-engine-does-differently"><span class="header-section-number">3.9</span> What the engine does differently</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/03-newton-and-the-n-body-problem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html">Where the Physics Comes From</a></li><li class="breadcrumb-item"><a href="./03-newton-and-the-n-body-problem.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-newton" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Everything orbitr does rests on one equation. This chapter writes it down carefully, in the vector form the code actually uses, and then asks the questions a careful reader should ask about it: why the mass of the body being pulled drops out, why a planet can be treated as a point, what the constant <span class="math inline">\(G\)</span> is and how well it is known, and what the computer does with the equation once it has it. By the end of the chapter you will have written your own version of orbitr’s inner loop in plain R and checked it against the package.</p>
+<section id="from-the-apple-to-the-moon" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="from-the-apple-to-the-moon"><span class="header-section-number">3.1</span> From the apple to the Moon</h2>
+<p>Newton’s law of universal gravitation says that two point masses <span class="math inline">\(m_1\)</span> and <span class="math inline">\(m_2\)</span> separated by a distance <span class="math inline">\(r\)</span> attract each other with a force of magnitude</p>
+<p><span id="eq-newton-scalar"><span class="math display">\[
+F = \frac{G\,m_1 m_2}{r^2}.
+\tag{3.1}\]</span></span></p>
+<p>The force is along the line joining them, and it falls off as the inverse square of the distance.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Where it comes from">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where it comes from
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The inverse-square law was in the air in the 1670s. Robert Hooke, Edmond Halley, and Christopher Wren all suspected that a force falling off as <span class="math inline">\(1/r^2\)</span> would produce Kepler’s ellipses; none of them could prove it. In 1684 Halley asked Newton what orbit such a force would produce. Newton said an ellipse, that he had worked it out years before, and that he had lost the calculation. He redid it, and the redoing grew into the <em>Principia</em> <span class="citation" data-cites="newton1687">(<a href="references.html#ref-newton1687" role="doc-biblioref">Newton 1687</a>)</span>.</p>
+<p>The famous test is the Moon. If the same force that makes an apple fall also holds the Moon in orbit, then since the Moon is about 60 Earth radii away, its acceleration toward Earth should be <span class="math inline">\(1/60^2 = 1/3600\)</span> of <span class="math inline">\(g\)</span>. The acceleration needed to keep a body on a circle of radius <span class="math inline">\(r\)</span> with period <span class="math inline">\(T\)</span> is <span class="math inline">\(4\pi^2 r/T^2\)</span>, and both numbers were known in Newton’s time. Here is the comparison with modern values:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>R_earth <span class="ot">&lt;-</span> <span class="fl">6.371e6</span>                           <span class="co"># m</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>g       <span class="ot">&lt;-</span> <span class="fl">9.81</span>                              <span class="co"># m/s^2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>T_moon  <span class="ot">&lt;-</span> <span class="fl">27.32</span> <span class="sc">*</span> seconds_per_day           <span class="co"># sidereal month</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>g <span class="sc">*</span> (R_earth <span class="sc">/</span> distance_earth_moon)<span class="sc">^</span><span class="dv">2</span>        <span class="co"># inverse-square prediction</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002694744</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">*</span> pi<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> distance_earth_moon <span class="sc">/</span> T_moon<span class="sc">^</span><span class="dv">2</span>    <span class="co"># centripetal, from the orbit</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002723668</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>They agree to about one percent. The residual is mostly the Moon’s own mass: the orbit’s period is set by the combined mass, <span class="math inline">\(G(M+m)\)</span>, which is 1.2% larger than <span class="math inline">\(GM\)</span> alone. Chapter 4 makes this precise. Newton’s own first calculation, in the 1660s, used an inaccurate figure for the size of the Earth and did not agree well; he returned to the problem years later when Picard’s survey gave a better one.</p>
+</div>
+</div>
+</section>
+<section id="the-law-in-vector-form" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-law-in-vector-form"><span class="header-section-number">3.2</span> The law in vector form</h2>
+<p>A simulation needs directions, not just magnitudes. Let <span class="math inline">\(\mathbf{r}_j\)</span> be the position vector of body <span class="math inline">\(j\)</span>. The vector from body <span class="math inline">\(j\)</span> to body <span class="math inline">\(k\)</span> is <span class="math inline">\(\mathbf{r}_k - \mathbf{r}_j\)</span>, its length is <span class="math inline">\(r_{jk} = |\mathbf{r}_k - \mathbf{r}_j|\)</span>, and the unit vector pointing from <span class="math inline">\(j\)</span> toward <span class="math inline">\(k\)</span> is</p>
+<p><span class="math display">\[
+\hat{\mathbf{r}}_{jk} = \frac{\mathbf{r}_k - \mathbf{r}_j}{r_{jk}}.
+\]</span></p>
+<p>The force on <span class="math inline">\(j\)</span> due to <span class="math inline">\(k\)</span> points <em>toward</em> <span class="math inline">\(k\)</span> (gravity attracts), so</p>
+<p><span id="eq-newton-vector"><span class="math display">\[
+\mathbf{F}_{jk} = \frac{G\,m_j m_k}{r_{jk}^2}\,\hat{\mathbf{r}}_{jk}.
+\tag{3.2}\]</span></span></p>
+<p>Swapping <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span> flips the unit vector and nothing else, so <span class="math inline">\(\mathbf{F}_{kj} = -\mathbf{F}_{jk}\)</span>: Newton’s third law is built in. This is the fact behind the drifting Earth in Chapter 2. Because every internal force comes in an equal and opposite pair, the total momentum of a system of gravitating bodies never changes, no matter how complicated the motion.</p>
+</section>
+<section id="superposition-the-n-body-acceleration" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="superposition-the-n-body-acceleration"><span class="header-section-number">3.3</span> Superposition: the N-body acceleration</h2>
+<p>Newton’s second law gives the acceleration of body <span class="math inline">\(j\)</span> from the net force on it, <span class="math inline">\(m_j \ddot{\mathbf{r}}_j = \sum_k \mathbf{F}_{jk}\)</span>. Gravitational forces add as vectors; the pull of the Sun on Earth does not care that the Moon is also pulling. Summing <a href="#eq-newton-vector" class="quarto-xref">Equation&nbsp;<span>3.2</span></a> over every other body and dividing by <span class="math inline">\(m_j\)</span>,</p>
+<p><span id="eq-nbody"><span class="math display">\[
+\ddot{\mathbf{r}}_j = \sum_{k \neq j} \frac{G\,m_k}{r_{jk}^2}\,\hat{\mathbf{r}}_{jk}
+= \sum_{k \neq j} G\,m_k\,\frac{\mathbf{r}_k - \mathbf{r}_j}{|\mathbf{r}_k - \mathbf{r}_j|^3}.
+\tag{3.3}\]</span></span></p>
+<p>This is the equation. The first form is the one in the package documentation; the second is the one the code uses, because it avoids computing the unit vector separately. The cube in the denominator is one power for turning the difference vector into a unit vector and two for the inverse-square law.</p>
+<p>Two things to notice.</p>
+<p><strong>The mass of body <span class="math inline">\(j\)</span> has cancelled.</strong> The acceleration of a body in a gravitational field does not depend on its own mass. A feather and a hammer fall together; the International Space Station and an astronaut floating inside it follow the same orbit. This is only true because the <span class="math inline">\(m_j\)</span> in Newton’s second law (inertial mass, the resistance to being accelerated) is the same quantity as the <span class="math inline">\(m_j\)</span> in the law of gravitation (gravitational mass, the thing that gravity pulls on). Nothing in Newtonian mechanics requires those to be equal; they just are. The equality has been tested to about one part in <span class="math inline">\(10^{15}\)</span> <span class="citation" data-cites="touboul2022">(<a href="references.html#ref-touboul2022" role="doc-biblioref"><span class="nocase">Touboul et al.</span> 2022</a>)</span>, and Einstein took it as the starting point of general relativity. For the simulation it means something practical: a body’s mass matters for how it pulls on the others, but a test particle of negligible mass follows exactly the same path it would with any other negligible mass.</p>
+<p><strong>The sum is over every pair.</strong> With <span class="math inline">\(N\)</span> bodies there are <span class="math inline">\(N(N-1)\)</span> ordered pairs, and each needs a subtraction, a norm, and a division. Doubling the number of bodies quadruples the work. This <span class="math inline">\(O(N^2)\)</span> scaling is the single fact that dominates the design of every N-body code ever written, and it is why orbitr’s inner loop is in C++ (Chapter 15). For the handful of bodies in this book it is not a problem.</p>
+</section>
+<section id="why-point-masses-are-enough" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="why-point-masses-are-enough"><span class="header-section-number">3.4</span> Why point masses are enough</h2>
+<p>Earth is not a point. It is a ball 12,742 km across, and every piece of it pulls on the Moon from a slightly different direction and distance. Why is it legitimate to write <a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> with a single <span class="math inline">\(\mathbf{r}_{\mathrm{Earth}}\)</span>?</p>
+<div id="thm-shell" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.1 (Newton’s shell theorem)</strong></span> A spherically symmetric body attracts an external point mass exactly as if all of its mass were concentrated at its center. A spherically symmetric shell exerts no net gravitational force on a point mass anywhere inside it.</p>
+</div>
+<p>Newton proved this geometrically in the <em>Principia</em> (Book I, Propositions 70 and 71), and he is often said to have delayed publishing the theory of gravitation until he had the proof, since without it the Moon test above is not justified. The modern proof takes three lines if you know Gauss’s law for gravity, which says that the flux of the gravitational field <span class="math inline">\(\mathbf{g}\)</span> through any closed surface is proportional to the mass enclosed:</p>
+<p><span class="math display">\[
+\oint \mathbf{g}\cdot d\mathbf{A} = -4\pi G\,M_{\mathrm{enc}}.
+\]</span></p>
+<p>Take the surface to be a sphere of radius <span class="math inline">\(r\)</span> centered on the body. By symmetry, <span class="math inline">\(\mathbf{g}\)</span> points radially and has the same magnitude <span class="math inline">\(g(r)\)</span> everywhere on the sphere, so the integral is <span class="math inline">\(-g(r)\cdot 4\pi r^2\)</span> (negative because the field points inward). Hence <span class="math inline">\(g(r) = G M_{\mathrm{enc}}/r^2\)</span>, directed toward the center. Outside the body, <span class="math inline">\(M_{\mathrm{enc}}\)</span> is the whole mass, and the field is that of a point mass. Inside a shell, <span class="math inline">\(M_{\mathrm{enc}} = 0\)</span>, and the field vanishes.</p>
+<p>So for any body whose mass is arranged in spherical shells, which is a very good description of stars and planets, the point-mass equation is not an approximation at all. It is exact, as long as the bodies do not overlap.</p>
+<p>Where it fails is instructive. Earth bulges at the equator by about 21 km because it spins; the extra mass there pulls satellites in low orbit slightly off the point-mass prediction, and the orbits of GPS satellites precess measurably because of it. Astronomers call the leading correction <span class="math inline">\(J_2\)</span>. Two stars in a close binary raise tides on each other and are not spherical either. orbitr ignores all of this, which is the right choice for orbital distances and the wrong one for anything skimming a surface. The package roadmap lists <span class="math inline">\(J_2\)</span> as a possible addition; Chapter 16 discusses what it would take.</p>
+</section>
+<section id="units-g-and-how-well-we-know-it" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="units-g-and-how-well-we-know-it"><span class="header-section-number">3.5</span> Units, <span class="math inline">\(G\)</span>, and how well we know it</h2>
+<p>Everything in orbitr is in SI: meters, kilograms, seconds. The gravitational constant is</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gravitational_constant</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6.6743e-11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>in <span class="math inline">\(\mathrm{m^3\,kg^{-1}\,s^{-2}}\)</span>. That is the CODATA 2018 recommended value, <span class="math inline">\(6.67430(15)\times10^{-11}\)</span> <span class="citation" data-cites="tiesinga2021">(<a href="references.html#ref-tiesinga2021" role="doc-biblioref">Tiesinga et al. 2021</a>)</span>, and the digits in parentheses are the uncertainty in the last two places: about 2 parts in <span class="math inline">\(10^5\)</span>. By the standards of fundamental constants that is terrible. The speed of light is exact by definition; Planck’s constant is now exact by definition; the fine-structure constant is known to a few parts in <span class="math inline">\(10^{10}\)</span>. <span class="math inline">\(G\)</span> is hard to measure because gravity is so weak that laboratory experiments have to detect the pull of a kilogram-scale mass on another, and because there is no way to shield the apparatus from everything else.</p>
+<p>The constant that astronomy actually uses is not <span class="math inline">\(G\)</span> but the product <span class="math inline">\(GM\)</span> for each body, called the gravitational parameter and written <span class="math inline">\(\mu\)</span>. For the Sun, <span class="math inline">\(GM_\odot\)</span> is known to about one part in <span class="math inline">\(10^{10}\)</span>, because it is what you get directly from fitting planetary orbits and spacecraft trajectories, no laboratory required. When the package reports the Sun’s mass as <span class="math inline">\(1.989\times10^{30}\)</span> kg, that number is <span class="math inline">\(GM_\odot\)</span> divided by a poorly known <span class="math inline">\(G\)</span>, and its uncertainty is essentially the uncertainty in <span class="math inline">\(G\)</span>. None of this affects a simulation, because the equations of motion only ever contain <span class="math inline">\(G\)</span> and a mass together. It does mean that if you ever compare a simulated orbital period to a measured one at the fifth significant figure, the discrepancy may be in <span class="math inline">\(G\)</span>, not in the integrator.</p>
+</section>
+<section id="the-equations-of-motion-as-a-system" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="the-equations-of-motion-as-a-system"><span class="header-section-number">3.6</span> The equations of motion as a system</h2>
+<p><a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> is a second-order differential equation for each of <span class="math inline">\(N\)</span> bodies. A simulation does not work with second-order equations; it works with a <em>state</em> and a rule for advancing it. The state of the system at time <span class="math inline">\(t\)</span> is the list of all positions and velocities,</p>
+<p><span class="math display">\[
+\big(\mathbf{r}_1, \ldots, \mathbf{r}_N,\ \mathbf{v}_1, \ldots, \mathbf{v}_N\big),
+\]</span></p>
+<p><span class="math inline">\(6N\)</span> numbers in all. The rule for how the state changes is a pair of first-order equations for each body,</p>
+<p><span id="eq-state"><span class="math display">\[
+\dot{\mathbf{r}}_j = \mathbf{v}_j, \qquad
+\dot{\mathbf{v}}_j = \mathbf{a}_j(\mathbf{r}_1, \ldots, \mathbf{r}_N),
+\tag{3.4}\]</span></span></p>
+<p>where <span class="math inline">\(\mathbf{a}_j\)</span> is the right-hand side of <a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a>. The accelerations depend only on positions, not on velocities. That is a special feature of gravity (and of any force that comes from a potential), and Chapter 5 will show that the best integrators exploit it.</p>
+<p>Here is the structure of every N-body code, including this one, in pseudo-code:</p>
+<pre><code>state &lt;- initial positions and velocities
+for each time step:
+    a     &lt;- accelerations(state)        # the N-body sum, all pairs
+    state &lt;- advance(state, a, dt)       # the integrator
+    record state</code></pre>
+<p>The <code>accelerations()</code> function is the physics. The <code>advance()</code> function is the numerics. orbitr keeps them separate, and so will this book: this chapter is about the first function, Chapter 5 is about the second.</p>
+</section>
+<section id="writing-the-acceleration-yourself" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="writing-the-acceleration-yourself"><span class="header-section-number">3.7</span> Writing the acceleration yourself</h2>
+<p>The best way to be sure what <a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> says is to implement it. Here it is in plain R, with no attempt at speed:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>accelerations <span class="ot">&lt;-</span> <span class="cf">function</span>(bodies, <span class="at">G =</span> gravitational_constant) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  n   <span class="ot">&lt;-</span> <span class="fu">nrow</span>(bodies)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(bodies[, <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>)])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  a   <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j <span class="sc">==</span> k) <span class="cf">next</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      d <span class="ot">&lt;-</span> pos[k, ] <span class="sc">-</span> pos[j, ]         <span class="co"># vector from j toward k</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      r <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(d<span class="sc">^</span><span class="dv">2</span>))              <span class="co"># distance</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      a[j, ] <span class="ot">&lt;-</span> a[j, ] <span class="sc">+</span> G <span class="sc">*</span> bodies<span class="sc">$</span>mass[k] <span class="sc">*</span> d <span class="sc">/</span> r<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">id =</span> bodies<span class="sc">$</span>id, <span class="at">ax =</span> a[, <span class="dv">1</span>], <span class="at">ay =</span> a[, <span class="dv">2</span>], <span class="at">az =</span> a[, <span class="dv">3</span>])</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The double loop runs over all ordered pairs <span class="math inline">\((j, k)\)</span> with <span class="math inline">\(j \neq k\)</span>. For each pair it forms the difference vector, its length, and the term in the sum. <code>bodies</code> is any data frame with columns <code>id</code>, <code>mass</code>, <code>x</code>, <code>y</code>, <code>z</code>, which is exactly what <code>get_bodies()</code> returns:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>em <span class="ot">&lt;-</span> <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_body</span>(<span class="st">"Earth"</span>, <span class="at">mass =</span> mass_earth) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_body</span>(<span class="st">"Moon"</span>,  <span class="at">mass =</span> mass_moon, <span class="at">x =</span> distance_earth_moon, <span class="at">vy =</span> speed_moon)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">accelerations</span>(<span class="fu">get_bodies</span>(em))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id            ax    ay    az</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Earth  0.0000332     0     0</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Moon  -0.00270       0     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The Moon’s acceleration is in the <span class="math inline">\(-x\)</span> direction, toward Earth, with magnitude <span class="math inline">\(G M_{\mathrm{Earth}}/r^2\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gravitational_constant <span class="sc">*</span> mass_earth <span class="sc">/</span> distance_earth_moon<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002697483</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>and Earth’s is in the <span class="math inline">\(+x\)</span> direction, toward the Moon, smaller by the mass ratio <span class="math inline">\(m_{\mathrm{Moon}}/M_{\mathrm{Earth}} \approx 1/81\)</span>. Equal and opposite <em>forces</em>; unequal accelerations.</p>
+<p>Now a check against the package. The package’s output does not include accelerations, but it does include velocities at every step, and over one hour the velocity change of the Moon should be close to <span class="math inline">\(\mathbf{a}\,\Delta t\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">simulate_system</span>(em, <span class="at">time_step =</span> seconds_per_hour,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">duration =</span> seconds_per_hour)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sim <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="st">"Moon"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">dvx_per_second =</span> <span class="fu">diff</span>(vx) <span class="sc">/</span> seconds_per_hour)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   dvx_per_second</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            &lt;dbl&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       -0.00270</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>That is the <span class="math inline">\(x\)</span> acceleration computed above, to about four significant figures. (It is not exact because the acceleration changes slightly during the hour as the Moon moves; the integrator uses the average of the accelerations at the start and end of the step, which is one of the things that makes it good.)</p>
+</section>
+<section id="a-three-body-example" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="a-three-body-example"><span class="header-section-number">3.8</span> A three-body example</h2>
+<p>With three bodies the sums in <a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> have two terms each. Put the Sun at the origin, Earth at 1 AU, and the Moon 384,400 km beyond Earth, and ask how hard the Sun pulls on the Moon compared to how hard Earth does:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sem <span class="ot">&lt;-</span> <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_sun</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_body</span>(<span class="st">"Earth"</span>, <span class="at">mass =</span> mass_earth, <span class="at">x =</span> distance_earth_sun) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_body</span>(<span class="st">"Moon"</span>,  <span class="at">mass =</span> mass_moon,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> distance_earth_sun <span class="sc">+</span> distance_earth_moon)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>a_sun_on_moon   <span class="ot">&lt;-</span> gravitational_constant <span class="sc">*</span> mass_sun <span class="sc">/</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                   (distance_earth_sun <span class="sc">+</span> distance_earth_moon)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>a_earth_on_moon <span class="ot">&lt;-</span> gravitational_constant <span class="sc">*</span> mass_earth <span class="sc">/</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                   distance_earth_moon<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>a_sun_on_moon <span class="sc">/</span> a_earth_on_moon</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2.187709</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The Sun pulls on the Moon more than twice as hard as Earth does. This surprises almost everyone the first time. The Moon orbits Earth not because Earth’s pull is stronger but because Earth and the Moon are <em>both</em> falling toward the Sun together, at nearly the same rate; what keeps the Moon bound to Earth is the small <em>difference</em> between the Sun’s pull on the two of them. Seen from the Sun, the Moon’s path is a slightly wobbly ellipse that is everywhere concave toward the Sun. Chapter 10 draws it.</p>
+<p>The full acceleration of the Moon is the vector sum of both terms, and our function gets it right with no changes:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accelerations</span>(<span class="fu">get_bodies</span>(sem)) <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">==</span> <span class="st">"Moon"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id          ax    ay    az</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Moon  -0.00860     0     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="what-the-engine-does-differently" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="what-the-engine-does-differently"><span class="header-section-number">3.9</span> What the engine does differently</h2>
+<p>The function above is correct and slow. Each call does <span class="math inline">\(N(N-1)\)</span> iterations of interpreted R, and a simulation calls it once or twice per step for hundreds of thousands of steps. The package’s pure-R fallback vectorizes the same computation with matrix outer products so that R does the loop in compiled code internally; its C++ engine writes the double loop directly in C++ and runs about as fast as the hardware allows. Both compute exactly <a href="#eq-nbody" class="quarto-xref">Equation&nbsp;<span>3.3</span></a>, with one small addition: an optional softening length <span class="math inline">\(\varepsilon\)</span> that replaces <span class="math inline">\(r^3\)</span> in the denominator with <span class="math inline">\((r^2 + \varepsilon^2)^{3/2}\)</span>. With <span class="math inline">\(\varepsilon = 0\)</span>, the default, there is no difference. Chapter 6 explains what softening is for.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="Key results">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The acceleration of body <span class="math inline">\(j\)</span> is <span class="math inline">\(\displaystyle \ddot{\mathbf{r}}_j = \sum_{k \neq j} G\,m_k\,\frac{\mathbf{r}_k - \mathbf{r}_j}{|\mathbf{r}_k - \mathbf{r}_j|^3}\)</span>. It does not depend on <span class="math inline">\(m_j\)</span>.</li>
+<li>Internal forces come in equal and opposite pairs, so total momentum is conserved: the center of mass of any isolated system moves at constant velocity.</li>
+<li>A spherically symmetric body gravitates exactly like a point mass at its center (shell theorem).</li>
+<li>The computational cost grows as <span class="math inline">\(N^2\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<div id="exr-ch3-ratio" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.1</strong></span> Using the constants in the package, compute the acceleration of Earth due to the Sun, due to the Moon, and due to Jupiter at its closest approach (Jupiter’s distance from the Sun minus Earth’s). Express the last two as fractions of the first.</p>
+</div>
+<div id="exr-ch3-shell" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.2</strong></span> A hollow spherical shell of mass <span class="math inline">\(M\)</span> and radius <span class="math inline">\(R\)</span> has a small hole drilled in it. A pebble is dropped into the hole. Describe its motion inside the shell. (No calculation needed, but say which theorem you are using.)</p>
+</div>
+<div id="exr-ch3-vectorize" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.3</strong></span> Rewrite <code>accelerations()</code> without the inner loop: for a fixed <span class="math inline">\(j\)</span>, compute the difference vectors to all other bodies at once with <code>sweep()</code> or by subtracting a row from the matrix, and sum the contributions with <code>colSums()</code>. Check that it gives the same answer on the Sun-Earth-Moon system.</p>
+</div>
+<div id="exr-ch3-g" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3.4</strong></span> Simulate the Earth-Moon system for 28 days with <code>create_system(G = gravitational_constant * 1.01)</code> and again with the standard value. By how much does the Moon’s position differ at the end? Is a 1% change in <span class="math inline">\(G\)</span> detectable from one month of orbit data?</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-newton1687" class="csl-entry" role="listitem">
+Newton, Isaac. 1687. <em>Philosophi<span>æ</span> Naturalis Principia Mathematica</em>. Royal Society.
+</div>
+<div id="ref-tiesinga2021" class="csl-entry" role="listitem">
+Tiesinga, Eite, Peter J. Mohr, David B. Newell, and Barry N. Taylor. 2021. <span>“<span>CODATA</span> Recommended Values of the Fundamental Physical Constants: 2018.”</span> <em>Reviews of Modern Physics</em> 93 (2): 025010. <a href="https://doi.org/10.1103/RevModPhys.93.025010">https://doi.org/10.1103/RevModPhys.93.025010</a>.
+</div>
+<div id="ref-touboul2022" class="csl-entry" role="listitem">
+<span class="nocase">Touboul, Pierre, Gilles Métris, Manuel Rodrigues, et al.</span> 2022. <span>“<span>MICROSCOPE</span> Mission: Final Results of the Test of the Equivalence Principle.”</span> <em>Physical Review Letters</em> 129 (12): 121102. <a href="https://doi.org/10.1103/PhysRevLett.129.121102">https://doi.org/10.1103/PhysRevLett.129.121102</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/book\.orbit-r\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-four-lines-to-an-orbit.html" class="pagination-link" aria-label="Four Lines to an Orbit">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Four Lines to an Orbit</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-the-two-body-problem.html" class="pagination-link" aria-label="The Two-Body Problem, Solved by Hand">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Two-Body Problem, Solved by Hand</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/03-newton-and-the-n-body-problem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

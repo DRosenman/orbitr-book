@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Binary Stars and Circumbinary Planets – Orbital Mechanics with R</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-reference-frames.html" rel="next">
+<link href="./08-the-solar-system.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-the-solar-system.html">Doing Astrophysics with orbitr</a></li><li class="breadcrumb-item"><a href="./09-binary-stars.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Orbital Mechanics with R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/DRosenman/orbitr-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the-app.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Try It First: The orbitr App</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">First Orbits</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-simulate-gravity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Simulate Gravity?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-four-lines-to-an-orbit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Four Lines to an Orbit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Where the Physics Comes From</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-newton-and-the-n-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Newton’s Law and the N-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-the-two-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Two-Body Problem, Solved by Hand</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-integrators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Integrators: Euler, Euler-Cromer, and Velocity Verlet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-softening.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Softening: What Happens When Bodies Get Close</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keplerian-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">From Orbital Elements to State Vectors</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Doing Astrophysics with orbitr</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-the-solar-system.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Solar System from JPL Elements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-binary-stars.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-reference-frames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reference Frames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-chaos-and-the-three-body-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chaos and the Three-Body Problem</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-energy-and-angular-momentum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conservation Laws as Diagnostics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-comets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comets and Highly Eccentric Orbits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-figures-for-papers-and-talks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Figures for Papers and Talks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Under the Hood</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-the-cpp-engine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The C++ Engine</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-limits-and-extensions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Limits and Extensions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-r-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">R Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-math-background.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Mathematical Background</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function Quick Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./D-constants.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Physical Constants</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./E-solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Solutions to Selected Exercises</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#two-stars" id="toc-two-stars" class="nav-link active" data-scroll-target="#two-stars"><span class="header-section-number">9.1</span> Two stars</a></li>
+  <li><a href="#an-eccentric-binary" id="toc-an-eccentric-binary" class="nav-link" data-scroll-target="#an-eccentric-binary"><span class="header-section-number">9.2</span> An eccentric binary</a></li>
+  <li><a href="#kepler-16" id="toc-kepler-16" class="nav-link" data-scroll-target="#kepler-16"><span class="header-section-number">9.3</span> Kepler-16</a></li>
+  <li><a href="#how-close-is-too-close" id="toc-how-close-is-too-close" class="nav-link" data-scroll-target="#how-close-is-too-close"><span class="header-section-number">9.4</span> How close is too close?</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/09-binary-stars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-the-solar-system.html">Doing Astrophysics with orbitr</a></li><li class="breadcrumb-item"><a href="./09-binary-stars.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-binary-stars" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Binary Stars and Circumbinary Planets</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Most stars are not alone. Roughly half of Sun-like stars have a companion, and the “central body at rest at the origin” picture that works for the solar system fails completely for a pair of comparable masses: both stars move, both move a lot, and the only thing that stays put is the point between them. The Kepler-16 example in the package documentation sets up a real binary with a planet around it, using four velocity formulas stated without derivation. This chapter derives them from Chapter 4, checks each one against the simulation, extends them to an eccentric binary, and then asks the question the discoverers of Kepler-16b had to answer: how close to a pair of stars can a planet orbit and survive?</p>
+<section id="two-stars" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="two-stars"><span class="header-section-number">9.1</span> Two stars</h2>
+<p>Take stars of mass <span class="math inline">\(m_A\)</span> and <span class="math inline">\(m_B\)</span> a distance <span class="math inline">\(d\)</span> apart on circular orbits. Chapter 4 reduced this to a single relative orbit with gravitational parameter <span class="math inline">\(\mu = G(m_A + m_B)\)</span>, so the relative speed on a circle of radius <span class="math inline">\(d\)</span> is <span class="math inline">\(u = \sqrt{G(m_A+m_B)/d}\)</span>. Each star’s actual orbit is around the center of mass, and from <a href="04-the-two-body-problem.html#eq-individual" class="quarto-xref">Equation&nbsp;<span>4.2</span></a> the two stars sit on opposite sides of it at distances</p>
+<p><span id="eq-binary-radii"><span class="math display">\[
+r_A = \frac{m_B}{m_A + m_B}\,d, \qquad r_B = \frac{m_A}{m_A + m_B}\,d,
+\tag{9.1}\]</span></span></p>
+<p>so the heavier star makes the smaller circle. The speeds scale the same way, <span class="math inline">\(v_A = u\,m_B/(m_A+m_B)\)</span> and <span class="math inline">\(v_B = u\,m_A/(m_A+m_B)\)</span>, and substituting <span class="math inline">\(u\)</span>:</p>
+<p><span id="eq-binary-speeds"><span class="math display">\[
+v_A = \sqrt{\frac{G\,m_B^2}{(m_A + m_B)\,d}}, \qquad
+v_B = \sqrt{\frac{G\,m_A^2}{(m_A + m_B)\,d}}.
+\tag{9.2}\]</span></span></p>
+<p>These are the formulas in the documentation. Note what they say: the star you are computing the speed <em>of</em> appears only in the denominator, inside the total mass; the numerator has the mass of the <em>other</em> star. A light companion barely moves the heavy primary. The momenta <span class="math inline">\(m_A v_A\)</span> and <span class="math inline">\(m_B v_B\)</span> are equal, so with the stars on opposite sides moving in opposite directions, the total momentum is zero and the center of mass stays at the origin. The period, from Kepler’s third law with <span class="math inline">\(a = d\)</span>, is <span class="math inline">\(T = 2\pi\sqrt{d^3/G(m_A+m_B)}\)</span> for both stars; they must have the same period, since they are always opposite each other.</p>
+<p>A function that builds any circular binary from these formulas:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>add_binary <span class="ot">&lt;-</span> <span class="cf">function</span>(system, m_A, m_B, d, <span class="at">ids =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  r_A <span class="ot">&lt;-</span> d <span class="sc">*</span> m_B <span class="sc">/</span> (m_A <span class="sc">+</span> m_B)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  r_B <span class="ot">&lt;-</span> d <span class="sc">*</span> m_A <span class="sc">/</span> (m_A <span class="sc">+</span> m_B)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  v_A <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> m_B<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> ((m_A <span class="sc">+</span> m_B) <span class="sc">*</span> d))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  v_B <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> m_A<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> ((m_A <span class="sc">+</span> m_B) <span class="sc">*</span> d))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  system <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(ids[<span class="dv">1</span>], <span class="at">mass =</span> m_A, <span class="at">x =</span>  r_A, <span class="at">vy =</span>  v_A) <span class="sc">|&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(ids[<span class="dv">2</span>], <span class="at">mass =</span> m_B, <span class="at">x =</span> <span class="sc">-</span>r_B, <span class="at">vy =</span> <span class="sc">-</span>v_B)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Check it on a lopsided pair, a Sun-mass star with a companion of a tenth of the mass, one AU apart:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pair <span class="ot">&lt;-</span> <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_binary</span>(<span class="at">m_A =</span> mass_sun, <span class="at">m_B =</span> <span class="fl">0.1</span> <span class="sc">*</span> mass_sun, <span class="at">d =</span> distance_earth_sun) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">simulate_system</span>(<span class="at">time_step =</span> seconds_per_hour <span class="sc">*</span> <span class="dv">6</span>, <span class="at">duration =</span> seconds_per_year <span class="sc">*</span> <span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>pair <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">r_min_AU =</span> <span class="fu">min</span>(<span class="fu">sqrt</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> distance_earth_sun,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">r_max_AU =</span> <span class="fu">max</span>(<span class="fu">sqrt</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> distance_earth_sun)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id    r_min_AU r_max_AU</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 A       0.0909   0.0909</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 B       0.909    0.909</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Each star stays on a circle (minimum and maximum radius agree), the radii are in the ratio 1 to 10 as <a href="#eq-binary-radii" class="quarto-xref">Equation&nbsp;<span>9.1</span></a> says, and they add to one AU. The period should be shorter than a year by the factor <span class="math inline">\(\sqrt{1.1}\)</span>, because the total mass is <span class="math inline">\(1.1\,M_\odot\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">predicted =</span> <span class="fl">365.25</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fl">1.1</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">measured  =</span> <span class="fu">measure_period</span>(pair, <span class="st">"B"</span>, <span class="st">"A"</span>) <span class="sc">/</span> seconds_per_day)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; predicted  measured </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  348.2522  348.2169</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>For a binary the natural frame is the one centered on the pair’s center of mass, and <code>shift_reference_frame(sim, "barycenter")</code> puts every time step in it. In that frame the center of mass sits at the origin at rest, and a body’s distance from the origin is its distance from the barycenter, which is what a circumbinary planet orbits. <code>measure_period()</code> with no <code>center</code> argument measures a body’s period about the origin, which is how the next section uses it.</p>
+</section>
+<section id="an-eccentric-binary" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="an-eccentric-binary"><span class="header-section-number">9.2</span> An eccentric binary</h2>
+<p>Real binaries are rarely circular. Kepler-16’s two stars have <span class="math inline">\(e = 0.16\)</span>. The same reduction handles it: pick the relative orbit, then split it between the stars by the mass ratio. If the relative orbit has semi-major axis <span class="math inline">\(a_{\mathrm{bin}}\)</span> and eccentricity <span class="math inline">\(e\)</span>, start the stars at periapsis, where the separation is <span class="math inline">\(d_p = a_{\mathrm{bin}}(1-e)\)</span> and the relative speed, from vis-viva, is</p>
+<p><span id="eq-binary-periapsis"><span class="math display">\[
+u_p = \sqrt{\frac{\mu}{a_{\mathrm{bin}}}\cdot\frac{1+e}{1-e}}, \qquad \mu = G(m_A+m_B).
+\tag{9.3}\]</span></span></p>
+<p>Then <span class="math inline">\(v_A = u_p\,m_B/(m_A+m_B)\)</span> and <span class="math inline">\(v_B = u_p\,m_A/(m_A+m_B)\)</span> as before, and the stars are placed at <span class="math inline">\(d_p\,m_B/(m_A+m_B)\)</span> and <span class="math inline">\(d_p\,m_A/(m_A+m_B)\)</span> on either side of the origin.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>add_eccentric_binary <span class="ot">&lt;-</span> <span class="cf">function</span>(system, m_A, m_B, a_bin, e, <span class="at">ids =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  M   <span class="ot">&lt;-</span> m_A <span class="sc">+</span> m_B</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  d_p <span class="ot">&lt;-</span> a_bin <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> e)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  u_p <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> M <span class="sc">/</span> a_bin <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> e) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  system <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(ids[<span class="dv">1</span>], <span class="at">mass =</span> m_A, <span class="at">x =</span>  d_p <span class="sc">*</span> m_B <span class="sc">/</span> M, <span class="at">vy =</span>  u_p <span class="sc">*</span> m_B <span class="sc">/</span> M) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(ids[<span class="dv">2</span>], <span class="at">mass =</span> m_B, <span class="at">x =</span> <span class="sc">-</span>d_p <span class="sc">*</span> m_A <span class="sc">/</span> M, <span class="at">vy =</span> <span class="sc">-</span>u_p <span class="sc">*</span> m_A <span class="sc">/</span> M)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The eccentricity vector from Chapter 4 checks that this produced the orbit it was supposed to:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ecc_pair <span class="ot">&lt;-</span> <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_eccentric_binary</span>(<span class="at">m_A =</span> mass_sun, <span class="at">m_B =</span> <span class="fl">0.5</span> <span class="sc">*</span> mass_sun,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">a_bin =</span> distance_earth_sun, <span class="at">e =</span> <span class="fl">0.4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">simulate_system</span>(<span class="at">time_step =</span> seconds_per_hour <span class="sc">*</span> <span class="dv">6</span>, <span class="at">duration =</span> seconds_per_year)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">get_orbital_elements</span>(ecc_pair, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="at">mu =</span> gravitational_constant <span class="sc">*</span> <span class="fl">1.5</span> <span class="sc">*</span> mass_sun) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">e_min =</span> <span class="fu">min</span>(e), <span class="at">e_max =</span> <span class="fu">max</span>(e))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   e_min e_max</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.400 0.400</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="kepler-16" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="kepler-16"><span class="header-section-number">9.3</span> Kepler-16</h2>
+<p>Kepler-16b was the first planet confirmed to orbit two stars, found in 2011 by the Kepler spacecraft when it was seen transiting both of them <span class="citation" data-cites="doyle2011">(<a href="references.html#ref-doyle2011" role="doc-biblioref"><span class="nocase">Doyle et al.</span> 2011</a>)</span>. The system is a K-type star of <span class="math inline">\(0.69\,M_\odot\)</span> and an M-type star of <span class="math inline">\(0.20\,M_\odot\)</span> in a 41-day orbit with semi-major axis 0.224 AU and eccentricity 0.16, and a Saturn-mass planet (<span class="math inline">\(0.33\,M_{\mathrm{Jup}}\)</span>) orbiting the pair every 229 days at 0.705 AU, on a nearly circular orbit in the same plane. The documentation builds it with a circular binary; here it is with the real eccentricity.</p>
+<p>The planet is far enough out that the two stars act on it almost like a single star of their combined mass at the barycenter. So the planet goes on a circle of radius <span class="math inline">\(0.705\)</span> AU around the origin at the circular speed for mass <span class="math inline">\(m_A + m_B\)</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>AU  <span class="ot">&lt;-</span> distance_earth_sun</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m_A <span class="ot">&lt;-</span> <span class="fl">0.69</span> <span class="sc">*</span> mass_sun</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>m_B <span class="ot">&lt;-</span> <span class="fl">0.20</span> <span class="sc">*</span> mass_sun</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>m_p <span class="ot">&lt;-</span> <span class="fl">0.333</span> <span class="sc">*</span> mass_jupiter</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>r_planet <span class="ot">&lt;-</span> <span class="fl">0.7048</span> <span class="sc">*</span> AU</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>v_planet <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> (m_A <span class="sc">+</span> m_B) <span class="sc">/</span> r_planet)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>kepler16 <span class="ot">&lt;-</span> <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_eccentric_binary</span>(m_A, m_B, <span class="at">a_bin =</span> <span class="fl">0.2243</span> <span class="sc">*</span> AU, <span class="at">e =</span> <span class="fl">0.159</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ids =</span> <span class="fu">c</span>(<span class="st">"Kepler-16A"</span>, <span class="st">"Kepler-16B"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_body</span>(<span class="st">"Kepler-16b"</span>, <span class="at">mass =</span> m_p, <span class="at">x =</span> r_planet, <span class="at">vy =</span> v_planet) <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">simulate_system</span>(<span class="at">time_step =</span> seconds_per_hour, <span class="at">duration =</span> seconds_per_year <span class="sc">*</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_orbits</span>(kepler16)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-kepler16" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kepler16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-binary-stars_files/figure-html/fig-kepler16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kepler16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Kepler-16 for two years. The two stars orbit their common center of mass every 41 days while the planet circles the pair every 229 days.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The planet’s orbit is not a two-body orbit about anything, but about the barycenter it is very nearly one, and the barycentric frame lets us measure it. The predictions are Kepler’s third law with the <em>combined</em> mass of all three bodies, and a period of 229 days for the planet and 41 days for the stars:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>k16 <span class="ot">&lt;-</span> <span class="fu">shift_reference_frame</span>(kepler16, <span class="st">"barycenter"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mu_total <span class="ot">&lt;-</span> gravitational_constant <span class="sc">*</span> (m_A <span class="sc">+</span> m_B <span class="sc">+</span> m_p)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">planet_predicted_days =</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> <span class="fu">sqrt</span>(r_planet<span class="sc">^</span><span class="dv">3</span> <span class="sc">/</span> mu_total) <span class="sc">/</span> seconds_per_day,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">planet_measured_days  =</span> <span class="fu">measure_period</span>(k16, <span class="st">"Kepler-16b"</span>) <span class="sc">/</span> seconds_per_day,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">binary_measured_days  =</span> <span class="fu">measure_period</span>(k16, <span class="st">"Kepler-16B"</span>, <span class="st">"Kepler-16A"</span>) <span class="sc">/</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                          seconds_per_day)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; planet_predicted_days  planet_measured_days  binary_measured_days </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             229.01798             220.79718              41.12564</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Both match the published periods. The planet is not <em>exactly</em> on a circle, because the two stars’ pull is not exactly that of a point at the barycenter; the difference is a small periodic wobble at the binary’s period, and you can see it by plotting the planet’s distance from the barycenter over time (Exercise <a href="#exr-ch9-wobble" class="quarto-xref">Exercise&nbsp;<span>9.2</span></a>). That wobble is real and it is how the planet’s orbit was characterized from the transit timing.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Where it comes from">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where it comes from
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The transit method finds planets by the dip in a star’s brightness when the planet crosses in front of it. For Kepler-16 the light curve showed the planet crossing <em>both</em> stars, and the two stars eclipsing each other, so the geometry of the whole system could be reconstructed from timing alone. The paper includes a diagram of the three orbits that looks almost exactly like <a href="#fig-kepler16" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>. Working out the masses needed a full three-body fit, because the planet’s orbit is noticeably non-Keplerian: the stars’ motion makes the planet’s transit times and durations vary noticeably from one transit to the next, and the size of the variation fixes the mass ratio.</p>
+</div>
+</div>
+</section>
+<section id="how-close-is-too-close" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="how-close-is-too-close"><span class="header-section-number">9.4</span> How close is too close?</h2>
+<p>A planet orbiting a binary can only survive if it is far enough out that the two stars act like one. Too close, and the alternating pulls of the stars as they go around pump energy into the planet’s orbit until it is ejected or thrown into one of the stars. The boundary is not sharp, and it depends on the binary’s mass ratio and eccentricity, but it is roughly two to four times the binary’s separation. Holman and Wiegert <span class="citation" data-cites="holman1999">(<a href="references.html#ref-holman1999" role="doc-biblioref">Holman and Wiegert 1999</a>)</span> ran thousands of three-body simulations and fitted a formula for the critical semi-major axis:</p>
+<p><span id="eq-holman-wiegert"><span class="math display">\[
+\frac{a_{\mathrm{crit}}}{a_{\mathrm{bin}}} = 1.60 + 5.10\,e - 2.22\,e^2 + 4.12\,q - 4.27\,e q - 5.09\,q^2 + 4.61\,e^2 q^2,
+\qquad q = \frac{m_B}{m_A + m_B}.
+\tag{9.4}\]</span></span></p>
+<p>For Kepler-16, <span class="math inline">\(q = 0.22\)</span> and <span class="math inline">\(e = 0.16\)</span> give <span class="math inline">\(a_{\mathrm{crit}} \approx 2.9\,a_{\mathrm{bin}}\)</span>, or 0.65 AU. The planet is at 0.705 AU, nine percent outside the line. It is one of the closest-in circumbinary planets known, and it sits almost exactly where the stability boundary says a planet can sit.</p>
+<p>We can test the boundary ourselves. Keep the real stars and drop a test planet at a range of distances, from well inside the critical radius to well outside, for fifteen years each:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a_bin <span class="ot">&lt;-</span> <span class="fl">0.2243</span> <span class="sc">*</span> AU</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="cf">function</span>(ratio) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> ratio <span class="sc">*</span> a_bin</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_system</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_eccentric_binary</span>(m_A, m_B, <span class="at">a_bin =</span> a_bin, <span class="at">e =</span> <span class="fl">0.159</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ids =</span> <span class="fu">c</span>(<span class="st">"Kepler-16A"</span>, <span class="st">"Kepler-16B"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_body</span>(<span class="st">"planet"</span>, <span class="at">mass =</span> <span class="fl">1e20</span>, <span class="at">x =</span> r,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">vy =</span> <span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> (m_A <span class="sc">+</span> m_B) <span class="sc">/</span> r)) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">simulate_system</span>(<span class="at">time_step =</span> seconds_per_hour <span class="sc">*</span> <span class="dv">3</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">duration =</span> seconds_per_year <span class="sc">*</span> <span class="dv">15</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">shift_reference_frame</span>(<span class="st">"barycenter"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(id <span class="sc">==</span> <span class="st">"planet"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">sqrt</span>(x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> z<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">energy =</span> (vx<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> vy<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> vz<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                    gravitational_constant <span class="sc">*</span> (m_A <span class="sc">+</span> m_B <span class="sc">+</span> <span class="fl">1e20</span>) <span class="sc">/</span> r) <span class="sc">|&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">ratio =</span> ratio,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">r_min =</span> <span class="fu">min</span>(r) <span class="sc">/</span> a_bin, <span class="at">r_max =</span> <span class="fu">max</span>(r) <span class="sc">/</span> a_bin,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">bound_at_end =</span> <span class="fu">last</span>(energy) <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>stability <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">lapply</span>(<span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">2.8</span>, <span class="fl">3.1</span>, <span class="fl">3.5</span>, <span class="fl">4.0</span>), trial))</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>stability</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 7 × 4</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ratio  r_min   r_max bound_at_end</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;       </span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   1.5 0.0661 1459.   FALSE       </span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   2   0.0174 3528.   FALSE       </span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   2.5 1.80     13.1  TRUE        </span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   2.8 2.55      2.90 TRUE        </span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5   3.1 2.90      3.18 TRUE        </span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   3.5 3.33      3.57 TRUE        </span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7   4   3.87      4.05 TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A planet that survives keeps its distance from the barycenter within a narrow band around where it started and stays bound. One that does not either wanders far inward and outward or ends with positive energy. The transition in the table sits near the Holman-Wiegert value of <span class="math inline">\(2.9\)</span>, which is remarkable agreement for a formula fitted to a different set of simulations with a different integrator. Fifteen years is not forever, and a planet that looks stable here might be ejected after a thousand; the published fit is for runs of ten thousand binary periods. But the lesson is already visible: there is a hard inner edge to where planets can live around a binary, and Kepler-16b lives right at it.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="Key results">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>A circular binary: stars at <span class="math inline">\(d\,m_B/M\)</span> and <span class="math inline">\(d\,m_A/M\)</span> from the barycenter, speeds <span class="math inline">\(\sqrt{G m_B^2/(Md)}\)</span> and <span class="math inline">\(\sqrt{G m_A^2/(Md)}\)</span>, <span class="math inline">\(M = m_A + m_B\)</span>. Zero total momentum.</li>
+<li>An eccentric binary: use the periapsis separation <span class="math inline">\(a(1-e)\)</span> and periapsis speed <span class="math inline">\(\sqrt{(\mu/a)(1+e)/(1-e)}\)</span>, split by mass ratio.</li>
+<li>A circumbinary planet far from the pair orbits the barycenter as if the stars were one body of mass <span class="math inline">\(m_A + m_B\)</span>.</li>
+<li>Planets inside about <span class="math inline">\(2\)</span> to <span class="math inline">\(4\)</span> binary separations (<a href="#eq-holman-wiegert" class="quarto-xref">Equation&nbsp;<span>9.4</span></a>) are unstable.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<div id="exr-ch9-equal" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 9.1</strong></span> Build an equal-mass binary of two Sun-mass stars 1 AU apart. Before running it, predict each star’s speed and the period. Then confirm both.</p>
+</div>
+<div id="exr-ch9-wobble" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 9.2</strong></span> Plot Kepler-16b’s distance from the barycenter against time for the two-year run. Identify the period of the wobble and explain why it matches the binary’s period rather than the planet’s.</p>
+</div>
+<div id="exr-ch9-sunset" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 9.3</strong></span> From the planet, how far apart in the sky are the two stars? Shift the Kepler-16 run to the planet’s frame with <code>shift_reference_frame("Kepler-16b")</code>, compute the angle between the directions to the two stars at every time step, and plot it. What is the maximum separation in degrees? (Chapter 10 does more with this.)</p>
+</div>
+<div id="exr-ch9-retrograde" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 9.4</strong></span> Put the test planet at <span class="math inline">\(2.0\,a_{\mathrm{bin}}\)</span> but give it a <em>retrograde</em> orbit (reverse the sign of its velocity). Retrograde circumbinary orbits are known to be more stable than prograde ones. Does it survive fifteen years?</p>
+</div>
+<div id="exr-ch9-mass-ratio" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 9.5</strong></span> Repeat the stability sweep with <span class="math inline">\(m_B = m_A\)</span> (so <span class="math inline">\(q = 0.5\)</span>) and a circular binary. Where is the transition now, and what does <a href="#eq-holman-wiegert" class="quarto-xref">Equation&nbsp;<span>9.4</span></a> predict?</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-doyle2011" class="csl-entry" role="listitem">
+<span class="nocase">Doyle, Laurance R., Joshua A. Carter, Daniel C. Fabrycky, et al.</span> 2011. <span>“<span>Kepler-16</span>: A Transiting Circumbinary Planet.”</span> <em>Science</em> 333 (6049): 1602–6. <a href="https://doi.org/10.1126/science.1210923">https://doi.org/10.1126/science.1210923</a>.
+</div>
+<div id="ref-holman1999" class="csl-entry" role="listitem">
+Holman, Matthew J., and Paul A. Wiegert. 1999. <span>“Long-Term Stability of Planets in Binary Systems.”</span> <em>The Astronomical Journal</em> 117 (1): 621–28. <a href="https://doi.org/10.1086/300695">https://doi.org/10.1086/300695</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/book\.orbit-r\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-the-solar-system.html" class="pagination-link" aria-label="The Solar System from JPL Elements">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Solar System from JPL Elements</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-reference-frames.html" class="pagination-link" aria-label="Reference Frames">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reference Frames</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/09-binary-stars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
