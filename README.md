@@ -76,9 +76,10 @@ chapters whose source changed. Commit `_freeze/` to version control.
 | `R/helpers.R` | The few derivation helpers the text defines (period measurement, Kepler's equation, by-hand element conversion); everything else is an orbitr 1.0.0 function |
 | `references.bib` | Bibliography |
 | `index.qmd` | Preface |
-| `the-app.qmd` | Unnumbered page after the preface: the Shiny app embedded (online) / URL + QR code (print) |
+| `qr-app.png` | QR code to the Shiny app, used in the preface's "Try it first" section in print |
 | `01-…16-*.qmd` | Chapters |
-| `A-*, …, E-*.qmd` | Appendices (R basics, math background, function reference, constants, solutions) |
+| `A-*, …, D-*.qmd` | Appendices (R basics, math background, function reference, constants) |
+| `exercises/` | Parked end-of-chapter exercises (not rendered); restore with a solutions appendix later |
 | `about.qmd` | About the author (last page; back-cover cut in an HTML comment) |
 
 ## Draft status
@@ -106,10 +107,9 @@ chapters whose source changed. Commit `_freeze/` to version control.
 | B Mathematical Background | complete |
 | C Function Quick Reference | complete |
 | D Physical Constants | complete (table generated from the package) |
-| E Solutions | to do |
 
-All sixteen chapters are drafted against orbitr 1.0.0. Appendix E (solutions)
-is the remaining writing task.
+All sixteen chapters are drafted against orbitr 1.0.0. The end-of-chapter
+exercises are parked in `exercises/` until solutions are written.
 
 ## Things to check before publication
 

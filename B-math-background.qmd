@@ -185,7 +185,7 @@ R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\
 R_x(\theta) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\theta & -\sin\theta \\ 0 & \sin\theta & \cos\theta \end{pmatrix}.
 $$ {#eq-rotation-matrices}
 
-Rotations preserve lengths and angles. Their inverse is their transpose ($R^{-1} = R^{T}$), so undoing a rotation costs nothing, which Chapter 7's exercises use. The sign convention here, that $R(\theta)$ rotates the *vector* counterclockwise by $\theta$, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with $-\theta$.
+Rotations preserve lengths and angles. Their inverse is their transpose ($R^{-1} = R^{T}$), so undoing a rotation costs nothing. The sign convention here, that $R(\theta)$ rotates the *vector* counterclockwise by $\theta$, is the one the package uses; some texts instead rotate the coordinate axes, which is the same matrix with $-\theta$.
 
 The **determinant** of a $2\times2$ matrix is $ad - bc$. Its geometric meaning is the thing Chapter 5 is built on: a matrix with determinant $D$ scales every area by a factor $|D|$ (every volume, for $3\times3$ matrices). A rotation has determinant 1, as it should. A map that preserves area has determinant exactly 1, and a map with determinant greater than 1 inflates every region it touches. Chapter 5 computes the determinant of each integrator's one-step map and finds $1 + \omega^2\Delta t^2$ for Euler and exactly 1 for Euler-Cromer and Verlet; that single number is the difference between an orbit that spirals and one that does not.
 

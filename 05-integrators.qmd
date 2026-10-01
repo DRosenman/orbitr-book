@@ -145,7 +145,7 @@ $$
 \mathbf{x}_{n+1} = 2\mathbf{x}_n - \mathbf{x}_{n-1} + \mathbf{a}_n\Delta t^2.
 $$ {#eq-stormer}
 
-No velocities appear at all, and the local error in position is $O(\Delta t^4)$, one order better than the derivation of @eq-verlet suggested. Subtracting consecutive position updates of @eq-verlet and using the velocity update to eliminate $\mathbf{v}$ (Exercise @exr-ch5-equivalence) shows that velocity Verlet produces exactly the same sequence of positions as @eq-stormer. Velocity Verlet is just the Störmer form with the velocity carried along explicitly, which is convenient because you usually want the velocity.
+No velocities appear at all, and the local error in position is $O(\Delta t^4)$, one order better than the derivation of @eq-verlet suggested. Subtracting consecutive position updates of @eq-verlet and using the velocity update to eliminate $\mathbf{v}$ (a few lines of algebra worth doing once) shows that velocity Verlet produces exactly the same sequence of positions as @eq-stormer. Velocity Verlet is just the Störmer form with the velocity carried along explicitly, which is convenient because you usually want the velocity.
 
 **The leapfrog, or kick-drift-kick, form.** Split the velocity update of @eq-verlet in half, doing the first half before the position update and the second half after:
 
@@ -309,26 +309,4 @@ Everything above gives you the tools to choose `time_step` sensibly rather than 
 - Velocity Verlet (= Störmer = leapfrog): second order, symplectic, time-reversible. Energy error bounded and $O(\Delta t^2)$. Use it.
 - Total energy of an N-body system: $E = \sum_j \tfrac12 m_j v_j^2 - \sum_{j<k} G m_j m_k / r_{jk}$.
 - Choose the step from the fastest orbit in the system, check it by halving.
-:::
-
-## Exercises {.unnumbered}
-
-::: {#exr-ch5-equivalence}
-Starting from the velocity Verlet update @eq-verlet, write the position update for step $n$ and for step $n-1$, subtract them, and use the velocity update to eliminate $\mathbf{v}_n - \mathbf{v}_{n-1}$. Show that the result is the Störmer form @eq-stormer.
-:::
-
-::: {#exr-ch5-vv-det}
-Multiply out $\det M_{\mathrm{VV}}$ in @eq-vv-matrix and confirm it equals 1. Then compute the trace, and show the eigenvalues have modulus 1 exactly when $\omega\Delta t < 2$.
-:::
-
-::: {#exr-ch5-cromer-phase}
-Run `star_planet` for ten years with Euler-Cromer and with Verlet at a six-hour step. For each, find the time of the fifth periapsis passage (the fifth local minimum of the planet's distance from the star). By how many days do they differ? Which do you trust, and why?
-:::
-
-::: {#exr-ch5-moon-step}
-The default time step is one hour. Simulate the Earth-Moon system for one year with steps of 1, 3, 6, and 12 hours, compute the maximum relative energy error for each, and check that it scales as expected for a second-order method.
-:::
-
-::: {#exr-ch5-euler-escape}
-Using the Euler run, estimate from the energy plot how long it would take the planet to reach zero total energy and escape. Then run it that long and see if you were right.
 :::

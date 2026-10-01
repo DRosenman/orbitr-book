@@ -4,7 +4,7 @@
 
 Before moving into industry he worked as a scientist for the State of New Jersey, at the Department of Environmental Protection, where he co-authored the *2016 New Jersey Integrated Water Quality Assessment Report*, the state's Clean Water Act assessment of the condition of its rivers, lakes, and coastal waters, submitted to the U.S. Environmental Protection Agency. The job was equal parts science and software: turning years of monitoring data into defensible assessments, with code that had to be right because decisions were made on it. That combination, physics training applied through well-engineered software, is the approach this book takes.
 
-He is currently an Infrastructure and Operations Engineer at Optum.
+He is currently an Infrastructure and Operations Engineer at Optum, and is working toward a Master of Science in Computer Science at Georgia Tech, specializing in artificial intelligence.
 
 <!-- DAVE: add the PyPI package name(s) if you want them listed alongside the
      CRAN ones. -->
@@ -21,8 +21,9 @@ If you use the book in a course, or build something with the package, he would l
 
 <!-- Back-cover version (three sentences):
 Dave Rosenman is an Infrastructure and Operations Engineer at Optum, with a
-B.S. in Physics from The College of New Jersey, and the author of orbitr, the
-R package this book is built on. He formerly worked as a scientist for the New
+B.S. in Physics from The College of New Jersey and an M.S. in Computer Science
+(artificial intelligence) in progress at Georgia Tech, and the author of orbitr,
+the R package this book is built on. He formerly worked as a scientist for the New
 Jersey Department of Environmental Protection, where he co-authored the state's
 2016 Integrated Water Quality Assessment Report. He lives in Newtown,
 Pennsylvania; his work is at daverosenman.com.

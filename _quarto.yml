@@ -64,7 +64,6 @@ book:
     - B-math-background.qmd
     - C-function-reference.qmd
     - D-constants.qmd
-    - E-solutions.qmd
     - about.qmd
 
 bibliography: references.bib

@@ -269,10 +269,10 @@
 \floatname{codelisting}{Listing}
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \usepackage{amsthm}
-\theoremstyle{definition}
-\newtheorem{exercise}{Exercise}[chapter]
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -574,24 +574,11 @@ it ended up in the package. Boxes marked \textbf{Key result} collect the
 formulas you will reuse. Exercises close each chapter; solutions are in
 Appendix~\ref{sec-solutions}.
 
-\section*{Acknowledgments}\label{acknowledgments}
-\addcontentsline{toc}{section}{Acknowledgments}
+\section*{Try it first: the orbitr
+app}\label{try-it-first-the-orbitr-app}
+\addcontentsline{toc}{section}{Try it first: the orbitr app}
 
-\markright{Acknowledgments}
-
-The physics in this book was shaped by Thornton and Marion's
-\emph{Classical Dynamics} (Thornton and Marion 2004) and Newman's
-\emph{Computational Physics} (Newman 2012), the two books I kept open
-while writing the engine. The N-body methods follow Aarseth (Aarseth
-2003).
-
-\bookmarksetup{startatroot}
-
-\chapter*{Try It First: The orbitr
-App}\label{try-it-first-the-orbitr-app}
-\addcontentsline{toc}{chapter}{Try It First: The orbitr App}
-
-\markboth{Try It First: The orbitr App}{Try It First: The orbitr App}
+\markright{Try it first: the orbitr app}
 
 Before any code, it helps to have \emph{seen} an orbit respond to a
 change: a planet given a little more speed and swinging out into an
@@ -624,6 +611,17 @@ shorten and lengthen the time step until something looks wrong; switch
 the integrator from Verlet to Euler and run the same system. After each
 one, open the Code tab and see which argument changed. Chapters 4 and 5
 explain what you just saw.
+
+\section*{Acknowledgments}\label{acknowledgments}
+\addcontentsline{toc}{section}{Acknowledgments}
+
+\markright{Acknowledgments}
+
+The physics in this book was shaped by Thornton and Marion's
+\emph{Classical Dynamics} (Thornton and Marion 2004) and Newman's
+\emph{Computational Physics} (Newman 2012), the two books I kept open
+while writing the engine. The N-body methods follow Aarseth (Aarseth
+2003).
 
 \part{First Orbits}
 
@@ -9869,15 +9867,57 @@ derivation exercises get the key steps.}
 
 \markboth{About the Author}{About the Author}
 
-\textbf{Dave Rosenman} is a data scientist with a degree in physics and
-the author of orbitr, the R package this book is built on. He has
-published open-source packages on both CRAN and PyPI, and writes about
-physics for a general audience. \emph{Orbital Mechanics with R} grew out
-of the package's documentation and the questions it could not answer:
-not how to run an orbit, but why the simulation behaves the way it does.
-He lives in Newtown, Pennsylvania. The package, the book, and his other
-work are at \url{https://orbit-r.com} and
-\url{https://daverosenman.com}.
+\textbf{Dave Rosenman} is a software engineer and data scientist with a
+Bachelor of Science in Physics from The College of New Jersey. He builds
+production analytics software, much of it in R: Shiny applications used
+daily by the people who depend on them, data pipelines, and the packages
+that make both easier to write. He is the author of orbitr, the package
+this book is built on, and of other open-source packages on CRAN and
+PyPI, among them \texttt{sqlserverconnect}, a set of helpers for
+connecting R to SQL Server, and \texttt{dbexplorer}, a Shiny application
+for browsing and exporting database tables.
+
+Before moving into industry he worked as a scientist for the State of
+New Jersey, at the Department of Environmental Protection, where he
+co-authored the \emph{2016 New Jersey Integrated Water Quality
+Assessment Report}, the state's Clean Water Act assessment of the
+condition of its rivers, lakes, and coastal waters, submitted to the
+U.S. Environmental Protection Agency. The job was equal parts science
+and software: turning years of monitoring data into defensible
+assessments, with code that had to be right because decisions were made
+on it. That combination, physics training applied through
+well-engineered software, is the approach this book takes.
+
+He is currently an Infrastructure and Operations Engineer at Optum.
+
+\emph{Orbital Mechanics with R} grew out of the orbitr documentation and
+the questions it could not answer: not how to run an orbit, but why the
+simulation behaves the way it does. He also writes about physics for a
+general audience. He lives in Newtown, Pennsylvania.
+
+\section*{Where to find things}\label{where-to-find-things}
+\addcontentsline{toc}{section}{Where to find things}
+
+\markright{Where to find things}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{orbitr documentation:} \url{https://orbit-r.com} --- the
+  package reference, the articles, and the interactive app. Start here
+  for how any function works.
+\item
+  \textbf{GitHub:} \url{https://github.com/DRosenman} --- the package
+  source (\texttt{orbitr}), this book's source (\texttt{orbitr-book}),
+  and his other open-source work. Bug reports and pull requests for
+  either go there.
+\item
+  \textbf{Personal site:} \url{https://daverosenman.com} --- projects,
+  writing, and contact.
+\end{itemize}
+
+If you use the book in a course, or build something with the package, he
+would like to hear about it.
 
 
 \backmatter

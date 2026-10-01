@@ -131,11 +131,11 @@ sat |>
   labs(x = "Day", y = "Distance from Earth's center (km)")
 ```
 
-Splitting is first-order accurate in the interval between kicks, so make the interval short compared with the drag timescale. The toy applies the same fractional kick wherever the satellite happens to be, which is what a body moving through a uniform medium feels. Real atmospheric drag is concentrated at periapsis, where the air is densest, and that changes the shape of the decay: periapsis stays nearly fixed while apoapsis is pulled down, the orbit circularizes, and only then does the whole thing spiral in. The same loop produces that behavior if the kick depends on altitude through a density profile, which is Exercise @exr-ch16-real-drag.
+Splitting is first-order accurate in the interval between kicks, so make the interval short compared with the drag timescale. The toy applies the same fractional kick wherever the satellite happens to be, which is what a body moving through a uniform medium feels. Real atmospheric drag is concentrated at periapsis, where the air is densest, and that changes the shape of the decay: periapsis stays nearly fixed while apoapsis is pulled down, the orbit circularizes, and only then does the whole thing spiral in. The same loop produces that behavior if the kick depends on altitude through a density profile, $\tau(r) = \tau_0\exp\big((r - r_0)/H\big)$ with a scale height $H$ of about 60 km, applied every few minutes instead of every day.
 
 ### Thrust
 
-A rocket burn is a kick too, and a short one is well modeled as an instantaneous velocity change: a $\Delta v$. The Hohmann transfer between two circular orbits is two kicks, one at periapsis of the transfer ellipse and one at apoapsis, with magnitudes that follow directly from vis-viva (Exercise @exr-ch16-hohmann). Splitting with `continue_simulation()` does it exactly.
+A rocket burn is a kick too, and a short one is well modeled as an instantaneous velocity change: a $\Delta v$. The Hohmann transfer between two circular orbits is two kicks, one at periapsis of the transfer ellipse and one at apoapsis, with magnitudes that follow directly from vis-viva: the transfer ellipse has $a = (r_1 + r_2)/2$, and each $\Delta v$ is the difference between the circular speed and the transfer-orbit speed at that radius. Splitting with `continue_simulation()` does it exactly.
 
 ## Oblateness
 
@@ -229,30 +229,4 @@ Thornton and Marion [@thornton2004] for the mechanics, Murray and Dermott [@murr
 - $J_2$ regresses the node at $-\tfrac32 n J_2 (R/a)^2\cos i$; five degrees a day for the ISS.
 - The post-Newtonian correction advances Mercury's perihelion by $6\pi GM/(c^2 a(1-e^2))$ per orbit: 43 arcseconds per century.
 - Adaptive steps break symplecticity unless chosen time-symmetrically; higher order comes from Yoshida's composition of Verlet steps.
-:::
-
-## Exercises {.unnumbered}
-
-::: {#exr-ch16-merge}
-Using `closest_approach()`, find the first time two stars of the chaotic triple pass within two solar radii. Stop the run there, replace the two with their inelastic merger, continue with `continue_simulation()`, and compare the subsequent motion with the unmerged run.
-:::
-
-::: {#exr-ch16-beta}
-Derive $e = \beta/(1-\beta)$ from Chapter 4's rule $e = |k^2-1|$, and confirm with `get_orbital_elements()` on the $\beta = 0.3$ grain (pass `mu = gravitational_constant * (1 - 0.3) * mass_sun`, the effective parameter).
-:::
-
-::: {#exr-ch16-hohmann}
-A Hohmann transfer from a circular orbit of radius $r_1$ to one of radius $r_2$ uses an ellipse with $a = (r_1+r_2)/2$. Use vis-viva to compute the two $\Delta v$'s for a transfer from a 400 km Earth orbit to geostationary altitude (42,164 km from Earth's center). Apply them with `kick_drag()`-style velocity edits and `continue_simulation()`, and confirm the satellite arrives on a circular orbit.
-:::
-
-::: {#exr-ch16-real-drag}
-Replace the uniform kick in `kick_drag()` with one whose damping time depends on altitude as $\tau(r) = \tau_0\exp\big((r - r_0)/H\big)$, with a scale height $H$ of 60 km, and apply it every ten minutes instead of every day (use a shorter run). Show that periapsis stays nearly fixed while apoapsis falls.
-:::
-
-::: {#exr-ch16-sun-sync}
-Use @eq-j2-rates to find the inclination at which a circular 700 km orbit is Sun-synchronous ($\dot\Omega = 360°$ per year). Why must it be retrograde?
-:::
-
-::: {#exr-ch16-yoshida}
-Implement the fourth-order Yoshida composition in plain R on top of Chapter 3's `accelerations()` for a two-body system, and show that its energy error scales as $\Delta t^4$ by halving the step twice.
 :::

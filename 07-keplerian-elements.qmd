@@ -251,7 +251,7 @@ The ratio is not 1. The velocity the conversion assigned is right for $\mu = GM_
 measure_period(em_sim, "Moon", "Earth") / seconds_per_day
 ```
 
-If you need the Moon's period right to better than a percent, build it with `keplerian_to_state()` using the combined $\mu$ and pass the result to `add_body()` (Exercise @exr-ch7-moon-fix). For every other body in the solar system the question does not arise: the heaviest planet is a thousandth of the Sun, and the error is a twentieth of a percent in its period.
+If you need the Moon's period right to better than a percent, build it with `keplerian_to_state()` using the combined $\mu$ and pass the result to `add_body()`; `measure_period()` then returns the real 27.32 days. For every other body in the solar system the question does not arise: the heaviest planet is a thousandth of the Sun, and the error is a twentieth of a percent in its period.
 
 ## Where is Mars today? Kepler's equation
 
@@ -364,26 +364,4 @@ The changes are small, of order $10^{-4}$, and they are real: Jupiter's pull on 
 - Inverse: $i$ from $\mathbf{h}$, $\Omega$ from $\hat{\mathbf z}\times\mathbf{h}$, $\omega$ and $\nu$ from $\mathbf{e}$, $a$ from vis-viva.
 - Time to position: $M = \sqrt{\mu/a^3}\,(t-t_p)$, solve $M = E - e\sin E$, then $\tan(\nu/2) = \sqrt{(1+e)/(1-e)}\tan(E/2)$.
 - In an N-body system the elements are osculating: they describe the instantaneous ellipse and drift under perturbation.
-:::
-
-## Exercises {.unnumbered}
-
-::: {#exr-ch7-hodograph}
-Show from @eq-pf-velocity that the perifocal velocity vector lies on a circle of radius $\mu/h$ centered at $(0, \mu e/h)$. Then compute $\mathbf{v}$ at every time step of the Mars simulation, rotate it back into the perifocal frame with the transpose of $Q$, and plot $v_y$ against $v_x$.
-:::
-
-::: {#exr-ch7-rotation-order}
-Apply the three rotations in the wrong order, $R_z(\omega)R_x(i)R_z(\Omega)$, to Mars's perifocal state and compare with the package. For which special values of the elements does the order not matter?
-:::
-
-::: {#exr-ch7-moon-fix}
-Build the Moon with `keplerian_to_state()` using $\mu = G(M_\oplus + m_{\mathrm{Moon}})$, $a = 384{,}400$ km, $e = 0.0549$, and $i = 5.15°$, add it with `add_body()`, and confirm with `measure_period()` that its period is the real 27.32 days.
-:::
-
-::: {#exr-ch7-spread}
-Use `true_anomaly_at()` to place Mercury, Venus, Earth, and Mars where they would be 200 days after each one's perihelion, then simulate and plot a snapshot with `plot_system()`.
-:::
-
-::: {#exr-ch7-precession}
-Extract Earth's osculating argument of perihelion $\omega$ from the Earth-Jupiter run at every time step with `get_orbital_elements()` and plot it. Does it precess steadily, oscillate, or both?
 :::

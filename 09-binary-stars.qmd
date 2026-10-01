@@ -136,7 +136,7 @@ c(planet_predicted_days = 2 * pi * sqrt(r_planet^3 / mu_total) / seconds_per_day
                           seconds_per_day)
 ```
 
-Both match the published periods. The planet is not *exactly* on a circle, because the two stars' pull is not exactly that of a point at the barycenter; the difference is a small periodic wobble at the binary's period, and you can see it by plotting the planet's distance from the barycenter over time (Exercise @exr-ch9-wobble). That wobble is real and it is how the planet's orbit was characterized from the transit timing.
+Both match the published periods. The planet is not *exactly* on a circle, because the two stars' pull is not exactly that of a point at the barycenter; the difference is a small periodic wobble at the binary's period, and you can see it by plotting the planet's distance from the barycenter over time. That wobble is real and it is how the planet's orbit was characterized from the transit timing.
 
 ::: {.callout-note title="Where it comes from"}
 The transit method finds planets by the dip in a star's brightness when the planet crosses in front of it. For Kepler-16 the light curve showed the planet crossing *both* stars, and the two stars eclipsing each other, so the geometry of the whole system could be reconstructed from timing alone. The paper includes a diagram of the three orbits that looks almost exactly like @fig-kepler16. Working out the masses needed a full three-body fit, because the planet's orbit is noticeably non-Keplerian: the stars' motion makes the planet's transit times and durations vary noticeably from one transit to the next, and the size of the variation fixes the mass ratio.
@@ -188,26 +188,4 @@ A planet that survives keeps its distance from the barycenter within a narrow ba
 - An eccentric binary: use the periapsis separation $a(1-e)$ and periapsis speed $\sqrt{(\mu/a)(1+e)/(1-e)}$, split by mass ratio.
 - A circumbinary planet far from the pair orbits the barycenter as if the stars were one body of mass $m_A + m_B$.
 - Planets inside about $2$ to $4$ binary separations (@eq-holman-wiegert) are unstable.
-:::
-
-## Exercises {.unnumbered}
-
-::: {#exr-ch9-equal}
-Build an equal-mass binary of two Sun-mass stars 1 AU apart. Before running it, predict each star's speed and the period. Then confirm both.
-:::
-
-::: {#exr-ch9-wobble}
-Plot Kepler-16b's distance from the barycenter against time for the two-year run. Identify the period of the wobble and explain why it matches the binary's period rather than the planet's.
-:::
-
-::: {#exr-ch9-sunset}
-From the planet, how far apart in the sky are the two stars? Shift the Kepler-16 run to the planet's frame with `shift_reference_frame("Kepler-16b")`, compute the angle between the directions to the two stars at every time step, and plot it. What is the maximum separation in degrees? (Chapter 10 does more with this.)
-:::
-
-::: {#exr-ch9-retrograde}
-Put the test planet at $2.0\,a_{\mathrm{bin}}$ but give it a *retrograde* orbit (reverse the sign of its velocity). Retrograde circumbinary orbits are known to be more stable than prograde ones. Does it survive fifteen years?
-:::
-
-::: {#exr-ch9-mass-ratio}
-Repeat the stability sweep with $m_B = m_A$ (so $q = 0.5$) and a circular binary. Where is the transition now, and what does @eq-holman-wiegert predict?
 :::

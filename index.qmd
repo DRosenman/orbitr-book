@@ -1,10 +1,20 @@
 # Preface {.unnumbered}
 
 ::: {.content-visible when-format="html"}
-::: {.callout-note title="About this edition"}
-This is the free online edition of *Orbital Mechanics with R*. It is the complete book, kept current with the orbitr package. A paperback edition is in preparation. <!-- DAVE: when the listing is live, change to: A paperback edition is available from Amazon [link]. -->
+<div style="text-align:center; font-style:italic; margin: 1.5em 0 2.5em 0; line-height:1.7;">
+For Kerry, a true academic, with a mind so beautiful<br>it is hard to believe it runs on the laws of physics.<br><br>
+And for my parents, who supported me through not one undergraduate degree but two:<br>political science at Temple, and then, when I announced the crazy idea<br>of studying theoretical physics, that one as well.<br><br>
+And lastly for my grandfather, a math teacher, for a million things,<br>among them the algebra and trigonometry he taught me all over again<br>before I could start on physics; and for my grandmother,<br>who powered every one of those sessions with the best Italian food on the planet.
+</div>
+:::
 
-The online edition is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/): read it, share the link, cite it, but please do not redistribute copies or sell derivatives. All code in the book is MIT-licensed, like the package, and may be used freely. The package documentation is at <https://orbit-r.com>, the source for both the package and this book is at <https://github.com/DRosenman>, and the author is at <https://daverosenman.com>.
+::: {.content-visible when-format="html"}
+::: {.callout-note title="About this edition"}
+This is the first online edition of *Orbital Mechanics with R*, and it is a living document. The text will change in small ways over time: a clearer sentence, a corrected number, a figure that was improved, an example brought up to date when the orbitr package changes. What will not change is the structure. The chapters, their order, and their numbering are fixed, so a reference to "Chapter 5" or "Section 4.3" in a syllabus or a citation will keep pointing at the same thing.
+
+A paperback edition is in preparation. My preference is for it to be available at or near the cost of printing rather than for profit, through a service like Leanpub, where an author sets a minimum price (which can be zero) and readers choose what to pay above it, and where a book can be published while still being refined, with updates going to everyone who has it. Until that edition exists, this online version is the edition of record, and it is subject to the minor changes described above.
+
+Whatever happens with print, this online edition will always be here, and always free. The text is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/); read it, share it, cite it. All code in the book is MIT-licensed, like the package, and may be used freely. The package documentation is at <https://orbit-r.com>, the source for both the package and this book is at <https://github.com/DRosenman>, and the author is at <https://daverosenman.com>.
 :::
 :::
 
@@ -36,7 +46,7 @@ If you are both, you will find the two halves of the book talk to each other mor
 
 **Part IV, Under the Hood**, looks at the C++ engine and at the places where a point-mass Newtonian model stops being enough.
 
-The appendices collect the mathematical background the derivations assume, a quick function reference, the built-in physical constants with their sources, and solutions to the exercises.
+The appendices collect the mathematical background the derivations assume, the R needed to run the book, a quick function reference, and the built-in physical constants with their sources.
 
 ## What you need {.unnumbered}
 
@@ -111,7 +121,7 @@ The symbol $\mu$ always means the gravitational parameter $\mu = G(M + m)$ of a 
 
 A few helper functions that the text defines for the derivations (measuring a period from a time series, solving Kepler's equation, converting elements to a state vector by hand) are collected in the file `R/helpers.R` in the book's source, which every chapter loads, so later chapters use them without repeating the definitions. Everything else is a package function.
 
-Boxes marked **Where it comes from** give the history of a method or a formula: who found it, what problem they were working on, and how it ended up in the package. Boxes marked **Key result** collect the formulas you will reuse. Exercises close each chapter; solutions are in @sec-solutions.
+Boxes marked **Where it comes from** give the history of a method or a formula: who found it, what problem they were working on, and how it ended up in the package. Boxes marked **Key result** collect the formulas you will reuse.
 
 ## Try it first: the orbitr app {.unnumbered}
 
