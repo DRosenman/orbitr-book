@@ -84,7 +84,17 @@
     "href": "index.html#acknowledgments",
     "title": "Orbital Mechanics with R",
     "section": "Acknowledgments",
-    "text": "Acknowledgments\n\nThe physics in this book was shaped by Thornton and Marion’s Classical Dynamics (Thornton and Marion 2004) and Newman’s Computational Physics (Newman 2012), the two books I kept open while writing the engine. The N-body methods follow Aarseth (Aarseth 2003).\n\n\n\n\nAarseth, Sverre J. 2003. Gravitational N-Body Simulations: Tools and Algorithms. Cambridge University Press.\n\n\nNewman, Mark. 2012. Computational Physics. CreateSpace.\n\n\nThornton, Stephen T., and Jerry B. Marion. 2004. Classical Dynamics of Particles and Systems. 5th ed. Brooks/Cole.",
+    "text": "Acknowledgments\n\nThe physics in this book was shaped by Thornton and Marion’s Classical Dynamics (Thornton and Marion 2004) and Newman’s Computational Physics (Newman 2012), the two books I kept open while writing the engine. The N-body methods follow Aarseth (Aarseth 2003).",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#dedication",
+    "href": "index.html#dedication",
+    "title": "Orbital Mechanics with R",
+    "section": "Dedication",
+    "text": "Dedication\nFor Kerry, a true academic, with a mind so beautiful it is hard to believe it runs on the laws of physics.\nFor my parents, who supported me through not one undergraduate degree but two: political science at Temple, and then, when I announced the crazy idea of studying theoretical physics, that one as well.\nAnd for my grandfather, a math teacher, for a million things, among them the algebra and trigonometry he taught me all over again before I could start on physics; and for my grandmother, who powered every one of those sessions with the best Italian food on the planet.\n\n\n\n\nAarseth, Sverre J. 2003. Gravitational N-Body Simulations: Tools and Algorithms. Cambridge University Press.\n\n\nNewman, Mark. 2012. Computational Physics. CreateSpace.\n\n\nThornton, Stephen T., and Jerry B. Marion. 2004. Classical Dynamics of Particles and Systems. 5th ed. Brooks/Cole.",
     "crumbs": [
       "Preface"
     ]
