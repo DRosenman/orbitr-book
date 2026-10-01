@@ -1,14 +1,6 @@
 # Preface {.unnumbered}
 
 ::: {.content-visible when-format="html"}
-<div style="text-align:center; font-style:italic; margin: 1.5em 0 2.5em 0; line-height:1.7;">
-For Kerry, a true academic, with a mind so beautiful<br>it is hard to believe it runs on the laws of physics.<br><br>
-And for my parents, who supported me through not one undergraduate degree but two:<br>political science at Temple, and then, when I announced the crazy idea<br>of studying theoretical physics, that one as well.<br><br>
-And lastly for my grandfather, a math teacher, for a million things,<br>among them the algebra and trigonometry he taught me all over again<br>before I could start on physics; and for my grandmother,<br>who powered every one of those sessions with the best Italian food on the planet.
-</div>
-:::
-
-::: {.content-visible when-format="html"}
 ::: {.callout-note title="About this edition"}
 This is the first online edition of *Orbital Mechanics with R*, and it is a living document. The text will change in small ways over time: a clearer sentence, a corrected number, a figure that was improved, an example brought up to date when the orbitr package changes. What will not change is the structure. The chapters, their order, and their numbering are fixed, so a reference to "Chapter 5" or "Section 4.3" in a syllabus or a citation will keep pointing at the same thing.
 
@@ -180,3 +172,11 @@ Nothing in the package itself has this limit. The same `simulate_system()` call 
      the role Claude Code played in building the package. -->
 
 The physics in this book was shaped by Thornton and Marion's *Classical Dynamics* [@thornton2004] and Newman's *Computational Physics* [@newman2012], the two books I kept open while writing the engine. The N-body methods follow Aarseth [@aarseth2003].
+
+## Dedication {.unnumbered}
+
+For Kerry, a true academic, with a mind so beautiful it is hard to believe it runs on the laws of physics.
+
+For my parents, who supported me through not one undergraduate degree but two: political science at Temple, and then, when I announced the crazy idea of studying theoretical physics, that one as well.
+
+And for my grandfather, a math teacher, for a million things, among them the algebra and trigonometry he taught me all over again before I could start on physics; and for my grandmother, who powered every one of those sessions with the best Italian food on the planet.
