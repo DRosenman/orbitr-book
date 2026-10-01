@@ -91,7 +91,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./the-app.html" rel="next">
+<link href="./01-why-simulate-gravity.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -188,7 +188,10 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Orbital Mechanics with R</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/DRosenman" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    <a href="https://orbit-r.com" title="orbitr documentation" class="quarto-navigation-tool px-1" aria-label="orbitr documentation"><i class="bi bi-book"></i></a>
+    <a href="https://daverosenman.com" title="About the author" class="quarto-navigation-tool px-1" aria-label="About the author"><i class="bi bi-person-circle"></i></a>
     <a href="https://github.com/DRosenman/orbitr-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
@@ -204,12 +207,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Preface</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./the-app.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Try It First: The orbitr App</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -423,6 +420,10 @@ window.Quarto = {
   <li><a href="#a-note-on-versions" id="toc-a-note-on-versions" class="nav-link" data-scroll-target="#a-note-on-versions">A note on versions</a></li>
   <li><a href="#how-the-code-works" id="toc-how-the-code-works" class="nav-link" data-scroll-target="#how-the-code-works">How the code works</a></li>
   <li><a href="#conventions" id="toc-conventions" class="nav-link" data-scroll-target="#conventions">Conventions</a></li>
+  <li><a href="#try-it-first-the-orbitr-app" id="toc-try-it-first-the-orbitr-app" class="nav-link" data-scroll-target="#try-it-first-the-orbitr-app">Try it first: the orbitr app</a>
+  <ul class="collapse">
+  <li><a href="#what-to-try" id="toc-what-to-try" class="nav-link" data-scroll-target="#what-to-try">What to try</a></li>
+  </ul></li>
   <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
   </ul></li>
   </ul>
@@ -470,8 +471,8 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is the free online edition of <em>Orbital Mechanics with R</em>. It is the complete book, kept current with the orbitr package. A paperback edition is available from Amazon. <!-- DAVE: add the Amazon link once the listing is live --></p>
-<p>The online edition is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>: read it, share the link, cite it, but please do not redistribute copies or sell derivatives. All code in the book is MIT-licensed, like the package, and may be used freely.</p>
+<p>This is the free online edition of <em>Orbital Mechanics with R</em>. It is the complete book, kept current with the orbitr package. A paperback edition is in preparation. <!-- DAVE: when the listing is live, change to: A paperback edition is available from Amazon [link]. --></p>
+<p>The online edition is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>: read it, share the link, cite it, but please do not redistribute copies or sell derivatives. All code in the book is MIT-licensed, like the package, and may be used freely. The package documentation is at <a href="https://orbit-r.com" class="uri">https://orbit-r.com</a>, the source for both the package and this book is at <a href="https://github.com/DRosenman" class="uri">https://github.com/DRosenman</a>, and the author is at <a href="https://daverosenman.com" class="uri">https://daverosenman.com</a>.</p>
 </div>
 </div>
 <p>The documentation for orbitr lives at <a href="https://orbit-r.com" class="uri">https://orbit-r.com</a>, and it is free. It will show you how to put a planet around a star in four lines of R, how to load the whole solar system from real JPL data, and how to animate a planet orbiting two suns. If all you want is to drive the package, you may not need this book.</p>
@@ -550,6 +551,42 @@ window.Quarto = {
 <p>The symbol <span class="math inline">\(\mu\)</span> always means the gravitational parameter <span class="math inline">\(\mu = G(M + m)\)</span> of a pair of bodies (or <span class="math inline">\(GM\)</span> when one is much heavier). Some mechanics texts use <span class="math inline">\(\mu\)</span> for the reduced mass; this book writes the reduced mass as <span class="math inline">\(m_r\)</span> to avoid the clash.</p>
 <p>A few helper functions that the text defines for the derivations (measuring a period from a time series, solving Kepler’s equation, converting elements to a state vector by hand) are collected in the file <code>R/helpers.R</code> in the book’s source, which every chapter loads, so later chapters use them without repeating the definitions. Everything else is a package function.</p>
 <p>Boxes marked <strong>Where it comes from</strong> give the history of a method or a formula: who found it, what problem they were working on, and how it ended up in the package. Boxes marked <strong>Key result</strong> collect the formulas you will reuse. Exercises close each chapter; solutions are in <a href="E-solutions.html" class="quarto-xref"><span>Appendix E — Solutions to Selected Exercises</span></a>.</p>
+</section>
+<section id="try-it-first-the-orbitr-app" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="try-it-first-the-orbitr-app">Try it first: the orbitr app</h2>
+<p>Before any code, it helps to have <em>seen</em> an orbit respond to a change: a planet given a little more speed and swinging out into an ellipse, a time step pushed too far and the orbit falling apart. The orbitr app is the package with a control panel on it. It runs in a browser, needs no installation, and does nothing the code in this book cannot do, which is the point: every control in it corresponds to an argument of a function you will meet in Chapter 2, and when you later type <code>add_body("Moon", mass = mass_moon, x = distance_earth_moon, vy = speed_moon)</code> you will already know what happens when that <code>vy</code> goes up. The app’s <strong>Code</strong> tab makes that correspondence explicit: whatever system you have set up, it shows the R code that produces exactly what is on the screen. Set up a system by clicking, read the code, paste it into R, and you have run your first simulation.</p>
+<!-- DAVE: confirm the app's actual controls and panels before publishing; the
+     walkthrough below describes the typical layout (presets, body table,
+     simulation settings, plot/animation) and should be edited to match. -->
+<iframe src="https://daverosenman.shinyapps.io/orbitr/" width="100%" height="820" style="border: 1px solid #ccc; border-radius: 6px;" title="The orbitr app">
+</iframe>
+<p>If the frame above is blank, your browser may be blocking embedded content; the app is also at <a href="https://daverosenman.shinyapps.io/orbitr/" class="uri">https://daverosenman.shinyapps.io/orbitr/</a> in its own tab.</p>
+<section id="what-to-try" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="what-to-try">What to try</h3>
+<p>Each of these is one of the book’s chapters, compressed to a minute.</p>
+<p><strong>1. Run a system as given.</strong> Choose one of the preset systems and run it without changing anything. The plot that appears is the output of <code>plot_orbits()</code> on a table of positions, and that table is what every chapter in this book works with.</p>
+<p><strong>2. Open the Code tab.</strong> It shows the R that produced the plot: a <code>create_system()</code>, an <code>add_body()</code> or <code>add_planet()</code> per body, a <code>simulate_system()</code> with the time step and duration you set, and the plotting call. This is the four-line pipeline of Chapter 2, written out for the system in front of you. Every experiment below changes one line of it; look at the Code tab after each one to see which.</p>
+<p><strong>3. Give a planet too much speed.</strong> Increase one body’s starting velocity by about 10% and run again. The circle becomes an ellipse with the starting point at its closest approach to the star. Increase it by 40% and the ellipse stretches toward escape; at <span class="math inline">\(\sqrt{2}\)</span> times the circular speed, about 41% more, the body never comes back. Chapter 4 derives exactly why those numbers are what they are.</p>
+<p><strong>4. Give it too little.</strong> Decrease the speed by 10% instead. The orbit dips <em>inward</em>, and the starting point is now the farthest point of the ellipse rather than the nearest. Same physics, opposite side.</p>
+<p><strong>5. Break the time step.</strong> Make the time step ten times larger and run the same system. Watch the orbit stop closing on itself. Then make it ten times smaller than the original. Chapter 5 explains what the step does and how to choose it; the short version is that the fastest-moving body in the system decides.</p>
+<p><strong>6. Switch the integrator.</strong> With a moderate time step, run the same system with Velocity Verlet and then with Euler. The Verlet orbit retraces itself; the Euler orbit spirals outward, gaining energy from nowhere. That spiral is the single most important thing to understand about simulating gravity, and Chapter 5 is about why it happens and how Verlet avoids it.</p>
+<p><strong>7. Add a third body.</strong> Put a second planet, or a second star, into the system and run it. If the third body is small and far from the others, nothing much changes. If it is comparable in mass and close, the motion stops being predictable in any useful sense. Chapter 11 measures that.</p>
+<p>When something surprises you, that is the moment to go to the chapter and find out why. The app shows the behavior and the Code tab shows the call; the book owns the explanation.</p>
+<div class="callout callout-style-default callout-warning no-icon callout-titled" title="When the app says no">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>When the app says no
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ask the app for a very long run with a very short time step and it will refuse rather than start. The reason is arithmetic. A simulation costs one force calculation per pair of bodies per step, so the work is roughly (number of steps) times (number of bodies squared), and the number of steps is the duration divided by the time step: a thousand years at hourly steps is nine million steps before the first planet has moved. The app runs on a shared web server with a fixed slice of one processor, so it estimates the step count before it starts and declines anything that would tie the server up for everyone else. <!-- DAVE: state the actual limit the app enforces, e.g. "about N steps" --></p>
+<p>Nothing in the package itself has this limit. The same <code>simulate_system()</code> call on your own computer runs for as long as it takes, and Chapter 15 measures exactly how long that is. When the app says no, that is the moment to open the Code tab, copy the code, and run it in R.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="acknowledgments" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
@@ -983,8 +1020,8 @@ Thornton, Stephen T., and Jerry B. Marion. 2004. <em>Classical Dynamics of Parti
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./the-app.html" class="pagination-link" aria-label="Try It First: The orbitr App">
-        <span class="nav-page-text">Try It First: The orbitr App</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./01-why-simulate-gravity.html" class="pagination-link" aria-label="Why Simulate Gravity?">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Simulate Gravity?</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -992,11 +1029,11 @@ Thornton, Stephen T., and Jerry B. Marion. 2004. <em>Classical Dynamics of Parti
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Copyright 2026 Dave Rosenman. The online edition is free to read under CC BY-NC-ND 4.0.</p>
+<p>Copyright 2026 <a href="./about.html">Dave Rosenman</a>. The online edition is free to read under CC BY-NC-ND 4.0.</p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<p><a href="https://orbit-r.com">orbit-r.com</a> · <a href="https://github.com/DRosenman">GitHub</a> · <a href="https://daverosenman.com">daverosenman.com</a></p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/DRosenman/orbitr-book/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/DRosenman/orbitr-book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>Built with <a href="https://quarto.org">Quarto</a>.</p>
 </div>
