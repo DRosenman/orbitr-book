@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2d168f75a1bb1eb8f29034416fff41ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-282ad48526d9429831959df086bc4660.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -494,36 +494,31 @@ window.Quarto = {
 <h2 class="unnumbered anchored" data-anchor-id="what-you-need">What you need</h2>
 <ul>
 <li>R, version 4.1 or later, from <a href="https://cran.r-project.org" class="uri">https://cran.r-project.org</a>. The book uses R’s native pipe <code>|&gt;</code> everywhere.</li>
-<li>The orbitr package, version 1.0.0 or later (see the box below).</li>
+<li>The orbitr package, version 1.0.0 or later, from CRAN (see the box below).</li>
 <li>The dplyr and ggplot2 packages. They are installed automatically with orbitr. A few chapters also use tidyr.</li>
 <li>For the interactive 3D plots and the animations, the plotly, gganimate, and gifski packages. These are optional; the book tells you when it uses them.</li>
 </ul>
 <p>An editor that runs R code chunks (RStudio or Positron, from <a href="https://posit.co" class="uri">https://posit.co</a>) makes it easy to run the book’s examples as you read.</p>
-<div class="callout callout-style-default callout-note no-icon callout-titled" title="Installing version 1.0.0">
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Installing orbitr">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Installing version 1.0.0
+<span class="screen-reader-only">Note</span>Installing orbitr
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This book needs orbitr 1.0.0, which has been submitted to CRAN and will be available there any day now. Once it is, the usual command is all you need:</p>
+<p>This book needs orbitr 1.0.0 or later, which is on CRAN:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"orbitr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If <code>packageVersion("orbitr")</code> still reports 0.3.0 after that, CRAN has not caught up yet. Install the current version directly from GitHub instead:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"DRosenman/orbitr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This builds the package’s C++ engine on your machine, so on Windows you need Rtools (<a href="https://cran.r-project.org/bin/windows/Rtools/" class="uri">https://cran.r-project.org/bin/windows/Rtools/</a>) and on a Mac the Xcode command-line tools (<code>xcode-select --install</code> in a terminal). Linux has a compiler already. Either route should leave <code>packageVersion("orbitr")</code> at 1.0.0 or higher.</p>
+<p><code>packageVersion("orbitr")</code> should then report 1.0.0 or higher. The development version, with whatever has been added since, is at <a href="https://github.com/DRosenman/orbitr" class="uri">https://github.com/DRosenman/orbitr</a> and installs with <code>remotes::install_github("DRosenman/orbitr")</code>; it compiles the package’s C++ engine, so on Windows that needs Rtools and on a Mac the Xcode command-line tools. For this book, the CRAN version is the one to use.</p>
 </div>
 </div>
 <p>The optional packages, in one line:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyr"</span>, <span class="st">"plotly"</span>, <span class="st">"gganimate"</span>, <span class="st">"gifski"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyr"</span>, <span class="st">"plotly"</span>, <span class="st">"gganimate"</span>, <span class="st">"gifski"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="a-note-on-versions" class="level2 unnumbered">
@@ -535,8 +530,8 @@ window.Quarto = {
 <p>Every figure and every number in this book was produced by the code shown next to it, when the book was built. Nothing was pasted in from elsewhere. That means two things for you as a reader. First, if you run the code, you should get the same picture. Second, when the text says a simulated period is “about 27 days,” that number came out of the simulation, not out of my head.</p>
 <p>Code appears in blocks like this, with output marked by <code>#&gt;</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> mass_earth <span class="sc">/</span> distance_earth_moon)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1018.289</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(gravitational_constant <span class="sc">*</span> mass_earth <span class="sc">/</span> distance_earth_moon)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1018.289</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Two kinds of output from orbitr do not survive the trip to paper. Interactive 3D plots (<code>plot_orbits_3d()</code>, and <code>plot_orbits()</code> whenever a body moves in <span class="math inline">\(z\)</span>) are plotly widgets, and animations (<code>animate_system()</code>) are GIFs. Throughout the book I use static ggplot2 figures, which are the same in every edition, and pass <code>three_d = FALSE</code> wherever a system has three-dimensional motion so that the figure stays flat.</p>
 <p>In a few places this online edition shows the animation or the interactive 3D plot itself; the printed edition replaces those with static snapshots. On your own screen, drop the <code>three_d = FALSE</code> argument from any figure and spin the orbits around.</p>
