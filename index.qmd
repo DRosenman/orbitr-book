@@ -43,29 +43,21 @@ The appendices collect the mathematical background the derivations assume, the R
 ## What you need {.unnumbered}
 
 - R, version 4.1 or later, from <https://cran.r-project.org>. The book uses R's native pipe `|>` everywhere.
-- The orbitr package, version 1.0.0 or later (see the box below).
+- The orbitr package, version 1.0.0 or later, from CRAN (see the box below).
 - The dplyr and ggplot2 packages. They are installed automatically with orbitr. A few chapters also use tidyr.
 - For the interactive 3D plots and the animations, the plotly, gganimate, and gifski packages. These are optional; the book tells you when it uses them.
 
 An editor that runs R code chunks (RStudio or Positron, from <https://posit.co>) makes it easy to run the book's examples as you read.
 
-::: {.callout-note title="Installing version 1.0.0"}
-This book needs orbitr 1.0.0, which has been submitted to CRAN and will be available there any day now. Once it is, the usual command is all you need:
+::: {.callout-note title="Installing orbitr"}
+This book needs orbitr 1.0.0 or later, which is on CRAN:
 
 ```{r}
 #| eval: false
 install.packages("orbitr")
 ```
 
-If `packageVersion("orbitr")` still reports 0.3.0 after that, CRAN has not caught up yet. Install the current version directly from GitHub instead:
-
-```{r}
-#| eval: false
-install.packages("remotes")
-remotes::install_github("DRosenman/orbitr")
-```
-
-This builds the package's C++ engine on your machine, so on Windows you need Rtools (<https://cran.r-project.org/bin/windows/Rtools/>) and on a Mac the Xcode command-line tools (`xcode-select --install` in a terminal). Linux has a compiler already. Either route should leave `packageVersion("orbitr")` at 1.0.0 or higher.
+`packageVersion("orbitr")` should then report 1.0.0 or higher. The development version, with whatever has been added since, is at <https://github.com/DRosenman/orbitr> and installs with `remotes::install_github("DRosenman/orbitr")`; it compiles the package's C++ engine, so on Windows that needs Rtools and on a Mac the Xcode command-line tools. For this book, the CRAN version is the one to use.
 :::
 
 

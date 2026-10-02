@@ -4,10 +4,7 @@
 
 He began his career in R at the New Jersey Department of Environmental Protection, where he was the lead programmer on the *2016 New Jersey Integrated Water Quality Assessment Report*, the state's assessment of its surface waters under the Clean Water Act. He built the application, in R, that downloaded and assessed the water quality data behind the report, and is listed as its co-author. Since then his work has mostly combined SQL Server with R and Python.
 
-He is the author of orbitr, the R package this book is built on, and of other open-source packages on CRAN and PyPI, among them `sqlserverconnect` and `dbexplorer`. He lives in Newtown, Pennsylvania, with his wife, Kerry.
-
-<!-- DAVE: add the PyPI package name(s) if you want them listed alongside the
-     CRAN ones. -->
+He is the author of orbitr, the R package this book is built on, and of other open-source packages, among them `sqlserverconnect`, an R package on CRAN for connecting R to SQL Server, and `polars_mssql`, a Python package on PyPI for working with SQL Server data in Polars. He lives in Newtown, Pennsylvania, with his wife, Kerry.
 
 ## Where to find things {.unnumbered}
 

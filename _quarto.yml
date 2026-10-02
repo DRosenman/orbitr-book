@@ -125,3 +125,8 @@ format:
     highlight-style: monochrome    # safe for black-and-white interiors
     include-in-header: latex/preamble.tex
     keep-tex: true
+    # Cairo renders figures to PDF more reliably than R's default device,
+    # especially on Windows (fonts, Unicode, no "unrecognized format" errors).
+    knitr:
+      opts_chunk:
+        dev: "cairo_pdf"

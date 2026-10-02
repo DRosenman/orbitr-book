@@ -271,8 +271,6 @@
 \usepackage{amsthm}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
-\theoremstyle{definition}
-\newtheorem{exercise}{Exercise}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Proof}}
 \newtheorem*{remark}{Remark}
@@ -421,8 +419,8 @@ ggplot2.
 places where a point-mass Newtonian model stops being enough.
 
 The appendices collect the mathematical background the derivations
-assume, a quick function reference, the built-in physical constants with
-their sources, and solutions to the exercises.
+assume, the R needed to run the book, a quick function reference, and
+the built-in physical constants with their sources.
 
 \section*{What you need}\label{what-you-need}
 \addcontentsline{toc}{section}{What you need}
@@ -571,8 +569,7 @@ else is a package function.
 Boxes marked \textbf{Where it comes from} give the history of a method
 or a formula: who found it, what problem they were working on, and how
 it ended up in the package. Boxes marked \textbf{Key result} collect the
-formulas you will reuse. Exercises close each chapter; solutions are in
-Appendix~\ref{sec-solutions}.
+formulas you will reuse.
 
 \section*{Try it first: the orbitr
 app}\label{try-it-first-the-orbitr-app}
@@ -622,6 +619,23 @@ The physics in this book was shaped by Thornton and Marion's
 \emph{Computational Physics} (Newman 2012), the two books I kept open
 while writing the engine. The N-body methods follow Aarseth (Aarseth
 2003).
+
+\section*{Dedication}\label{dedication}
+\addcontentsline{toc}{section}{Dedication}
+
+\markright{Dedication}
+
+For Kerry, a true academic, with a mind so beautiful it is hard to
+believe it runs on the laws of physics.
+
+For my parents, who supported me through not one undergraduate degree
+but two: political science at Temple, and then, when I announced the
+crazy idea of studying theoretical physics, that one as well.
+
+And for my grandfather, a math teacher, for a million things, among them
+the algebra and trigonometry he taught me all over again before I could
+start on physics; and for my grandmother, who powered every one of those
+sessions with the best Italian food on the planet.
 
 \part{First Orbits}
 
@@ -784,9 +798,10 @@ code is there to check the physics, not the other way round. Part III
 assumes Part II but each chapter stands alone, so you can go straight to
 binary stars or chaos if that is what you came for.
 
-The exercises matter more than they might in a pure physics book,
-because the answers are something you can run. Many of them are of the
-form ``predict, then simulate.'' Do the prediction first.
+The most useful habit while reading is to predict before you run. Each
+chapter's code sets up something whose outcome the physics tells you in
+advance; say what you expect, then look. When the two disagree, one of
+them is wrong, and finding out which is where the learning is.
 
 \section{Setting up}\label{setting-up}
 
@@ -808,38 +823,6 @@ update: the analysis functions this book relies on were added in 1.0.0.
 Anything newer should run the book's code unchanged; the changelog
 (\texttt{NEWS.md} in the GitHub repository,
 \url{https://github.com/DRosenman/orbitr}) lists any deprecations.
-
-\section*{Exercises}\label{exercises}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch1-three-body}{}\label{exr-ch1-three-body}
-
-Kepler's laws describe one body orbiting one other body. List three
-systems in the real solar system where you would expect them to be
-noticeably wrong, and say which other body is responsible in each case.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch1-step}{}\label{exr-ch1-step}
-
-The Moon orbits Earth in about 27.3 days. If a simulation steps forward
-one hour at a time, how many steps does one orbit take? How many if it
-steps one day at a time? Which do you think is more likely to give a
-good answer, and why? (Chapter 5 gives a rule of thumb; guess first.)
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch1-point-mass}{}\label{exr-ch1-point-mass}
-
-Earth has a radius of about 6,371 km and the Moon orbits at about
-384,400 km. The International Space Station orbits at about 420 km above
-the surface. For which of these two orbits do you think treating Earth
-as a point mass is a better approximation, and what feature of Earth
-might matter for the other?
-
-\end{exercise}
 
 \chapter{Four Lines to an Orbit}\label{sec-four-lines}
 
@@ -1362,49 +1345,6 @@ R:
 The simulation output is just a tibble, so \texttt{readr::write\_csv()}
 or \texttt{saveRDS()} handle it like any other data.
 
-\section*{Exercises}\label{exercises-1}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch2-zero-g}{}\label{exr-ch2-zero-g}
-
-Build the Earth-Moon system with \texttt{create\_system(G\ =\ 0)} and
-plot it. Explain the result in one sentence.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch2-speed}{}\label{exr-ch2-speed}
-
-Run the Moon simulation three times with the Moon's initial speed at
-1,000, 1,022, and 1,044 m/s. Plot the Moon's distance from the origin
-against time for each run on one axis. Which run has the largest swing
-between nearest and farthest distance? Before you run it, predict
-whether the orbit will be larger or smaller than the circle in each
-case.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch2-com}{}\label{exr-ch2-com}
-
-In the four-line version, the center of mass drifts at
-\(v_{\mathrm{com}} = m_{\mathrm{Moon}} v_{\mathrm{Moon}} / (m_{\mathrm{Earth}} + m_{\mathrm{Moon}})\).
-Compute the center-of-mass position at every time step from the
-simulation tibble (mass-weighted mean of \(x\) and \(y\), grouped by
-\texttt{time}) and plot its \(y\) coordinate against time. Confirm it is
-a straight line with the predicted slope.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch2-step}{}\label{exr-ch2-step}
-
-Re-run the inner solar system with
-\texttt{time\_step\ =\ seconds\_per\_day\ *\ 5}. Does Mercury's orbit
-still look right? Try 10 days. At what step size does it visibly fall
-apart, and does Mars fall apart at the same step size?
-
-\end{exercise}
-
 \part{Where the Physics Comes From}
 
 \chapter{Newton's Law and the N-Body Problem}\label{sec-newton}
@@ -1843,49 +1783,6 @@ explains what softening is for.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-2}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch3-ratio}{}\label{exr-ch3-ratio}
-
-Using the constants in the package, compute the acceleration of Earth
-due to the Sun, due to the Moon, and due to Jupiter at its closest
-approach (Jupiter's distance from the Sun minus Earth's). Express the
-last two as fractions of the first.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch3-shell}{}\label{exr-ch3-shell}
-
-A hollow spherical shell of mass \(M\) and radius \(R\) has a small hole
-drilled in it. A pebble is dropped into the hole. Describe its motion
-inside the shell. (No calculation needed, but say which theorem you are
-using.)
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch3-vectorize}{}\label{exr-ch3-vectorize}
-
-Rewrite \texttt{accelerations()} without the inner loop: for a fixed
-\(j\), compute the difference vectors to all other bodies at once with
-\texttt{sweep()} or by subtracting a row from the matrix, and sum the
-contributions with \texttt{colSums()}. Check that it gives the same
-answer on the Sun-Earth-Moon system.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch3-g}{}\label{exr-ch3-g}
-
-Simulate the Earth-Moon system for 28 days with
-\texttt{create\_system(G\ =\ gravitational\_constant\ *\ 1.01)} and
-again with the standard value. By how much does the Moon's position
-differ at the end? Is a 1\% change in \(G\) detectable from one month of
-orbit data?
-
-\end{exercise}
 
 \chapter{The Two-Body Problem, Solved by Hand}\label{sec-two-body}
 
@@ -2580,57 +2477,6 @@ For the relative motion of two bodies with \(\mu = G(m_1 + m_2)\):
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-3}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch4-energy-a}{}\label{exr-ch4-energy-a}
-
-Carry out the algebra from Equation~\ref{eq-e-energy} to
-Equation~\ref{eq-energy-a}: substitute \(h^2 = \mu a (1-e^2)\) and solve
-for \(\varepsilon\). Where did the assumption \(e \ne 1\) get used?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch4-escape}{}\label{exr-ch4-escape}
-
-Launch the planet in \texttt{make\_sim()} at \(k = 0.99\sqrt{2}\),
-\(k = \sqrt{2}\), and \(k = 1.1\sqrt{2}\) for two years. Compute the
-specific energy \(\varepsilon\) from the simulated state at every time
-step and plot it against time for all three. What sign does each have,
-and is it constant?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch4-perihelion-speed}{}\label{exr-ch4-perihelion-speed}
-
-Mars has \(a = 2.279\times10^{11}\) m and \(e = 0.0934\). Use vis-viva
-to compute its speed at perihelion and at aphelion. Then build Mars with
-\texttt{add\_planet("Mars",\ parent\ =\ "Sun")} (which starts it at
-perihelion), simulate for one Mars year, and compare the maximum and
-minimum speeds in the output with your numbers.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch4-weigh}{}\label{exr-ch4-weigh}
-
-Io orbits Jupiter with a period of 1.769 days at a mean distance of
-421,800 km. Use Kepler's third law to compute Jupiter's mass and compare
-with \texttt{mass\_jupiter}. Then simulate Io on a circular orbit using
-your computed mass and check that \texttt{measure\_period()} returns
-1.769 days.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch4-e-vector-direction}{}\label{exr-ch4-e-vector-direction}
-
-For the \(k = 1.2\) run, print the components of \(\mathbf{e}\) at
-\(t = 0\). In which direction does it point, and why is that the
-direction you should expect given where the planet was launched?
-
-\end{exercise}
-
 \chapter{Integrators: Euler, Euler-Cromer, and Velocity
 Verlet}\label{sec-integrators}
 
@@ -2899,11 +2745,11 @@ No velocities appear at all, and the local error in position is
 \(O(\Delta t^4)\), one order better than the derivation of
 Equation~\ref{eq-verlet} suggested. Subtracting consecutive position
 updates of Equation~\ref{eq-verlet} and using the velocity update to
-eliminate \(\mathbf{v}\) (Exercise Exercise~\ref{exr-ch5-equivalence})
-shows that velocity Verlet produces exactly the same sequence of
-positions as Equation~\ref{eq-stormer}. Velocity Verlet is just the
-Störmer form with the velocity carried along explicitly, which is
-convenient because you usually want the velocity.
+eliminate \(\mathbf{v}\) (a few lines of algebra worth doing once) shows
+that velocity Verlet produces exactly the same sequence of positions as
+Equation~\ref{eq-stormer}. Velocity Verlet is just the Störmer form with
+the velocity carried along explicitly, which is convenient because you
+usually want the velocity.
 
 \textbf{The leapfrog, or kick-drift-kick, form.} Split the velocity
 update of Equation~\ref{eq-verlet} in half, doing the first half before
@@ -3226,55 +3072,6 @@ time once and saves you from publishing a numerical artifact.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-4}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch5-equivalence}{}\label{exr-ch5-equivalence}
-
-Starting from the velocity Verlet update Equation~\ref{eq-verlet}, write
-the position update for step \(n\) and for step \(n-1\), subtract them,
-and use the velocity update to eliminate
-\(\mathbf{v}_n - \mathbf{v}_{n-1}\). Show that the result is the Störmer
-form Equation~\ref{eq-stormer}.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch5-vv-det}{}\label{exr-ch5-vv-det}
-
-Multiply out \(\det M_{\mathrm{VV}}\) in Equation~\ref{eq-vv-matrix} and
-confirm it equals 1. Then compute the trace, and show the eigenvalues
-have modulus 1 exactly when \(\omega\Delta t < 2\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch5-cromer-phase}{}\label{exr-ch5-cromer-phase}
-
-Run \texttt{star\_planet} for ten years with Euler-Cromer and with
-Verlet at a six-hour step. For each, find the time of the fifth
-periapsis passage (the fifth local minimum of the planet's distance from
-the star). By how many days do they differ? Which do you trust, and why?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch5-moon-step}{}\label{exr-ch5-moon-step}
-
-The default time step is one hour. Simulate the Earth-Moon system for
-one year with steps of 1, 3, 6, and 12 hours, compute the maximum
-relative energy error for each, and check that it scales as expected for
-a second-order method.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch5-euler-escape}{}\label{exr-ch5-euler-escape}
-
-Using the Euler run, estimate from the energy plot how long it would
-take the planet to reach zero total energy and escape. Then run it that
-long and see if you were right.
-
-\end{exercise}
 
 \chapter{Softening: What Happens When Bodies Get
 Close}\label{sec-softening}
@@ -3610,47 +3407,6 @@ diagnose a drift that is not there.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-5}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch6-period}{}\label{exr-ch6-period}
-
-Simulate the Earth-Sun system for one year with \texttt{softening} equal
-to \(10^8\), \(10^9\), and \(10^{10}\) m and measure the period each
-time with \texttt{measure\_period()}. Compare the fractional change with
-the prediction \(\tfrac34(\varepsilon/r)^2\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch6-max-force}{}\label{exr-ch6-max-force}
-
-Differentiate the softened acceleration
-\(a(r) = Gm\,r/(r^2+\varepsilon^2)^{3/2}\) with respect to \(r\) and
-show that its maximum is at \(r = \varepsilon/\sqrt2\) with value
-\((2/3)^{3/2}\,Gm/(\sqrt{2}\,\varepsilon^2) \approx 0.385\,Gm/\varepsilon^2\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch6-step}{}\label{exr-ch6-step}
-
-For the unsoftened encounter, run with steps of 320, 160, 80, 40, and 20
-seconds and tabulate the eccentricity after the encounter and the
-maximum energy error. At what step does the answer stop changing?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch6-potential}{}\label{exr-ch6-potential}
-
-Show that the potential energy of two bodies interacting through the
-softened force is \(-Gm_1m_2/\sqrt{r^2+\varepsilon^2}\) by integrating
-the force from \(r\) to infinity. Then confirm that
-\texttt{conserved\_quantities(soft)} reports a nearly constant energy
-while \texttt{conserved\_quantities(soft,\ softening\ =\ 0)} does not.
-
-\end{exercise}
 
 \chapter{From Orbital Elements to State Vectors}\label{sec-keplerian}
 
@@ -4084,10 +3840,10 @@ real 27.32 days. The simulation confirms it:
 
 If you need the Moon's period right to better than a percent, build it
 with \texttt{keplerian\_to\_state()} using the combined \(\mu\) and pass
-the result to \texttt{add\_body()} (Exercise
-Exercise~\ref{exr-ch7-moon-fix}). For every other body in the solar
-system the question does not arise: the heaviest planet is a thousandth
-of the Sun, and the error is a twentieth of a percent in its period.
+the result to \texttt{add\_body()}; \texttt{measure\_period()} then
+returns the real 27.32 days. For every other body in the solar system
+the question does not arise: the heaviest planet is a thousandth of the
+Sun, and the error is a twentieth of a percent in its period.
 
 \section{Where is Mars today? Kepler's
 equation}\label{where-is-mars-today-keplers-equation}
@@ -4297,57 +4053,6 @@ osculating elements at J2000, and the simulation takes it from there.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-6}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch7-hodograph}{}\label{exr-ch7-hodograph}
-
-Show from Equation~\ref{eq-pf-velocity} that the perifocal velocity
-vector lies on a circle of radius \(\mu/h\) centered at
-\((0, \mu e/h)\). Then compute \(\mathbf{v}\) at every time step of the
-Mars simulation, rotate it back into the perifocal frame with the
-transpose of \(Q\), and plot \(v_y\) against \(v_x\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch7-rotation-order}{}\label{exr-ch7-rotation-order}
-
-Apply the three rotations in the wrong order,
-\(R_z(\omega)R_x(i)R_z(\Omega)\), to Mars's perifocal state and compare
-with the package. For which special values of the elements does the
-order not matter?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch7-moon-fix}{}\label{exr-ch7-moon-fix}
-
-Build the Moon with \texttt{keplerian\_to\_state()} using
-\(\mu = G(M_\oplus + m_{\mathrm{Moon}})\), \(a = 384{,}400\) km,
-\(e = 0.0549\), and \(i = 5.15°\), add it with \texttt{add\_body()}, and
-confirm with \texttt{measure\_period()} that its period is the real
-27.32 days.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch7-spread}{}\label{exr-ch7-spread}
-
-Use \texttt{true\_anomaly\_at()} to place Mercury, Venus, Earth, and
-Mars where they would be 200 days after each one's perihelion, then
-simulate and plot a snapshot with \texttt{plot\_system()}.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch7-precession}{}\label{exr-ch7-precession}
-
-Extract Earth's osculating argument of perihelion \(\omega\) from the
-Earth-Jupiter run at every time step with
-\texttt{get\_orbital\_elements()} and plot it. Does it precess steadily,
-oscillate, or both?
-
-\end{exercise}
 
 \part{Doing Astrophysics with orbitr}
 
@@ -4736,61 +4441,6 @@ the step, it gets four times wider. Both are worth doing once to see.
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-7}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch8-venus}{}\label{exr-ch8-venus}
-
-Compute the Earth-Venus synodic period from Equation~\ref{eq-synodic}
-and from the data. It should be close to 584 days. How many synodic
-periods make almost exactly eight years? (This near-commensurability is
-why Venus's appearances in the sky repeat on an eight-year cycle, known
-since the Babylonians.)
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch8-moon}{}\label{exr-ch8-moon}
-
-Build the Earth-Moon system with
-\texttt{add\_planet("Moon",\ parent\ =\ "Earth")} and an hourly step,
-measure the Moon's period, and weigh Earth with Kepler's third law. How
-does the answer compare with \texttt{mass\_earth}, and why is it
-slightly off? (Chapter 7 is relevant.)
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch8-pluto}{}\label{exr-ch8-pluto}
-
-Pluto and Neptune are in a 3:2 orbital resonance: Pluto completes two
-orbits for every three of Neptune. Run a 500-year simulation with Pluto
-included (a daily step is fine) and measure both periods. Is the ratio
-3:2? Pluto's orbit crosses Neptune's; use the data to show that the two
-bodies are never close when it does.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch8-saturn}{}\label{exr-ch8-saturn}
-
-Remove Jupiter from the system and repeat the Sun-wobble plot. Identify
-Saturn's period and velocity amplitude from the result and compare with
-the two-body prediction
-\(v = \sqrt{G m_{\mathrm{Saturn}}^2 / ((M_\odot + m_{\mathrm{Saturn}})\, a)}\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch8-mercury}{}\label{exr-ch8-mercury}
-
-Mercury's perihelion precesses by about 532 arcseconds per century
-because of the other planets (plus 43 from general relativity, which the
-package does not include). Extract Mercury's osculating argument of
-perihelion from the full run, average it over each orbit to smooth out
-the short-period wobble, and estimate the precession rate. How close do
-you get, and what limits the precision?
-
-\end{exercise}
-
 \chapter{Binary Stars and Circumbinary Planets}\label{sec-binary-stars}
 
 Most stars are not alone. Roughly half of Sun-like stars have a
@@ -5026,9 +4676,8 @@ Both match the published periods. The planet is not \emph{exactly} on a
 circle, because the two stars' pull is not exactly that of a point at
 the barycenter; the difference is a small periodic wobble at the
 binary's period, and you can see it by plotting the planet's distance
-from the barycenter over time (Exercise Exercise~\ref{exr-ch9-wobble}).
-That wobble is real and it is how the planet's orbit was characterized
-from the transit timing.
+from the barycenter over time. That wobble is real and it is how the
+planet's orbit was characterized from the transit timing.
 
 \begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title={Where it comes from}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
 
@@ -5140,54 +4789,6 @@ can live around a binary, and Kepler-16b lives right at it.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-8}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch9-equal}{}\label{exr-ch9-equal}
-
-Build an equal-mass binary of two Sun-mass stars 1 AU apart. Before
-running it, predict each star's speed and the period. Then confirm both.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch9-wobble}{}\label{exr-ch9-wobble}
-
-Plot Kepler-16b's distance from the barycenter against time for the
-two-year run. Identify the period of the wobble and explain why it
-matches the binary's period rather than the planet's.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch9-sunset}{}\label{exr-ch9-sunset}
-
-From the planet, how far apart in the sky are the two stars? Shift the
-Kepler-16 run to the planet's frame with
-\texttt{shift\_reference\_frame("Kepler-16b")}, compute the angle
-between the directions to the two stars at every time step, and plot it.
-What is the maximum separation in degrees? (Chapter 10 does more with
-this.)
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch9-retrograde}{}\label{exr-ch9-retrograde}
-
-Put the test planet at \(2.0\,a_{\mathrm{bin}}\) but give it a
-\emph{retrograde} orbit (reverse the sign of its velocity). Retrograde
-circumbinary orbits are known to be more stable than prograde ones. Does
-it survive fifteen years?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch9-mass-ratio}{}\label{exr-ch9-mass-ratio}
-
-Repeat the stability sweep with \(m_B = m_A\) (so \(q = 0.5\)) and a
-circular binary. Where is the transition now, and what does
-Equation~\ref{eq-holman-wiegert} predict?
-
-\end{exercise}
 
 \chapter{Reference Frames}\label{sec-reference-frames}
 
@@ -5647,53 +5248,6 @@ looks at the other Lagrange points, which are not so hospitable.
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-9}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch10-selenocentric}{}\label{exr-ch10-selenocentric}
-
-Shift the Sun-Earth-Moon run to the Moon's frame and plot Earth's path.
-Why is it a closed loop when the Moon's heliocentric path is not?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch10-venus}{}\label{exr-ch10-venus}
-
-Repeat the retrograde analysis for Venus seen from Earth. Inner planets
-go retrograde too, but around \emph{inferior conjunction} (between Earth
-and the Sun) rather than opposition. Confirm this, and compare the
-retrograde duration with Mars's.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch10-l5}{}\label{exr-ch10-l5}
-
-Put a second Trojan at \(L_5\), 60 degrees behind Jupiter, and confirm
-it librates too. Then put one at \(L_3\), on the far side of the Sun
-from Jupiter, and watch how long it stays.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch10-horseshoe}{}\label{exr-ch10-horseshoe}
-
-Nudge the \(L_4\) Trojan outward by 6\% instead of 2\%. The libration
-should grow into a \emph{horseshoe} orbit that wraps around \(L_4\),
-\(L_3\), and \(L_5\) together. Find the nudge at which the tadpole
-becomes a horseshoe.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch10-sunset-size}{}\label{exr-ch10-sunset-size}
-
-The two stars of Kepler-16 have radii of about \(0.65\) and \(0.23\)
-solar radii. Convert each star's distance from the planet into an
-apparent angular diameter over the year and plot both. How large do the
-suns look compared with ours, which spans half a degree?
-
-\end{exercise}
-
 \chapter{Chaos and the Three-Body Problem}\label{sec-chaos}
 
 Chapter 4 solved the two-body problem completely, on paper. Add one more
@@ -6147,60 +5701,6 @@ can never be ignored.
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-10}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch11-lyapunov-step}{}\label{exr-ch11-lyapunov-step}
-
-Repeat the twin-run experiment with a time step of 30 minutes instead of
-an hour. Does the Lyapunov time change? Does the detailed trajectory
-after two years change? What does that tell you about which results of a
-chaotic simulation to trust?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch11-energy-check}{}\label{exr-ch11-energy-check}
-
-Run \texttt{get\_energy()} on the three-year triple and confirm the
-total is conserved through the ejection. Then compute the energy of the
-surviving pair alone (as a two-body system) at the end and show that it
-is more negative than the total.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch11-figure-eight}{}\label{exr-ch11-figure-eight}
-
-The figure-eight orbit is a periodic solution of the equal-mass
-three-body problem in which all three bodies chase each other around a
-single figure-eight curve. In units with \(G = 1\) and unit masses, its
-initial conditions are bodies at \((0.97000436, -0.24308753)\),
-\((-0.97000436, 0.24308753)\), and \((0, 0)\) with velocities
-\((0.46620369, 0.43236573)\), \((0.46620369, 0.43236573)\), and
-\((-0.93240737, -0.86473146)\). Scale these to SI units (choose a mass
-and a length; derive the time and velocity scales) and reproduce the
-orbit with \texttt{create\_system(G\ =\ ...)}. How long does it stay on
-the figure eight?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch11-retrograde-hill}{}\label{exr-ch11-retrograde-hill}
-
-Place a test moon at \(0.7\,r_{\mathrm{H}}\) on a \emph{retrograde}
-orbit (reverse the sign of its velocity relative to Earth) and another
-at the same distance prograde. Which survives five years?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch11-l2}{}\label{exr-ch11-l2}
-
-Repeat the \(L_1\) experiment at \(L_2\), on the far side of Earth from
-the Sun, where JWST operates. Is the e-folding time the same? Then try
-\(L_3\), and explain why its instability is so much slower.
-
-\end{exercise}
-
 \chapter{Conservation Laws as Diagnostics}\label{sec-diagnostics}
 
 A simulation can be wrong in ways that are invisible in a plot. An orbit
@@ -6616,56 +6116,6 @@ eccentricity vector is the usual one, and watch that.
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-11}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch12-euler-L}{}\label{exr-ch12-euler-L}
-
-Show that one Euler step changes the total angular momentum by
-\(\Delta t^2\sum_j m_j\mathbf{v}_j\times\mathbf{a}_j\), and that for a
-circular two-body orbit this quantity is nonzero and has a constant
-sign. Confirm with the Euler run that \(|\mathbf{L}|\) grows
-monotonically.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch12-softening}{}\label{exr-ch12-softening}
-
-Run Chapter 6's softened encounter and compute
-\texttt{conserved\_quantities()} with its default and with
-\texttt{softening\ =\ 0}. Describe the spurious ``drift'' the mismatched
-version shows.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch12-precession-e}{}\label{exr-ch12-precession-e}
-
-Repeat the numerical-precession measurement for a planet on a circular
-orbit (\(e = 0\)) and on a very eccentric one (\(e = 0.8\)) with the
-same semi-major axis and step. How does the artifact depend on
-eccentricity, and why?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch12-euler-cromer-precession}{}\label{exr-ch12-euler-cromer-precession}
-
-Repeat it with Euler-Cromer at a one-day step. Is the numerical
-precession larger or smaller than Verlet's at the same step, and how
-does it scale when the step is halved?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch12-full}{}\label{exr-ch12-full}
-
-Write a function \texttt{check\_run(sim)} that prints one line per
-conservation law saying ``ok'' or ``suspect'', using thresholds you
-choose from the figures in this chapter, and run it on every simulation
-in Chapter 8.
-
-\end{exercise}
-
 \chapter{Comets and Highly Eccentric Orbits}\label{sec-comets}
 
 Everything in the solar system chapter was nearly circular, and nearly
@@ -7049,55 +6499,6 @@ would have hit.''
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-12}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch13-two-orbits}{}\label{exr-ch13-two-orbits}
-
-Extend the segmented Halley run to two full orbits by adding three more
-segments, and compare the time of the second perihelion with Kepler's
-third law.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch13-switch-radius}{}\label{exr-ch13-switch-radius}
-
-Repeat the segmented run switching at 2 AU and at 10 AU instead of 5 AU.
-Tabulate the number of steps and the maximum energy error for each.
-Where is the sweet spot?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch13-loop}{}\label{exr-ch13-loop}
-
-Write a function
-\texttt{run\_segmented(system,\ body,\ center,\ r\_switch,\ step\_far,\ step\_near,\ duration)}
-that runs in chunks of one year with the coarse step (using
-\texttt{continue\_simulation()}), checks after each chunk whether the
-body is inside \texttt{r\_switch}, and switches steps accordingly,
-without using Kepler's equation at all. Test it on Halley.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch13-borisov}{}\label{exr-ch13-borisov}
-
-Comet 2I/Borisov, the second interstellar visitor, had \(e = 3.36\) and
-\(q = 2.01\) AU. Set it up, run it through perihelion, and compute its
-deflection angle and its speed at infinity.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch13-sungrazer}{}\label{exr-ch13-sungrazer}
-
-Build a Kreutz-like comet with \(q = 0.005\) AU and \(e = 0.9999\),
-start it at 2 AU inbound, and find the time step at which Verlet
-resolves the perihelion passage (energy error below \(10^{-4}\)). How
-many steps per day is that?
-
-\end{exercise}
-
 \chapter{Figures for Papers and Talks}\label{sec-figures}
 
 The plotting functions in orbitr are built to get you a picture in one
@@ -7476,41 +6877,6 @@ book.
 
 \end{tcolorbox}
 
-\section*{Exercises}\label{exercises-13}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch14-phase}{}\label{exr-ch14-phase}
-
-Plot Mercury's radial velocity \(\dot r\) against \(r\) over one orbit
-(a phase-space plot). What shape is it, and why is it closed?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch14-grid}{}\label{exr-ch14-grid}
-
-Make a snapshot grid of the Kepler-16 system from Chapter 9 at six
-instants spaced over one binary orbit, in the frame of the planet.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch14-greyscale}{}\label{exr-ch14-greyscale}
-
-Take any three-body figure from Chapter 11 and make it work in
-greyscale: distinguish the bodies by line type and point shape rather
-than color, and check it by printing it in black and white.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch14-anim}{}\label{exr-ch14-anim}
-
-Animate the retrograde-Mars run of Chapter 10 in Earth's frame with the
-custom gganimate recipe, with a title that shows the date and a shadow
-wake on Mars only.
-
-\end{exercise}
-
 \part{Under the Hood}
 
 \chapter{The C++ Engine}\label{sec-cpp}
@@ -7742,20 +7108,20 @@ Measure it:
 \CommentTok{\#\textgreater{} \# A tibble: 14 x 3}
 \CommentTok{\#\textgreater{}        n engine ms\_per\_step}
 \CommentTok{\#\textgreater{}    \textless{}dbl\textgreater{} \textless{}chr\textgreater{}        \textless{}dbl\textgreater{}}
-\CommentTok{\#\textgreater{}  1     2 C++          0.450}
-\CommentTok{\#\textgreater{}  2     2 R            0.625}
-\CommentTok{\#\textgreater{}  3     5 C++          0.350}
-\CommentTok{\#\textgreater{}  4     5 R            0.700}
-\CommentTok{\#\textgreater{}  5    10 C++          0.525}
-\CommentTok{\#\textgreater{}  6    10 R            0.675}
+\CommentTok{\#\textgreater{}  1     2 C++          0.550}
+\CommentTok{\#\textgreater{}  2     2 R            0.800}
+\CommentTok{\#\textgreater{}  3     5 C++          0.450}
+\CommentTok{\#\textgreater{}  4     5 R            0.750}
+\CommentTok{\#\textgreater{}  5    10 C++          0.475}
+\CommentTok{\#\textgreater{}  6    10 R            0.600}
 \CommentTok{\#\textgreater{}  7    20 C++          0.450}
-\CommentTok{\#\textgreater{}  8    20 R            0.675}
+\CommentTok{\#\textgreater{}  8    20 R            0.775}
 \CommentTok{\#\textgreater{}  9    50 C++          0.550}
-\CommentTok{\#\textgreater{} 10    50 R            1.33 }
-\CommentTok{\#\textgreater{} 11   100 C++          1.05 }
-\CommentTok{\#\textgreater{} 12   100 R            2.48 }
-\CommentTok{\#\textgreater{} 13   200 C++          1.73 }
-\CommentTok{\#\textgreater{} 14   200 R           29.0}
+\CommentTok{\#\textgreater{} 10    50 R            1.30 }
+\CommentTok{\#\textgreater{} 11   100 C++          0.85 }
+\CommentTok{\#\textgreater{} 12   100 R            3.12 }
+\CommentTok{\#\textgreater{} 13   200 C++          1.72 }
+\CommentTok{\#\textgreater{} 14   200 R           10.5}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7804,7 +7170,7 @@ because each tibble has to be checked and copied:
 \NormalTok{one\_step }\OtherTok{\textless{}{-}} \FunctionTok{get\_bodies}\NormalTok{(}\FunctionTok{cluster}\NormalTok{(}\DecValTok{9}\NormalTok{))}
 \NormalTok{pieces   }\OtherTok{\textless{}{-}} \FunctionTok{replicate}\NormalTok{(}\DecValTok{10000}\NormalTok{, one\_step, }\AttributeTok{simplify =} \ConstantTok{FALSE}\NormalTok{)}
 \FunctionTok{system.time}\NormalTok{(}\FunctionTok{bind\_rows}\NormalTok{(pieces))[[}\StringTok{"elapsed"}\NormalTok{]]}
-\CommentTok{\#\textgreater{} [1] 0.13}
+\CommentTok{\#\textgreater{} [1] 0.14}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7845,7 +7211,7 @@ evaluation, the \(n = 200\) point gives \(c\), and
 \CommentTok{\#\textgreater{}        n ms\_per\_step hours\_per\_10000\_steps}
 \CommentTok{\#\textgreater{}    \textless{}dbl\textgreater{}       \textless{}dbl\textgreater{}                 \textless{}dbl\textgreater{}}
 \CommentTok{\#\textgreater{} 1   1000        43.1                 0.120}
-\CommentTok{\#\textgreater{} 2  10000      4313.                 12.0  }
+\CommentTok{\#\textgreater{} 2  10000      4312.                 12.0  }
 \CommentTok{\#\textgreater{} 3 100000    431250.               1198.}
 \end{Highlighting}
 \end{Shaded}
@@ -7917,47 +7283,6 @@ the switch.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-14}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch15-halve}{}\label{exr-ch15-halve}
-
-Modify the kernel (or Chapter 3's R version) to loop over \(j < k\)
-only, applying each pair's force to both bodies with opposite signs.
-Confirm it gives the same accelerations, and time it against the
-original for \(n = 200\).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch15-record}{}\label{exr-ch15-record}
-
-Run a two-body system for one year with hourly steps, then again with
-daily steps, and compare the elapsed times. By what factor does the cost
-change, and what does that say about where the time goes?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch15-energy-cost}{}\label{exr-ch15-energy-cost}
-
-\texttt{get\_energy()} is also \(O(n^2)\) per time step: its
-potential-energy sum uses the same \texttt{outer()} matrices as the R
-fallback. Time it on the 200-body run and compare with the simulation
-itself. Which is more expensive, and why?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch15-verlet-cost}{}\label{exr-ch15-verlet-cost}
-
-\texttt{simulate\_system()} evaluates the acceleration twice per Verlet
-step, but \(\mathbf{a}_{n+1}\) of one step is \(\mathbf{a}_n\) of the
-next. Sketch how the loop would change to reuse it, and estimate from
-the benchmark how much time it would save for \(n = 10\) and for
-\(n = 200\).
-
-\end{exercise}
 
 \chapter{Limits and Extensions}\label{sec-limits}
 
@@ -8199,8 +7524,9 @@ concentrated at periapsis, where the air is densest, and that changes
 the shape of the decay: periapsis stays nearly fixed while apoapsis is
 pulled down, the orbit circularizes, and only then does the whole thing
 spiral in. The same loop produces that behavior if the kick depends on
-altitude through a density profile, which is Exercise
-Exercise~\ref{exr-ch16-real-drag}.
+altitude through a density profile,
+\(\tau(r) = \tau_0\exp\big((r - r_0)/H\big)\) with a scale height \(H\)
+of about 60 km, applied every few minutes instead of every day.
 
 \subsection{Thrust}\label{thrust}
 
@@ -8208,8 +7534,10 @@ A rocket burn is a kick too, and a short one is well modeled as an
 instantaneous velocity change: a \(\Delta v\). The Hohmann transfer
 between two circular orbits is two kicks, one at periapsis of the
 transfer ellipse and one at apoapsis, with magnitudes that follow
-directly from vis-viva (Exercise Exercise~\ref{exr-ch16-hohmann}).
-Splitting with \texttt{continue\_simulation()} does it exactly.
+directly from vis-viva: the transfer ellipse has \(a = (r_1 + r_2)/2\),
+and each \(\Delta v\) is the difference between the circular speed and
+the transfer-orbit speed at that radius. Splitting with
+\texttt{continue\_simulation()} does it exactly.
 
 \section{Oblateness}\label{oblateness}
 
@@ -8416,71 +7744,6 @@ physics will not.
 \end{itemize}
 
 \end{tcolorbox}
-
-\section*{Exercises}\label{exercises-15}
-\addcontentsline{toc}{section}{Exercises}
-
-\markright{Exercises}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-merge}{}\label{exr-ch16-merge}
-
-Using \texttt{closest\_approach()}, find the first time two stars of the
-chaotic triple pass within two solar radii. Stop the run there, replace
-the two with their inelastic merger, continue with
-\texttt{continue\_simulation()}, and compare the subsequent motion with
-the unmerged run.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-beta}{}\label{exr-ch16-beta}
-
-Derive \(e = \beta/(1-\beta)\) from Chapter 4's rule \(e = |k^2-1|\),
-and confirm with \texttt{get\_orbital\_elements()} on the
-\(\beta = 0.3\) grain (pass
-\texttt{mu\ =\ gravitational\_constant\ *\ (1\ -\ 0.3)\ *\ mass\_sun},
-the effective parameter).
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-hohmann}{}\label{exr-ch16-hohmann}
-
-A Hohmann transfer from a circular orbit of radius \(r_1\) to one of
-radius \(r_2\) uses an ellipse with \(a = (r_1+r_2)/2\). Use vis-viva to
-compute the two \(\Delta v\)'s for a transfer from a 400 km Earth orbit
-to geostationary altitude (42,164 km from Earth's center). Apply them
-with \texttt{kick\_drag()}-style velocity edits and
-\texttt{continue\_simulation()}, and confirm the satellite arrives on a
-circular orbit.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-real-drag}{}\label{exr-ch16-real-drag}
-
-Replace the uniform kick in \texttt{kick\_drag()} with one whose damping
-time depends on altitude as
-\(\tau(r) = \tau_0\exp\big((r - r_0)/H\big)\), with a scale height \(H\)
-of 60 km, and apply it every ten minutes instead of every day (use a
-shorter run). Show that periapsis stays nearly fixed while apoapsis
-falls.
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-sun-sync}{}\label{exr-ch16-sun-sync}
-
-Use Equation~\ref{eq-j2-rates} to find the inclination at which a
-circular 700 km orbit is Sun-synchronous (\(\dot\Omega = 360°\) per
-year). Why must it be retrograde?
-
-\end{exercise}
-
-\begin{exercise}[]\protect\hypertarget{exr-ch16-yoshida}{}\label{exr-ch16-yoshida}
-
-Implement the fourth-order Yoshida composition in plain R on top of
-Chapter 3's \texttt{accelerations()} for a two-body system, and show
-that its energy error scales as \(\Delta t^4\) by halving the step
-twice.
-
-\end{exercise}
 
 \bookmarksetup{startatroot}
 
@@ -9419,11 +8682,11 @@ R_x(\theta) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\theta & -\sin\theta \\ 0 & \
 }\end{equation}
 
 Rotations preserve lengths and angles. Their inverse is their transpose
-(\(R^{-1} = R^{T}\)), so undoing a rotation costs nothing, which Chapter
-7's exercises use. The sign convention here, that \(R(\theta)\) rotates
-the \emph{vector} counterclockwise by \(\theta\), is the one the package
-uses; some texts instead rotate the coordinate axes, which is the same
-matrix with \(-\theta\).
+(\(R^{-1} = R^{T}\)), so undoing a rotation costs nothing. The sign
+convention here, that \(R(\theta)\) rotates the \emph{vector}
+counterclockwise by \(\theta\), is the one the package uses; some texts
+instead rotate the coordinate axes, which is the same matrix with
+\(-\theta\).
 
 The \textbf{determinant} of a \(2\times2\) matrix is \(ad - bc\). Its
 geometric meaning is the thing Chapter 5 is built on: a matrix with
@@ -9846,54 +9109,30 @@ speed\_pluto & 4.7400e+03 & m/s \\
 
 }
 
-\chapter{Solutions to Selected Exercises}\label{sec-solutions}
-
-\emph{Draft status: to be written once the chapters are final. Solutions
-will be given for every exercise that has a numerical answer, with code;
-derivation exercises get the key steps.}
-
-\section{Chapter 1}\label{chapter-1}
-
-\section{Chapter 2}\label{chapter-2}
-
-\section{Chapter 3}\label{chapter-3}
-
-\section{Chapter 4}\label{chapter-4}
-
-\section{Chapter 5}\label{chapter-5}
-
 \chapter*{About the Author}\label{about-the-author}
 \addcontentsline{toc}{chapter}{About the Author}
 
 \markboth{About the Author}{About the Author}
 
-\textbf{Dave Rosenman} is a software engineer and data scientist with a
-Bachelor of Science in Physics from The College of New Jersey. He builds
-production analytics software, much of it in R: Shiny applications used
-daily by the people who depend on them, data pipelines, and the packages
-that make both easier to write. He is the author of orbitr, the package
-this book is built on, and of other open-source packages on CRAN and
-PyPI, among them \texttt{sqlserverconnect}, a set of helpers for
-connecting R to SQL Server, and \texttt{dbexplorer}, a Shiny application
-for browsing and exporting database tables.
+\textbf{Dave Rosenman} is a software engineer and data scientist. He
+holds a B.S. in Physics from The College of New Jersey and an earlier
+degree in Political Science from Temple University, and is working
+toward an M.S. in Computer Science at Georgia Tech, specializing in
+artificial intelligence. He is currently an Infrastructure and
+Operations Engineer at Optum.
 
-Before moving into industry he worked as a scientist for the State of
-New Jersey, at the Department of Environmental Protection, where he
-co-authored the \emph{2016 New Jersey Integrated Water Quality
-Assessment Report}, the state's Clean Water Act assessment of the
-condition of its rivers, lakes, and coastal waters, submitted to the
-U.S. Environmental Protection Agency. The job was equal parts science
-and software: turning years of monitoring data into defensible
-assessments, with code that had to be right because decisions were made
-on it. That combination, physics training applied through
-well-engineered software, is the approach this book takes.
+He began his career in R at the New Jersey Department of Environmental
+Protection, where he was the lead programmer on the \emph{2016 New
+Jersey Integrated Water Quality Assessment Report}, the state's
+assessment of its surface waters under the Clean Water Act. He built the
+application, in R, that downloaded and assessed the water quality data
+behind the report, and is listed as its co-author. Since then his work
+has mostly combined SQL Server with R and Python.
 
-He is currently an Infrastructure and Operations Engineer at Optum.
-
-\emph{Orbital Mechanics with R} grew out of the orbitr documentation and
-the questions it could not answer: not how to run an orbit, but why the
-simulation behaves the way it does. He also writes about physics for a
-general audience. He lives in Newtown, Pennsylvania.
+He is the author of orbitr, the R package this book is built on, and of
+other open-source packages on CRAN and PyPI, among them
+\texttt{sqlserverconnect} and \texttt{dbexplorer}. He lives in Newtown,
+Pennsylvania, with his wife, Kerry.
 
 \section*{Where to find things}\label{where-to-find-things}
 \addcontentsline{toc}{section}{Where to find things}
