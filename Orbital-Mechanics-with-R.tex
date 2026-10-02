@@ -434,7 +434,8 @@ the built-in physical constants with their sources.
   book uses R's native pipe \texttt{\textbar{}\textgreater{}}
   everywhere.
 \item
-  The orbitr package, version 1.0.0 or later (see the box below).
+  The orbitr package, version 1.0.0 or later, from CRAN (see the box
+  below).
 \item
   The dplyr and ggplot2 packages. They are installed automatically with
   orbitr. A few chapters also use tidyr.
@@ -448,11 +449,9 @@ An editor that runs R code chunks (RStudio or Positron, from
 \url{https://posit.co}) makes it easy to run the book's examples as you
 read.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title={Installing version 1.0.0}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title={Installing orbitr}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
 
-This book needs orbitr 1.0.0, which has been submitted to CRAN and will
-be available there any day now. Once it is, the usual command is all you
-need:
+This book needs orbitr 1.0.0 or later, which is on CRAN:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -460,23 +459,13 @@ need:
 \end{Highlighting}
 \end{Shaded}
 
-If \texttt{packageVersion("orbitr")} still reports 0.3.0 after that,
-CRAN has not caught up yet. Install the current version directly from
-GitHub instead:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
-\NormalTok{remotes}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"DRosenman/orbitr"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-This builds the package's C++ engine on your machine, so on Windows you
-need Rtools (\url{https://cran.r-project.org/bin/windows/Rtools/}) and
-on a Mac the Xcode command-line tools
-(\texttt{xcode-select\ -\/-install} in a terminal). Linux has a compiler
-already. Either route should leave \texttt{packageVersion("orbitr")} at
-1.0.0 or higher.
+\texttt{packageVersion("orbitr")} should then report 1.0.0 or higher.
+The development version, with whatever has been added since, is at
+\url{https://github.com/DRosenman/orbitr} and installs with
+\texttt{remotes::install\_github("DRosenman/orbitr")}; it compiles the
+package's C++ engine, so on Windows that needs Rtools and on a Mac the
+Xcode command-line tools. For this book, the CRAN version is the one to
+use.
 
 \end{tcolorbox}
 
@@ -9130,9 +9119,11 @@ behind the report, and is listed as its co-author. Since then his work
 has mostly combined SQL Server with R and Python.
 
 He is the author of orbitr, the R package this book is built on, and of
-other open-source packages on CRAN and PyPI, among them
-\texttt{sqlserverconnect} and \texttt{dbexplorer}. He lives in Newtown,
-Pennsylvania, with his wife, Kerry.
+other open-source packages, among them \texttt{sqlserverconnect}, an R
+package on CRAN for connecting R to SQL Server, and
+\texttt{polars\_mssql}, a Python package on PyPI for working with SQL
+Server data in Polars. He lives in Newtown, Pennsylvania, with his wife,
+Kerry.
 
 \section*{Where to find things}\label{where-to-find-things}
 \addcontentsline{toc}{section}{Where to find things}
