@@ -1,0 +1,6 @@
+# Profile used by the GitHub Actions publish job (QUARTO_PROFILE=ci).
+# The runner has no R, so never execute code there: render every chapter from
+# the results committed in _freeze/, even if a .qmd was edited without being
+# re-rendered locally. Prose changes still render; code output comes from cache.
+execute:
+  freeze: true
