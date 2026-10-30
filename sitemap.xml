@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://book.orbit-r.com/index.html</loc>
-    <lastmod>2026-10-17T22:41:10.630Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.487Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/01-why-simulate-gravity.html</loc>
-    <lastmod>2026-10-17T22:41:10.504Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.352Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/02-four-lines-to-an-orbit.html</loc>
-    <lastmod>2026-10-17T22:41:10.504Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.352Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/03-newton-and-the-n-body-problem.html</loc>
-    <lastmod>2026-10-17T22:41:10.505Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.353Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/04-the-two-body-problem.html</loc>
-    <lastmod>2026-10-17T22:41:10.505Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.353Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/05-integrators.html</loc>
-    <lastmod>2026-10-17T22:41:10.507Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.355Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/06-softening.html</loc>
-    <lastmod>2026-10-17T22:41:10.509Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.357Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/07-keplerian-elements.html</loc>
-    <lastmod>2026-10-17T22:41:10.511Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.359Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/08-the-solar-system.html</loc>
-    <lastmod>2026-10-17T22:41:10.511Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.360Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/09-binary-stars.html</loc>
-    <lastmod>2026-10-17T22:41:10.513Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.361Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/10-reference-frames.html</loc>
-    <lastmod>2026-10-17T22:41:10.513Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.361Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/11-chaos-and-the-three-body-problem.html</loc>
-    <lastmod>2026-10-17T22:41:10.516Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.365Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/12-energy-and-angular-momentum.html</loc>
-    <lastmod>2026-10-17T22:41:10.520Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.369Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/13-comets.html</loc>
-    <lastmod>2026-10-17T22:41:10.524Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.372Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/14-figures-for-papers-and-talks.html</loc>
-    <lastmod>2026-10-17T22:41:10.524Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.373Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/15-the-cpp-engine.html</loc>
-    <lastmod>2026-10-17T22:41:10.525Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.373Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/16-limits-and-extensions.html</loc>
-    <lastmod>2026-10-17T22:41:10.526Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.374Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/references.html</loc>
-    <lastmod>2026-10-17T22:41:10.630Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.487Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/A-r-basics.html</loc>
-    <lastmod>2026-10-17T22:41:10.528Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.376Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/B-math-background.html</loc>
-    <lastmod>2026-10-17T22:41:10.528Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.376Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/C-function-reference.html</loc>
-    <lastmod>2026-10-17T22:41:10.528Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.376Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/D-constants.html</loc>
-    <lastmod>2026-10-17T22:41:10.528Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.376Z</lastmod>
   </url>
   <url>
     <loc>https://book.orbit-r.com/about.html</loc>
-    <lastmod>2026-10-17T22:41:10.607Z</lastmod>
+    <lastmod>2026-10-30T01:01:28.464Z</lastmod>
   </url>
 </urlset>
